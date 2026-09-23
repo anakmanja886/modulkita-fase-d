@@ -1,89 +1,198 @@
 <!doctype html>
 <html lang="id">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#4338ca">
-<title>ModulKita Premium — Perangkat Guru Lengkap</title>
+<title>ModulKita Premium — Perangkat Ajar Guru Lebih Praktis</title>
+<meta name="description" content="Buat CP–TP, ATP, PROTA, PROSEM, Modul Ajar, dan LKPD dalam satu alur. Tersedia Demo Gratis dan akses Premium.">
 <style>
-:root{--p:#4338ca;--p2:#7c3aed;--ink:#172033;--muted:#667085;--line:#e4e7ec;--bg:#f7f8fc;--card:#fff;--ok:#067647;--warn:#b54708;--bad:#b42318}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;color:var(--ink)}button,input,select,textarea{font:inherit}
-.top{background:linear-gradient(135deg,#312e81,#4338ca 55%,#7c3aed);color:#fff}.nav{max-width:1180px;margin:auto;padding:16px 20px;display:flex;justify-content:space-between;align-items:center}.brand{font-weight:950;font-size:20px}.nav button{border:1px solid rgba(255,255,255,.3);background:rgba(255,255,255,.12);color:#fff;border-radius:11px;padding:9px 12px;font-weight:850;cursor:pointer}
-.hero{max-width:1180px;margin:auto;padding:55px 20px 64px;display:grid;grid-template-columns:1.15fr .85fr;gap:28px;align-items:center}.hero h1{font-size:clamp(38px,6vw,65px);line-height:1.01;margin:12px 0 16px;letter-spacing:-2px}.hero p{line-height:1.7;font-size:17px;opacity:.95}.badge{display:inline-block;padding:7px 11px;background:#fffaeb;color:#b54708;border-radius:999px;font-size:11px;font-weight:950}.heroCard{background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.23);border-radius:22px;padding:20px}.heroCard ul{line-height:1.85;padding-left:20px}
-.wrap{max-width:1180px;margin:auto;padding:28px 20px 60px}.sectionTitle{text-align:center;margin:10px auto 25px;max-width:720px}.sectionTitle h2{font-size:30px;margin:0 0 8px}.sectionTitle p{color:var(--muted);line-height:1.6}
-.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:20px;box-shadow:0 12px 35px rgba(16,24,40,.06)}.price{font-size:27px;font-weight:950;color:#312e81;margin:12px 0}.features{padding-left:18px;color:#475467;line-height:1.75;min-height:135px}
+:root{
+  --p:#4338ca;--p2:#7c3aed;--ink:#172033;--muted:#667085;--line:#e4e7ec;
+  --bg:#f7f8fc;--card:#fff;--ok:#067647;--warn:#b54708;--bad:#b42318;
+  --soft:#eef2ff;--soft2:#faf5ff;--shadow:0 18px 45px rgba(16,24,40,.08)
+}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;color:var(--ink)}
+button,input,select,textarea{font:inherit}
+a{text-decoration:none;color:inherit}
+.top{background:linear-gradient(135deg,#312e81,#4338ca 55%,#7c3aed);color:#fff}
+.nav{max-width:1180px;margin:auto;padding:15px 20px;display:flex;justify-content:space-between;align-items:center;gap:12px}
+.brand{font-weight:950;font-size:20px;display:flex;align-items:center;gap:9px}.logo{width:36px;height:36px;border-radius:12px;background:#fff;color:#4338ca;display:grid;place-items:center;font-weight:950}
+.navActions{display:flex;gap:8px;align-items:center}.nav button,.nav a{border:1px solid rgba(255,255,255,.28);background:rgba(255,255,255,.12);color:#fff;border-radius:11px;padding:9px 12px;font-weight:850;cursor:pointer}
+.hero{max-width:1180px;margin:auto;padding:60px 20px 70px;display:grid;grid-template-columns:1.12fr .88fr;gap:30px;align-items:center}
+.hero h1{font-size:clamp(40px,6vw,67px);line-height:1.02;margin:13px 0 16px;letter-spacing:-2px}
+.hero p{line-height:1.7;font-size:17px;opacity:.95;max-width:720px}
+.badge{display:inline-block;padding:7px 11px;background:#fffaeb;color:#b54708;border-radius:999px;font-size:11px;font-weight:950}
+.heroBtns{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px}.heroBtns button,.heroBtns a{padding:12px 16px;border-radius:12px;font-weight:900;cursor:pointer}
+.heroPrimary{background:#fff;color:#3730a3;border:0}.heroGhost{border:1px solid rgba(255,255,255,.34);background:rgba(255,255,255,.10);color:#fff}
+.heroCard{background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.23);border-radius:24px;padding:22px;box-shadow:0 20px 60px rgba(17,24,39,.14)}
+.preview{display:grid;gap:10px}.previewItem{background:#fff;color:#344054;border-radius:14px;padding:12px 14px;display:flex;gap:11px;align-items:center}.previewIcon{width:38px;height:38px;border-radius:11px;background:#eef2ff;color:#4338ca;display:grid;place-items:center;font-weight:950}.previewItem b{display:block;font-size:13px}.previewItem span{font-size:11px;color:#667085}
+.wrap{max-width:1180px;margin:auto;padding:34px 20px 64px}
+.sectionTitle{text-align:center;margin:10px auto 28px;max-width:760px}.sectionTitle h2{font-size:32px;margin:0 0 9px}.sectionTitle p{color:var(--muted);line-height:1.65;margin:0}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.card{background:#fff;border:1px solid var(--line);border-radius:20px;padding:20px;box-shadow:var(--shadow)}
+.featureIcon{width:46px;height:46px;border-radius:14px;background:linear-gradient(135deg,#eef2ff,#faf5ff);display:grid;place-items:center;font-size:22px;margin-bottom:12px}
+.card h3{margin:0 0 7px}.card p{color:#667085;line-height:1.6;font-size:13px}
+.step{position:relative}.stepNo{width:34px;height:34px;border-radius:50%;background:#4338ca;color:#fff;display:grid;place-items:center;font-weight:950;margin-bottom:10px}
+.dashboard{display:none;margin:0 0 32px}.dashboard.show{display:block}.status{display:flex;justify-content:space-between;gap:16px;align-items:center;flex-wrap:wrap}.planTag{padding:7px 10px;border-radius:999px;background:#eef2ff;color:#3730a3;font-weight:900;font-size:12px}
+.price{font-size:30px;font-weight:950;color:#312e81;margin:12px 0}.features{padding-left:18px;color:#475467;line-height:1.78;min-height:150px}.priceCard{position:relative}.priceCard.featured{border:2px solid #8b5cf6}.best{position:absolute;right:16px;top:16px;background:#f5f3ff;color:#6d28d9;border-radius:999px;padding:5px 8px;font-size:10px;font-weight:900}
 .btn{border:0;border-radius:11px;padding:11px 14px;font-weight:900;cursor:pointer}.primary{background:linear-gradient(90deg,var(--p),var(--p2));color:#fff}.secondary{background:#eef2ff;color:#3730a3}.ghost{background:#fff;border:1px solid var(--line);color:#344054}.danger{background:#fff1f3;color:#c01048}.btn.full{width:100%}
-.modal{position:fixed;inset:0;background:rgba(16,24,40,.55);display:none;align-items:center;justify-content:center;padding:18px;z-index:50}.modal.show{display:flex}.panel{width:min(520px,100%);max-height:92vh;overflow:auto;background:#fff;border-radius:20px;padding:20px;box-shadow:0 30px 80px rgba(0,0,0,.2)}.tabs{display:flex;gap:8px;margin-bottom:16px}.tab{flex:1;padding:9px;border:1px solid var(--line);background:#fff;border-radius:10px;font-weight:850;cursor:pointer}.tab.active{background:#eef2ff;color:#3730a3;border-color:#c7d2fe}label{display:block;font-size:12.5px;font-weight:850;margin:10px 0 6px}input,select,textarea{width:100%;padding:10px 11px;border:1px solid #d0d5dd;border-radius:10px;outline:none}input:focus,select:focus,textarea:focus{border-color:#818cf8;box-shadow:0 0 0 3px #eef2ff}.muted{color:var(--muted);font-size:12px;line-height:1.55}.msg{padding:10px 12px;border-radius:10px;font-size:12.5px;margin:10px 0;display:none}.msg.show{display:block}.msg.ok{background:#ecfdf3;color:#067647}.msg.bad{background:#fef3f2;color:#b42318}.msg.warn{background:#fffaeb;color:#b54708}
-.dashboard{display:none}.dashboard.show{display:block}.status{display:flex;justify-content:space-between;gap:16px;align-items:center;flex-wrap:wrap}.planTag{padding:7px 10px;border-radius:999px;background:#eef2ff;color:#3730a3;font-weight:900;font-size:12px}.purchaseList{margin-top:12px}.purchaseItem{padding:10px;border:1px solid var(--line);border-radius:10px;margin-top:8px;font-size:12px}.qris{max-width:220px;width:100%;border:1px solid var(--line);border-radius:14px;display:none;margin:10px auto}.qris.show{display:block}.paybox{background:#f8fafc;border:1px solid var(--line);border-radius:14px;padding:12px;margin:12px 0}.paybox b{color:#312e81}.copyrow{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.copyvalue{font-size:18px;font-weight:950;letter-spacing:.3px}.waBtn{display:inline-block;text-decoration:none;background:#ecfdf3;color:#067647;border:1px solid #a7f3d0;border-radius:10px;padding:8px 10px;font-weight:850}
+.infoBand{background:linear-gradient(135deg,#eef2ff,#faf5ff);border:1px solid #ddd6fe;border-radius:22px;padding:22px;display:grid;grid-template-columns:1fr auto;gap:18px;align-items:center}.infoBand h3{margin:0 0 7px}.infoBand p{margin:0;color:#667085;line-height:1.6}.contactBtn{display:inline-block;background:#fff;border:1px solid #c7d2fe;color:#3730a3;padding:10px 13px;border-radius:11px;font-weight:900}
+.faq{display:grid;gap:10px;max-width:860px;margin:auto}.faq details{background:#fff;border:1px solid var(--line);border-radius:15px;padding:14px 16px}.faq summary{cursor:pointer;font-weight:900}.faq p{color:#667085;line-height:1.6;font-size:13px}
+.note{background:#fffaeb;border:1px solid #fedf89;color:#7a2e0e;border-radius:14px;padding:12px 14px;font-size:12px;line-height:1.6;margin-top:18px}
+.modal{position:fixed;inset:0;background:rgba(16,24,40,.58);display:none;align-items:center;justify-content:center;padding:18px;z-index:50}.modal.show{display:flex}.panel{width:min(520px,100%);max-height:92vh;overflow:auto;background:#fff;border-radius:22px;padding:20px;box-shadow:0 30px 80px rgba(0,0,0,.2)}
+.tabs{display:flex;gap:8px;margin-bottom:16px}.tab{flex:1;padding:9px;border:1px solid var(--line);background:#fff;border-radius:10px;font-weight:850;cursor:pointer}.tab.active{background:#eef2ff;color:#3730a3;border-color:#c7d2fe}
+label{display:block;font-size:12.5px;font-weight:850;margin:10px 0 6px}input,select,textarea{width:100%;padding:10px 11px;border:1px solid #d0d5dd;border-radius:10px;outline:none}input:focus,select:focus,textarea:focus{border-color:#818cf8;box-shadow:0 0 0 3px #eef2ff}
+.muted{color:var(--muted);font-size:12px;line-height:1.55}.msg{padding:10px 12px;border-radius:10px;font-size:12.5px;margin:10px 0;display:none}.msg.show{display:block}.msg.ok{background:#ecfdf3;color:#067647}.msg.bad{background:#fef3f2;color:#b42318}.msg.warn{background:#fffaeb;color:#b54708}
+.purchaseList{margin-top:12px}.purchaseItem{padding:10px;border:1px solid var(--line);border-radius:10px;margin-top:8px;font-size:12px}
+.qris{max-width:220px;width:100%;border:1px solid var(--line);border-radius:14px;display:none;margin:10px auto}.qris.show{display:block}
+.paybox{background:#f8fafc;border:1px solid var(--line);border-radius:14px;padding:12px;margin:12px 0}.paybox b{color:#312e81}.copyrow{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.copyvalue{font-size:18px;font-weight:950;letter-spacing:.3px}.waBtn{display:inline-block;text-decoration:none;background:#ecfdf3;color:#067647;border:1px solid #a7f3d0;border-radius:10px;padding:8px 10px;font-weight:850}
 .setup{display:none;background:#fff4e5;border:1px solid #fed7aa;color:#9a3412;padding:11px 13px;border-radius:12px;margin-bottom:18px}.setup.show{display:block}
-footer{text-align:center;color:#667085;font-size:12px;padding:30px 20px}
-@media(max-width:850px){.hero{grid-template-columns:1fr}.heroCard{display:none}.grid3{grid-template-columns:1fr}.features{min-height:0}}
+footer{text-align:center;color:#667085;font-size:12px;padding:34px 20px 45px}
+@media(max-width:900px){.hero{grid-template-columns:1fr}.heroCard{display:none}.grid3{grid-template-columns:1fr}.grid4{grid-template-columns:1fr 1fr}.features{min-height:0}.infoBand{grid-template-columns:1fr}}
+@media(max-width:560px){.nav{padding:12px 14px}.brand span{display:none}.hero{padding:46px 18px 55px}.hero h1{font-size:42px}.wrap{padding:28px 14px 55px}.grid4{grid-template-columns:1fr}.sectionTitle h2{font-size:27px}}
 </style>
 </head>
 <body>
 <header class="top">
- <div class="nav"><div class="brand">ModulKita Premium</div><div><button id="accountBtn" onclick="openAuth()">Masuk / Daftar</button></div></div>
- <div class="hero"><div><span class="badge">Perangkat Guru dalam Satu Aplikasi</span><h1>Buat perangkat lengkap.<br>Lebih cepat, lebih rapi.</h1><p>CP–TP, ATP, Kalender Pendidikan kerja, PROTA, PROSEM, Modul Ajar Pembelajaran Mendalam, serta LKPD lucu dan bergambar dalam satu alur.</p></div><div class="heroCard"><b>Untuk guru:</b><ul><li>Akun pribadi</li><li>Demo gratis</li><li>Akses Premium setelah pembayaran disetujui admin</li><li>Data akun dilindungi Supabase Auth + RLS</li><li>Generator dapat digunakan dari HP/laptop</li></ul></div></div>
+  <div class="nav">
+    <div class="brand"><div class="logo">M</div><span>ModulKita</span></div>
+    <div class="navActions">
+      <a href="#paket">Paket</a>
+      <button id="accountBtn" onclick="openAuth()">Masuk / Daftar</button>
+    </div>
+  </div>
+  <div class="hero">
+    <div>
+      <span class="badge">Untuk Guru SMP & Sederajat</span>
+      <h1>Perangkat ajar lebih cepat. Tetap kendali di tangan guru.</h1>
+      <p>Susun CP–TP, ATP, Kalender Pendidikan kerja, PROTA, PROSEM, Modul Ajar Pembelajaran Mendalam, serta LKPD dalam satu alur yang rapi dan mudah digunakan dari HP maupun laptop.</p>
+      <div class="heroBtns">
+        <button class="heroPrimary" onclick="openAuth('register')">Coba Gratis</button>
+        <a class="heroGhost" href="#paket">Lihat Paket Premium</a>
+      </div>
+    </div>
+    <div class="heroCard">
+      <div class="preview">
+        <div class="previewItem"><div class="previewIcon">01</div><div><b>Isi identitas & materi</b><span>Bab, subbab, kelas, alokasi waktu</span></div></div>
+        <div class="previewItem"><div class="previewIcon">02</div><div><b>Generate perangkat</b><span>Satu alur untuk satu tahun pembelajaran</span></div></div>
+        <div class="previewItem"><div class="previewIcon">03</div><div><b>Edit & simpan</b><span>Tinjau, sesuaikan, lalu cetak/download</span></div></div>
+      </div>
+    </div>
+  </div>
 </header>
 
 <main class="wrap">
- <div id="setupNotice" class="setup"><b>Mode setup:</b> Supabase belum dihubungkan. Isi <code>config.js</code> terlebih dahulu agar login dan Premium aktif.</div>
+  <div id="setupNotice" class="setup"><b>Layanan akun belum siap.</b> Silakan hubungi admin ModulKita.</div>
 
- <section id="dashboard" class="dashboard card">
-  <div class="status"><div><h2 style="margin:0 0 6px">Halo, <span id="dashName">Guru</span> 👋</h2><div class="muted" id="dashEmail"></div></div><div><span id="planTag" class="planTag">Demo</span></div></div>
-  <div id="accessInfo" class="msg show warn">Memeriksa akses…</div>
-  <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px"><button class="btn primary" id="openGeneratorBtn" onclick="openGenerator()">Buka Generator</button><button class="btn ghost" onclick="loadPurchases()">Riwayat Pembelian</button><button class="btn ghost" id="adminBtn" style="display:none" onclick="location.href='admin.html'">Admin</button><button class="btn danger" onclick="logout()">Keluar</button></div>
-  <div id="purchaseHistory" class="purchaseList"></div>
- </section>
+  <section id="dashboard" class="dashboard card">
+    <div class="status">
+      <div><h2 style="margin:0 0 6px">Halo, <span id="dashName">Guru</span> 👋</h2><div class="muted" id="dashEmail"></div></div>
+      <div><span id="planTag" class="planTag">Demo</span></div>
+    </div>
+    <div id="accessInfo" class="msg show warn">Memeriksa akses…</div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px">
+      <button class="btn primary" id="openGeneratorBtn" onclick="openGenerator()">Buka Generator</button>
+      <button class="btn ghost" onclick="loadPurchases()">Riwayat Pembelian</button>
+      <button class="btn ghost" id="adminBtn" style="display:none" onclick="location.href='admin.html'">Admin</button>
+      <button class="btn danger" onclick="logout()">Keluar</button>
+    </div>
+    <div id="purchaseHistory" class="purchaseList"></div>
+  </section>
 
- <section style="margin-top:42px">
-  <div class="sectionTitle"><h2>Pilih akses ModulKita</h2><p>Harga dapat Bapak atur sendiri melalui <code>config.js</code>. Pembayaran versi awal menggunakan konfirmasi manual, lalu admin mengaktifkan akun Premium.</p></div>
-  <div id="pricing" class="grid3"></div>
- </section>
+  <section>
+    <div class="sectionTitle"><h2>Satu tempat untuk perangkat pembelajaran</h2><p>Dirancang agar guru bisa menyusun dokumen pokok tanpa harus berpindah-pindah template.</p></div>
+    <div class="grid3">
+      <div class="card"><div class="featureIcon">🎯</div><h3>CP → TP & ATP</h3><p>Susun alur tujuan pembelajaran dari materi dan subbab yang Anda masukkan.</p></div>
+      <div class="card"><div class="featureIcon">📅</div><h3>Kalender, PROTA & PROSEM</h3><p>Atur minggu efektif, alokasi waktu, program tahunan, dan program semester.</p></div>
+      <div class="card"><div class="featureIcon">📘</div><h3>Modul Ajar</h3><p>Modul Pembelajaran Mendalam per subbab dengan pengalaman belajar dan asesmen.</p></div>
+      <div class="card"><div class="featureIcon">🎨</div><h3>LKPD Menarik</h3><p>LKPD peserta didik yang rapi, mudah dipahami, dan dapat disertai ilustrasi.</p></div>
+      <div class="card"><div class="featureIcon">📝</div><h3>Edit Sebelum Digunakan</h3><p>Hasil dapat ditinjau dan disesuaikan dengan kondisi siswa serta kebijakan sekolah.</p></div>
+      <div class="card"><div class="featureIcon">📱</div><h3>HP & Laptop</h3><p>Gunakan akun yang sama dari perangkat yang mendukung browser modern.</p></div>
+    </div>
+  </section>
+
+  <section style="margin-top:58px">
+    <div class="sectionTitle"><h2>Cara menggunakan ModulKita</h2><p>Mulai dari akun gratis, lalu naikkan ke Premium saat membutuhkan fitur lengkap.</p></div>
+    <div class="grid4">
+      <div class="card step"><div class="stepNo">1</div><h3>Daftar</h3><p>Buat akun dengan nama, email, dan password.</p></div>
+      <div class="card step"><div class="stepNo">2</div><h3>Isi Data</h3><p>Masukkan mapel, kelas, bab, subbab, dan kalender kerja.</p></div>
+      <div class="card step"><div class="stepNo">3</div><h3>Generate</h3><p>Buat perangkat dan LKPD sesuai data yang telah diisi.</p></div>
+      <div class="card step"><div class="stepNo">4</div><h3>Tinjau & Gunakan</h3><p>Periksa kembali, edit bila perlu, lalu cetak atau download.</p></div>
+    </div>
+  </section>
+
+  <section id="paket" style="margin-top:58px">
+    <div class="sectionTitle"><h2>Pilih akses ModulKita</h2><p>Coba gratis terlebih dahulu. Untuk penggunaan penuh, pilih paket Premium yang sesuai kebutuhan.</p></div>
+    <div id="pricing" class="grid3"></div>
+    <div class="note"><b>Catatan penting:</b> ModulKita membantu menyusun draf perangkat pembelajaran. Guru tetap perlu meninjau dan menyesuaikan hasil dengan CP resmi, karakteristik peserta didik, kalender sekolah, serta kebijakan satuan pendidikan.</div>
+  </section>
+
+  <section style="margin-top:48px">
+    <div class="infoBand">
+      <div><h3>Pembayaran Premium melalui DANA</h3><p>Setelah memilih paket, transfer ke akun DANA yang ditampilkan lalu kirim konfirmasi. Admin akan memeriksa pembayaran dan mengaktifkan akses Premium.</p></div>
+      <a id="publicWa" class="contactBtn" href="#" target="_blank" rel="noopener">Hubungi Admin</a>
+    </div>
+  </section>
+
+  <section style="margin-top:58px">
+    <div class="sectionTitle"><h2>Pertanyaan yang sering ditanyakan</h2></div>
+    <div class="faq">
+      <details><summary>Apa yang bisa dilakukan pada akun Demo?</summary><p>Demo dapat digunakan untuk mencoba generator dengan maksimal satu subbab. Fitur download Word/PDF tersedia pada akun Premium.</p></details>
+      <details><summary>Berapa lama Premium aktif?</summary><p>Sesuai paket yang dipilih: 30 hari, 1 tahun, atau Lifetime. Masa aktif terlihat setelah Anda login.</p></details>
+      <details><summary>Bagaimana aktivasi setelah membayar?</summary><p>Kirim konfirmasi pembayaran dari halaman pembelian. Setelah diverifikasi admin, akun akan diaktifkan sesuai paket yang dibeli.</p></details>
+      <details><summary>Apakah hasil langsung siap digunakan?</summary><p>Hasil generator adalah draf perangkat yang harus ditinjau guru. Sesuaikan dengan kondisi siswa, kebijakan sekolah, dan dokumen kurikulum resmi yang berlaku.</p></details>
+    </div>
+  </section>
 </main>
 
 <div id="authModal" class="modal" onclick="if(event.target===this)closeAuth()">
- <div class="panel">
-  <div style="display:flex;justify-content:space-between;align-items:center"><h2 style="margin:0">Akun ModulKita</h2><button class="btn ghost" onclick="closeAuth()">✕</button></div>
-  <div class="tabs"><button id="loginTab" class="tab active" onclick="showAuthTab('login')">Masuk</button><button id="registerTab" class="tab" onclick="showAuthTab('register')">Daftar</button></div>
-  <div id="authMsg" class="msg"></div>
-  <div id="loginForm">
-   <label>Email</label><input id="loginEmail" type="email" autocomplete="email">
-   <label>Password</label><input id="loginPassword" type="password" autocomplete="current-password">
-   <button class="btn primary full" style="margin-top:14px" onclick="login()">Masuk</button>
+  <div class="panel">
+    <div style="display:flex;justify-content:space-between;align-items:center"><h2 style="margin:0">Akun ModulKita</h2><button class="btn ghost" onclick="closeAuth()">✕</button></div>
+    <div class="tabs"><button id="loginTab" class="tab active" onclick="showAuthTab('login')">Masuk</button><button id="registerTab" class="tab" onclick="showAuthTab('register')">Daftar</button></div>
+    <div id="authMsg" class="msg"></div>
+    <div id="loginForm">
+      <label>Email</label><input id="loginEmail" type="email" autocomplete="email">
+      <label>Password</label><input id="loginPassword" type="password" autocomplete="current-password">
+      <button class="btn primary full" style="margin-top:14px" onclick="login()">Masuk</button>
+    </div>
+    <div id="registerForm" style="display:none">
+      <label>Nama Lengkap</label><input id="regName">
+      <label>Email</label><input id="regEmail" type="email">
+      <label>Password</label><input id="regPassword" type="password" minlength="6">
+      <button class="btn primary full" style="margin-top:14px" onclick="register()">Daftar Akun</button>
+      <p class="muted">Gunakan email aktif dan simpan password Anda dengan baik.</p>
+    </div>
   </div>
-  <div id="registerForm" style="display:none">
-   <label>Nama Lengkap</label><input id="regName">
-   <label>Email</label><input id="regEmail" type="email">
-   <label>Password</label><input id="regPassword" type="password" minlength="6">
-   <button class="btn primary full" style="margin-top:14px" onclick="register()">Daftar Akun</button>
-   <p class="muted">Jika verifikasi email aktif di Supabase, cek email setelah mendaftar.</p>
-  </div>
- </div>
 </div>
 
 <div id="buyModal" class="modal" onclick="if(event.target===this)closeBuy()">
- <div class="panel">
-  <div style="display:flex;justify-content:space-between;align-items:center"><h2 style="margin:0">Konfirmasi Pembelian</h2><button class="btn ghost" onclick="closeBuy()">✕</button></div>
-  <div id="buyMsg" class="msg"></div>
-  <label>Paket</label><select id="buyPackage"></select>
-  <div id="paymentBox" class="paybox">
-    <div class="muted">Pembayaran manual melalui</div>
-    <div style="font-size:17px;font-weight:950;margin:4px 0" id="payMethod">DANA</div>
-    <div>Atas nama: <b id="payName">-</b></div>
-    <div class="copyrow" style="margin-top:5px"><span>Nomor:</span><span class="copyvalue" id="payNumber">-</span><button class="btn ghost" type="button" onclick="copyPaymentNumber()">Salin</button></div>
-    <div class="muted" style="margin-top:7px">Setelah transfer, isi referensi transaksi di bawah lalu kirim konfirmasi.</div>
-    <a id="waContact" class="waBtn" target="_blank" rel="noopener" style="margin-top:9px">Hubungi Admin via WhatsApp</a>
+  <div class="panel">
+    <div style="display:flex;justify-content:space-between;align-items:center"><h2 style="margin:0">Pembelian Premium</h2><button class="btn ghost" onclick="closeBuy()">✕</button></div>
+    <div id="buyMsg" class="msg"></div>
+    <label>Paket yang dipilih</label><select id="buyPackage"></select>
+    <div id="paymentBox" class="paybox">
+      <div class="muted">Transfer pembayaran melalui</div>
+      <div style="font-size:18px;font-weight:950;margin:4px 0" id="payMethod">DANA</div>
+      <div>Atas nama: <b id="payName">-</b></div>
+      <div class="copyrow" style="margin-top:5px"><span>Nomor:</span><span class="copyvalue" id="payNumber">-</span><button class="btn ghost" type="button" onclick="copyPaymentNumber()">Salin</button></div>
+      <div class="muted" style="margin-top:8px">Transfer sesuai harga paket, lalu isi data konfirmasi di bawah.</div>
+      <a id="waContact" class="waBtn" target="_blank" rel="noopener" style="margin-top:9px">Hubungi Admin via WhatsApp</a>
+    </div>
+    <div id="qrisWrap" style="text-align:center"><img id="qrisImg" class="qris" alt="QRIS"></div>
+    <label>Nomor WhatsApp pembeli</label><input id="buyPhone" placeholder="08xxxxxxxxxx">
+    <label>Referensi transaksi</label><input id="buyRef" placeholder="Contoh: ID transaksi / waktu transfer">
+    <label>Catatan</label><textarea id="buyNotes" rows="3" placeholder="Opsional"></textarea>
+    <button class="btn primary full" style="margin-top:14px" onclick="submitPurchase()">Kirim Konfirmasi Pembayaran</button>
+    <p class="muted">Akses Premium akan aktif setelah pembayaran diperiksa admin.</p>
   </div>
-  <div id="qrisWrap" style="text-align:center"><img id="qrisImg" class="qris" alt="QRIS"></div>
-  <label>Nomor WhatsApp</label><input id="buyPhone" placeholder="08xxxxxxxxxx">
-  <label>Referensi/berita transfer</label><input id="buyRef" placeholder="Contoh: Transfer a.n. Rizky / ID transaksi">
-  <label>Catatan</label><textarea id="buyNotes" rows="3" placeholder="Opsional"></textarea>
-  <button class="btn primary full" style="margin-top:14px" onclick="submitPurchase()">Kirim Konfirmasi</button>
-  <p class="muted">Setelah admin memeriksa pembayaran, akun akan diaktifkan menjadi Premium.</p>
- </div>
 </div>
 
-<footer>ModulKita Premium • Akun dan status akses menggunakan Supabase • Pembayaran otomatis dapat ditambahkan kemudian.</footer>
+<footer>
+  <b>ModulKita</b> — Perangkat pembelajaran lebih praktis untuk guru.<br>
+  <span>Hasil generator perlu ditinjau sebelum digunakan sebagai dokumen resmi sekolah.</span>
+</footer>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="config.js"></script>
@@ -91,40 +200,66 @@ footer{text-align:center;color:#667085;font-size:12px;padding:30px 20px}
 let sb=null,currentUser=null,currentProfile=null,selectedPackage=null;
 const cfg=window.MODULKITA_CONFIG||{};
 const $=id=>document.getElementById(id);
+
 function configured(){return !!(cfg.supabaseUrl&&cfg.supabasePublishableKey)}
 function initSupabase(){if(!configured()){ $('setupNotice').classList.add('show'); return false } sb=window.supabase.createClient(cfg.supabaseUrl,cfg.supabasePublishableKey);return true}
 function msg(id,text,type='bad'){const el=$(id);el.textContent=text;el.className='msg show '+type}
 function clearMsg(id){$(id).className='msg';$(id).textContent=''}
+
+function packageLabel(id){
+ if(id==='premium_30')return 'Premium 30 Hari';
+ if(id==='premium_year')return 'Premium 1 Tahun';
+ if(id==='lifetime')return 'Lifetime';
+ return id;
+}
 function renderPricing(){
  const box=$('pricing');box.innerHTML='';
- const cards=[{id:'demo',name:'Demo Gratis',price:'Rp0',features:['Mencoba generator','Maksimal 1 subbab','Tidak bisa download Word/PDF','Cocok untuk mencoba']},...(cfg.packages||[])];
- cards.forEach(p=>{const d=document.createElement('div');d.className='card';const isDemo=p.id==='demo';d.innerHTML=`<div class="planTag">${isDemo?'Coba dulu':'Premium'}</div><h3 style="font-size:21px">${p.name}</h3><div class="price">${p.price||'Atur harga'}</div><ul class="features">${(p.features||['Generator perangkat lengkap','Bab & subbab tanpa batas','Kalender, PROTA, PROSEM','Modul Ajar + LKPD','Download Word/PDF']).map(x=>`<li>${x}</li>`).join('')}</ul><button class="btn ${isDemo?'secondary':'primary'} full">${isDemo?'Daftar Gratis':'Pilih Paket'}</button>`;d.querySelector('button').onclick=()=>isDemo?openAuth('register'):startBuy(p.id);box.appendChild(d)})
+ const cards=[{id:'demo',name:'Demo Gratis',price:'Rp0',features:['Mencoba generator','Maksimal 1 subbab','Tanpa download Word/PDF','Cocok untuk mencoba']},...(cfg.packages||[])];
+ cards.forEach(p=>{
+   const d=document.createElement('div');
+   const isDemo=p.id==='demo',featured=p.id==='premium_year';
+   d.className='card priceCard'+(featured?' featured':'');
+   d.innerHTML=`${featured?'<span class="best">1 TAHUN</span>':''}<div class="planTag">${isDemo?'Coba dulu':'Premium'}</div><h3 style="font-size:22px;margin-top:16px">${p.name}</h3><div class="price">${p.price||'-'}</div><ul class="features">${(p.features||['Generator perangkat lengkap','Bab & subbab tanpa batas','Kalender, PROTA, PROSEM','Modul Ajar + LKPD','Download Word/PDF']).map(x=>`<li>${x}</li>`).join('')}</ul><button class="btn ${isDemo?'secondary':'primary'} full">${isDemo?'Daftar Gratis':'Pilih Paket'}</button>`;
+   d.querySelector('button').onclick=()=>isDemo?openAuth('register'):startBuy(p.id);
+   box.appendChild(d)
+ })
+}
+function setupPublicContact(){
+ if(!cfg.adminWhatsApp)return;
+ const wa=cfg.adminWhatsApp.replace(/\D/g,'').replace(/^0/,'62');
+ $('publicWa').href=`https://wa.me/${wa}?text=${encodeURIComponent('Halo Admin ModulKita, saya ingin bertanya tentang akses Premium.')}`;
 }
 function openAuth(tab='login'){clearMsg('authMsg');$('authModal').classList.add('show');showAuthTab(tab)}
 function closeAuth(){$('authModal').classList.remove('show')}
 function showAuthTab(tab){$('loginTab').classList.toggle('active',tab==='login');$('registerTab').classList.toggle('active',tab==='register');$('loginForm').style.display=tab==='login'?'block':'none';$('registerForm').style.display=tab==='register'?'block':'none'}
+
 async function register(){
- if(!sb)return msg('authMsg','Supabase belum dikonfigurasi.','warn');
+ if(!sb)return msg('authMsg','Layanan akun sedang belum siap. Hubungi admin.','warn');
  const full_name=$('regName').value.trim(),email=$('regEmail').value.trim(),password=$('regPassword').value;
  if(!full_name||!email||password.length<6)return msg('authMsg','Lengkapi nama, email, dan password minimal 6 karakter.');
  const {data,error}=await sb.auth.signUp({email,password,options:{data:{full_name}}});
  if(error)return msg('authMsg',error.message);
- msg('authMsg',data.session?'Akun berhasil dibuat dan sudah masuk.':'Akun dibuat. Silakan cek email untuk verifikasi.','ok');
- if(data.session){closeAuth();await refreshSession()}
+ if(data.session){
+   msg('authMsg','Akun berhasil dibuat. Anda sudah masuk.','ok');
+   setTimeout(async()=>{closeAuth();await refreshSession()},700)
+ }else{
+   msg('authMsg','Akun berhasil dibuat. Silakan masuk menggunakan email dan password Anda.','ok')
+ }
 }
 async function login(){
- if(!sb)return msg('authMsg','Supabase belum dikonfigurasi.','warn');
+ if(!sb)return msg('authMsg','Layanan akun sedang belum siap. Hubungi admin.','warn');
  const email=$('loginEmail').value.trim(),password=$('loginPassword').value;
  const {error}=await sb.auth.signInWithPassword({email,password});
  if(error)return msg('authMsg',error.message);
  closeAuth();await refreshSession()
 }
 async function logout(){if(sb)await sb.auth.signOut();currentUser=null;currentProfile=null;location.reload()}
+
 async function refreshSession(){
  if(!sb)return;
  const {data:{session}}=await sb.auth.getSession();
  currentUser=session?.user||null;
- if(!currentUser){$('dashboard').classList.remove('show');$('accountBtn').textContent='Masuk / Daftar';return}
+ if(!currentUser){$('dashboard').classList.remove('show');$('accountBtn').textContent='Masuk / Daftar';$('accountBtn').onclick=()=>openAuth();return}
  $('accountBtn').textContent='Akun Saya';$('accountBtn').onclick=()=>document.getElementById('dashboard').scrollIntoView({behavior:'smooth'});
  const {data,error}=await sb.from('modulkita_profiles').select('*').eq('id',currentUser.id).single();
  if(error){console.error(error);return}
@@ -132,9 +267,10 @@ async function refreshSession(){
  const premium=data.is_active&&(data.plan==='lifetime'||['premium_30','premium_year'].includes(data.plan)&&(!data.access_until||new Date(data.access_until)>new Date()));
  if(data.role==='admin')$('adminBtn').style.display='inline-block';
  if(premium){msg('accessInfo',data.plan==='lifetime'?'Akses Premium Lifetime aktif.':`Akses Premium aktif sampai ${new Date(data.access_until).toLocaleDateString('id-ID')}.`,'ok')}
- else{msg('accessInfo','Akun Demo aktif. Anda dapat mencoba 1 subbab. Pilih paket Premium untuk fitur lengkap.','warn')}
+ else{msg('accessInfo','Akun Demo aktif. Anda dapat mencoba 1 subbab. Pilih Premium untuk fitur lengkap.','warn')}
 }
 function openGenerator(){if(!currentUser)return openAuth();location.href='generator.html'}
+
 function startBuy(id){
  selectedPackage=(cfg.packages||[]).find(x=>x.id===id);if(!selectedPackage)return;
  if(!currentUser){openAuth('login');return}
@@ -151,20 +287,24 @@ function startBuy(id){
 }
 function copyPaymentNumber(){const n=cfg.danaNumber||'';if(n&&navigator.clipboard){navigator.clipboard.writeText(n).then(()=>alert('Nomor DANA berhasil disalin.'))}else{alert('Nomor DANA: '+n)}}
 function closeBuy(){$('buyModal').classList.remove('show')}
+
 async function submitPurchase(){
  if(!currentUser)return msg('buyMsg','Silakan login dahulu.');
  const pkg=$('buyPackage').value,phone=$('buyPhone').value.trim(),transaction_ref=$('buyRef').value.trim(),notes=$('buyNotes').value.trim();
- if(!phone||!transaction_ref)return msg('buyMsg','Isi nomor WhatsApp dan referensi pembayaran.');
+ if(!phone||!transaction_ref)return msg('buyMsg','Isi nomor WhatsApp dan referensi transaksi.');
  const {error}=await sb.from('modulkita_purchase_requests').insert({user_id:currentUser.id,package:pkg,phone,transaction_ref,notes});
  if(error)return msg('buyMsg',error.message);
- msg('buyMsg','Konfirmasi terkirim. Admin akan memeriksa dan mengaktifkan akses Premium.','ok');setTimeout(closeBuy,1800);loadPurchases()
+ msg('buyMsg','Konfirmasi berhasil dikirim. Admin akan memeriksa pembayaran Anda.','ok');setTimeout(closeBuy,1900);loadPurchases()
 }
 async function loadPurchases(){
  if(!currentUser)return;
  const {data,error}=await sb.from('modulkita_purchase_requests').select('*').eq('user_id',currentUser.id).order('created_at',{ascending:false});
  if(error)return;
- $('purchaseHistory').innerHTML=data.length?'<h3>Riwayat Konfirmasi</h3>'+data.map(x=>`<div class="purchaseItem"><b>${x.package.replaceAll('_',' ')}</b> • ${x.status.toUpperCase()}<br><span class="muted">${new Date(x.created_at).toLocaleString('id-ID')} • Ref: ${x.transaction_ref||'-'}</span></div>`).join(''):'<div class="muted">Belum ada konfirmasi pembayaran.</div>'
+ $('purchaseHistory').innerHTML=data.length?'<h3>Riwayat Pembelian</h3>'+data.map(x=>`<div class="purchaseItem"><b>${packageLabel(x.package)}</b> • ${x.status.toUpperCase()}<br><span class="muted">${new Date(x.created_at).toLocaleString('id-ID')} • Ref: ${x.transaction_ref||'-'}</span></div>`).join(''):'<div class="muted">Belum ada riwayat pembelian.</div>'
 }
-renderPricing();if(initSupabase()){refreshSession();sb.auth.onAuthStateChange(()=>refreshSession())}
+
+renderPricing();setupPublicContact();
+if(initSupabase()){refreshSession();sb.auth.onAuthStateChange(()=>refreshSession())}
 </script>
-</body></html>
+</body>
+</html>
