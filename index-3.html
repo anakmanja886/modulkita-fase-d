@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#4338ca">
+<title>ModulKita Premium — Perangkat Guru Lengkap</title>
+<style>
+:root{--p:#4338ca;--p2:#7c3aed;--ink:#172033;--muted:#667085;--line:#e4e7ec;--bg:#f7f8fc;--card:#fff;--ok:#067647;--warn:#b54708;--bad:#b42318}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;color:var(--ink)}button,input,select,textarea{font:inherit}
+.top{background:linear-gradient(135deg,#312e81,#4338ca 55%,#7c3aed);color:#fff}.nav{max-width:1180px;margin:auto;padding:16px 20px;display:flex;justify-content:space-between;align-items:center}.brand{font-weight:950;font-size:20px}.nav button{border:1px solid rgba(255,255,255,.3);background:rgba(255,255,255,.12);color:#fff;border-radius:11px;padding:9px 12px;font-weight:850;cursor:pointer}
+.hero{max-width:1180px;margin:auto;padding:55px 20px 64px;display:grid;grid-template-columns:1.15fr .85fr;gap:28px;align-items:center}.hero h1{font-size:clamp(38px,6vw,65px);line-height:1.01;margin:12px 0 16px;letter-spacing:-2px}.hero p{line-height:1.7;font-size:17px;opacity:.95}.badge{display:inline-block;padding:7px 11px;background:#fffaeb;color:#b54708;border-radius:999px;font-size:11px;font-weight:950}.heroCard{background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.23);border-radius:22px;padding:20px}.heroCard ul{line-height:1.85;padding-left:20px}
+.wrap{max-width:1180px;margin:auto;padding:28px 20px 60px}.sectionTitle{text-align:center;margin:10px auto 25px;max-width:720px}.sectionTitle h2{font-size:30px;margin:0 0 8px}.sectionTitle p{color:var(--muted);line-height:1.6}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:20px;box-shadow:0 12px 35px rgba(16,24,40,.06)}.price{font-size:27px;font-weight:950;color:#312e81;margin:12px 0}.features{padding-left:18px;color:#475467;line-height:1.75;min-height:135px}
+.btn{border:0;border-radius:11px;padding:11px 14px;font-weight:900;cursor:pointer}.primary{background:linear-gradient(90deg,var(--p),var(--p2));color:#fff}.secondary{background:#eef2ff;color:#3730a3}.ghost{background:#fff;border:1px solid var(--line);color:#344054}.danger{background:#fff1f3;color:#c01048}.btn.full{width:100%}
+.modal{position:fixed;inset:0;background:rgba(16,24,40,.55);display:none;align-items:center;justify-content:center;padding:18px;z-index:50}.modal.show{display:flex}.panel{width:min(520px,100%);max-height:92vh;overflow:auto;background:#fff;border-radius:20px;padding:20px;box-shadow:0 30px 80px rgba(0,0,0,.2)}.tabs{display:flex;gap:8px;margin-bottom:16px}.tab{flex:1;padding:9px;border:1px solid var(--line);background:#fff;border-radius:10px;font-weight:850;cursor:pointer}.tab.active{background:#eef2ff;color:#3730a3;border-color:#c7d2fe}label{display:block;font-size:12.5px;font-weight:850;margin:10px 0 6px}input,select,textarea{width:100%;padding:10px 11px;border:1px solid #d0d5dd;border-radius:10px;outline:none}input:focus,select:focus,textarea:focus{border-color:#818cf8;box-shadow:0 0 0 3px #eef2ff}.muted{color:var(--muted);font-size:12px;line-height:1.55}.msg{padding:10px 12px;border-radius:10px;font-size:12.5px;margin:10px 0;display:none}.msg.show{display:block}.msg.ok{background:#ecfdf3;color:#067647}.msg.bad{background:#fef3f2;color:#b42318}.msg.warn{background:#fffaeb;color:#b54708}
+.dashboard{display:none}.dashboard.show{display:block}.status{display:flex;justify-content:space-between;gap:16px;align-items:center;flex-wrap:wrap}.planTag{padding:7px 10px;border-radius:999px;background:#eef2ff;color:#3730a3;font-weight:900;font-size:12px}.purchaseList{margin-top:12px}.purchaseItem{padding:10px;border:1px solid var(--line);border-radius:10px;margin-top:8px;font-size:12px}.qris{max-width:220px;width:100%;border:1px solid var(--line);border-radius:14px;display:none;margin:10px auto}.qris.show{display:block}.paybox{background:#f8fafc;border:1px solid var(--line);border-radius:14px;padding:12px;margin:12px 0}.paybox b{color:#312e81}.copyrow{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.copyvalue{font-size:18px;font-weight:950;letter-spacing:.3px}.waBtn{display:inline-block;text-decoration:none;background:#ecfdf3;color:#067647;border:1px solid #a7f3d0;border-radius:10px;padding:8px 10px;font-weight:850}
+.setup{display:none;background:#fff4e5;border:1px solid #fed7aa;color:#9a3412;padding:11px 13px;border-radius:12px;margin-bottom:18px}.setup.show{display:block}
+footer{text-align:center;color:#667085;font-size:12px;padding:30px 20px}
+@media(max-width:850px){.hero{grid-template-columns:1fr}.heroCard{display:none}.grid3{grid-template-columns:1fr}.features{min-height:0}}
+</style>
+</head>
+<body>
+<header class="top">
+ <div class="nav"><div class="brand">ModulKita Premium</div><div><button id="accountBtn" onclick="openAuth()">Masuk / Daftar</button></div></div>
+ <div class="hero"><div><span class="badge">Perangkat Guru dalam Satu Aplikasi</span><h1>Buat perangkat lengkap.<br>Lebih cepat, lebih rapi.</h1><p>CP–TP, ATP, Kalender Pendidikan kerja, PROTA, PROSEM, Modul Ajar Pembelajaran Mendalam, serta LKPD lucu dan bergambar dalam satu alur.</p></div><div class="heroCard"><b>Untuk guru:</b><ul><li>Akun pribadi</li><li>Demo gratis</li><li>Akses Premium setelah pembayaran disetujui admin</li><li>Data akun dilindungi Supabase Auth + RLS</li><li>Generator dapat digunakan dari HP/laptop</li></ul></div></div>
+</header>
+
+<main class="wrap">
+ <div id="setupNotice" class="setup"><b>Mode setup:</b> Supabase belum dihubungkan. Isi <code>config.js</code> terlebih dahulu agar login dan Premium aktif.</div>
+
+ <section id="dashboard" class="dashboard card">
+  <div class="status"><div><h2 style="margin:0 0 6px">Halo, <span id="dashName">Guru</span> 👋</h2><div class="muted" id="dashEmail"></div></div><div><span id="planTag" class="planTag">Demo</span></div></div>
+  <div id="accessInfo" class="msg show warn">Memeriksa akses…</div>
+  <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px"><button class="btn primary" id="openGeneratorBtn" onclick="openGenerator()">Buka Generator</button><button class="btn ghost" onclick="loadPurchases()">Riwayat Pembelian</button><button class="btn ghost" id="adminBtn" style="display:none" onclick="location.href='admin.html'">Admin</button><button class="btn danger" onclick="logout()">Keluar</button></div>
+  <div id="purchaseHistory" class="purchaseList"></div>
+ </section>
+
+ <section style="margin-top:42px">
+  <div class="sectionTitle"><h2>Pilih akses ModulKita</h2><p>Harga dapat Bapak atur sendiri melalui <code>config.js</code>. Pembayaran versi awal menggunakan konfirmasi manual, lalu admin mengaktifkan akun Premium.</p></div>
+  <div id="pricing" class="grid3"></div>
+ </section>
+</main>
+
+<div id="authModal" class="modal" onclick="if(event.target===this)closeAuth()">
+ <div class="panel">
+  <div style="display:flex;justify-content:space-between;align-items:center"><h2 style="margin:0">Akun ModulKita</h2><button class="btn ghost" onclick="closeAuth()">✕</button></div>
+  <div class="tabs"><button id="loginTab" class="tab active" onclick="showAuthTab('login')">Masuk</button><button id="registerTab" class="tab" onclick="showAuthTab('register')">Daftar</button></div>
+  <div id="authMsg" class="msg"></div>
+  <div id="loginForm">
+   <label>Email</label><input id="loginEmail" type="email" autocomplete="email">
+   <label>Password</label><input id="loginPassword" type="password" autocomplete="current-password">
+   <button class="btn primary full" style="margin-top:14px" onclick="login()">Masuk</button>
+  </div>
+  <div id="registerForm" style="display:none">
+   <label>Nama Lengkap</label><input id="regName">
+   <label>Email</label><input id="regEmail" type="email">
+   <label>Password</label><input id="regPassword" type="password" minlength="6">
+   <button class="btn primary full" style="margin-top:14px" onclick="register()">Daftar Akun</button>
+   <p class="muted">Jika verifikasi email aktif di Supabase, cek email setelah mendaftar.</p>
+  </div>
+ </div>
+</div>
+
+<div id="buyModal" class="modal" onclick="if(event.target===this)closeBuy()">
+ <div class="panel">
+  <div style="display:flex;justify-content:space-between;align-items:center"><h2 style="margin:0">Konfirmasi Pembelian</h2><button class="btn ghost" onclick="closeBuy()">✕</button></div>
+  <div id="buyMsg" class="msg"></div>
+  <label>Paket</label><select id="buyPackage"></select>
+  <div id="paymentBox" class="paybox">
+    <div class="muted">Pembayaran manual melalui</div>
+    <div style="font-size:17px;font-weight:950;margin:4px 0" id="payMethod">DANA</div>
+    <div>Atas nama: <b id="payName">-</b></div>
+    <div class="copyrow" style="margin-top:5px"><span>Nomor:</span><span class="copyvalue" id="payNumber">-</span><button class="btn ghost" type="button" onclick="copyPaymentNumber()">Salin</button></div>
+    <div class="muted" style="margin-top:7px">Setelah transfer, isi referensi transaksi di bawah lalu kirim konfirmasi.</div>
+    <a id="waContact" class="waBtn" target="_blank" rel="noopener" style="margin-top:9px">Hubungi Admin via WhatsApp</a>
+  </div>
+  <div id="qrisWrap" style="text-align:center"><img id="qrisImg" class="qris" alt="QRIS"></div>
+  <label>Nomor WhatsApp</label><input id="buyPhone" placeholder="08xxxxxxxxxx">
+  <label>Referensi/berita transfer</label><input id="buyRef" placeholder="Contoh: Transfer a.n. Rizky / ID transaksi">
+  <label>Catatan</label><textarea id="buyNotes" rows="3" placeholder="Opsional"></textarea>
+  <button class="btn primary full" style="margin-top:14px" onclick="submitPurchase()">Kirim Konfirmasi</button>
+  <p class="muted">Setelah admin memeriksa pembayaran, akun akan diaktifkan menjadi Premium.</p>
+ </div>
+</div>
+
+<footer>ModulKita Premium • Akun dan status akses menggunakan Supabase • Pembayaran otomatis dapat ditambahkan kemudian.</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="config.js"></script>
+<script>
+let sb=null,currentUser=null,currentProfile=null,selectedPackage=null;
+const cfg=window.MODULKITA_CONFIG||{};
+const $=id=>document.getElementById(id);
+function configured(){return !!(cfg.supabaseUrl&&cfg.supabasePublishableKey)}
+function initSupabase(){if(!configured()){ $('setupNotice').classList.add('show'); return false } sb=window.supabase.createClient(cfg.supabaseUrl,cfg.supabasePublishableKey);return true}
+function msg(id,text,type='bad'){const el=$(id);el.textContent=text;el.className='msg show '+type}
+function clearMsg(id){$(id).className='msg';$(id).textContent=''}
+function renderPricing(){
+ const box=$('pricing');box.innerHTML='';
+ const cards=[{id:'demo',name:'Demo Gratis',price:'Rp0',features:['Mencoba generator','Maksimal 1 subbab','Tidak bisa download Word/PDF','Cocok untuk mencoba']},...(cfg.packages||[])];
+ cards.forEach(p=>{const d=document.createElement('div');d.className='card';const isDemo=p.id==='demo';d.innerHTML=`<div class="planTag">${isDemo?'Coba dulu':'Premium'}</div><h3 style="font-size:21px">${p.name}</h3><div class="price">${p.price||'Atur harga'}</div><ul class="features">${(p.features||['Generator perangkat lengkap','Bab & subbab tanpa batas','Kalender, PROTA, PROSEM','Modul Ajar + LKPD','Download Word/PDF']).map(x=>`<li>${x}</li>`).join('')}</ul><button class="btn ${isDemo?'secondary':'primary'} full">${isDemo?'Daftar Gratis':'Pilih Paket'}</button>`;d.querySelector('button').onclick=()=>isDemo?openAuth('register'):startBuy(p.id);box.appendChild(d)})
+}
+function openAuth(tab='login'){clearMsg('authMsg');$('authModal').classList.add('show');showAuthTab(tab)}
+function closeAuth(){$('authModal').classList.remove('show')}
+function showAuthTab(tab){$('loginTab').classList.toggle('active',tab==='login');$('registerTab').classList.toggle('active',tab==='register');$('loginForm').style.display=tab==='login'?'block':'none';$('registerForm').style.display=tab==='register'?'block':'none'}
+async function register(){
+ if(!sb)return msg('authMsg','Supabase belum dikonfigurasi.','warn');
+ const full_name=$('regName').value.trim(),email=$('regEmail').value.trim(),password=$('regPassword').value;
+ if(!full_name||!email||password.length<6)return msg('authMsg','Lengkapi nama, email, dan password minimal 6 karakter.');
+ const {data,error}=await sb.auth.signUp({email,password,options:{data:{full_name}}});
+ if(error)return msg('authMsg',error.message);
+ msg('authMsg',data.session?'Akun berhasil dibuat dan sudah masuk.':'Akun dibuat. Silakan cek email untuk verifikasi.','ok');
+ if(data.session){closeAuth();await refreshSession()}
+}
+async function login(){
+ if(!sb)return msg('authMsg','Supabase belum dikonfigurasi.','warn');
+ const email=$('loginEmail').value.trim(),password=$('loginPassword').value;
+ const {error}=await sb.auth.signInWithPassword({email,password});
+ if(error)return msg('authMsg',error.message);
+ closeAuth();await refreshSession()
+}
+async function logout(){if(sb)await sb.auth.signOut();currentUser=null;currentProfile=null;location.reload()}
+async function refreshSession(){
+ if(!sb)return;
+ const {data:{session}}=await sb.auth.getSession();
+ currentUser=session?.user||null;
+ if(!currentUser){$('dashboard').classList.remove('show');$('accountBtn').textContent='Masuk / Daftar';return}
+ $('accountBtn').textContent='Akun Saya';$('accountBtn').onclick=()=>document.getElementById('dashboard').scrollIntoView({behavior:'smooth'});
+ const {data,error}=await sb.from('modulkita_profiles').select('*').eq('id',currentUser.id).single();
+ if(error){console.error(error);return}
+ currentProfile=data;$('dashboard').classList.add('show');$('dashName').textContent=data.full_name||'Guru';$('dashEmail').textContent=data.email||currentUser.email;$('planTag').textContent=(data.plan||'demo').replaceAll('_',' ').toUpperCase();
+ const premium=data.is_active&&(data.plan==='lifetime'||['premium_30','premium_year'].includes(data.plan)&&(!data.access_until||new Date(data.access_until)>new Date()));
+ if(data.role==='admin')$('adminBtn').style.display='inline-block';
+ if(premium){msg('accessInfo',data.plan==='lifetime'?'Akses Premium Lifetime aktif.':`Akses Premium aktif sampai ${new Date(data.access_until).toLocaleDateString('id-ID')}.`,'ok')}
+ else{msg('accessInfo','Akun Demo aktif. Anda dapat mencoba 1 subbab. Pilih paket Premium untuk fitur lengkap.','warn')}
+}
+function openGenerator(){if(!currentUser)return openAuth();location.href='generator.html'}
+function startBuy(id){
+ selectedPackage=(cfg.packages||[]).find(x=>x.id===id);if(!selectedPackage)return;
+ if(!currentUser){openAuth('login');return}
+ $('buyPackage').innerHTML=(cfg.packages||[]).map(p=>`<option value="${p.id}" ${p.id===id?'selected':''}>${p.name} — ${p.price}</option>`).join('');
+ $('payMethod').textContent=cfg.paymentMethod||'DANA';
+ $('payName').textContent=cfg.danaName||'-';
+ $('payNumber').textContent=cfg.danaNumber||'-';
+ if(cfg.adminWhatsApp){
+   const wa=cfg.adminWhatsApp.replace(/\D/g,'').replace(/^0/,'62');
+   $('waContact').href=`https://wa.me/${wa}?text=${encodeURIComponent('Halo Admin ModulKita, saya ingin konfirmasi pembayaran Premium.')}`;
+ } else {$('waContact').style.display='none'}
+ if(cfg.qrisImageUrl){$('qrisImg').src=cfg.qrisImageUrl;$('qrisImg').classList.add('show')}
+ clearMsg('buyMsg');$('buyModal').classList.add('show')
+}
+function copyPaymentNumber(){const n=cfg.danaNumber||'';if(n&&navigator.clipboard){navigator.clipboard.writeText(n).then(()=>alert('Nomor DANA berhasil disalin.'))}else{alert('Nomor DANA: '+n)}}
+function closeBuy(){$('buyModal').classList.remove('show')}
+async function submitPurchase(){
+ if(!currentUser)return msg('buyMsg','Silakan login dahulu.');
+ const pkg=$('buyPackage').value,phone=$('buyPhone').value.trim(),transaction_ref=$('buyRef').value.trim(),notes=$('buyNotes').value.trim();
+ if(!phone||!transaction_ref)return msg('buyMsg','Isi nomor WhatsApp dan referensi pembayaran.');
+ const {error}=await sb.from('modulkita_purchase_requests').insert({user_id:currentUser.id,package:pkg,phone,transaction_ref,notes});
+ if(error)return msg('buyMsg',error.message);
+ msg('buyMsg','Konfirmasi terkirim. Admin akan memeriksa dan mengaktifkan akses Premium.','ok');setTimeout(closeBuy,1800);loadPurchases()
+}
+async function loadPurchases(){
+ if(!currentUser)return;
+ const {data,error}=await sb.from('modulkita_purchase_requests').select('*').eq('user_id',currentUser.id).order('created_at',{ascending:false});
+ if(error)return;
+ $('purchaseHistory').innerHTML=data.length?'<h3>Riwayat Konfirmasi</h3>'+data.map(x=>`<div class="purchaseItem"><b>${x.package.replaceAll('_',' ')}</b> • ${x.status.toUpperCase()}<br><span class="muted">${new Date(x.created_at).toLocaleString('id-ID')} • Ref: ${x.transaction_ref||'-'}</span></div>`).join(''):'<div class="muted">Belum ada konfirmasi pembayaran.</div>'
+}
+renderPricing();if(initSupabase()){refreshSession();sb.auth.onAuthStateChange(()=>refreshSession())}
+</script>
+</body></html>

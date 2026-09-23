@@ -1,0 +1,389 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#4338ca">
+<title>ModulKita V6.1 — LKPD Lucu + Input Bab & Kalender Diperbaiki</title>
+<style>
+:root{--bg:#f6f7fb;--card:#fff;--ink:#172033;--muted:#667085;--line:#e4e7ec;--p:#4338ca;--p2:#7c3aed;--soft:#eef2ff;--ok:#067647;--danger:#b42318;--shadow:0 14px 40px rgba(16,24,40,.08)}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif}button,input,select,textarea{font:inherit}
+.top{background:linear-gradient(135deg,#312e81,#4338ca 58%,#7c3aed);color:#fff}.nav{max-width:1320px;margin:auto;padding:16px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px}.brand{display:flex;align-items:center;gap:10px;font-weight:900}.logo{width:44px;height:44px;border-radius:14px;background:#fff;color:#4338ca;display:grid;place-items:center;font-size:22px}.navbtn{border:1px solid rgba(255,255,255,.25);background:rgba(255,255,255,.12);color:#fff;padding:9px 12px;border-radius:10px;font-weight:800;cursor:pointer}.hero{max-width:1320px;margin:auto;padding:28px 20px 36px;display:grid;grid-template-columns:1.15fr .85fr;gap:24px;align-items:center}.hero h1{font-size:clamp(34px,5vw,58px);line-height:1.02;margin:10px 0 14px;letter-spacing:-1.8px}.hero p{font-size:17px;line-height:1.65;opacity:.94;max-width:790px;margin:0}.badge{display:inline-flex;background:#fffaeb;color:#b54708;padding:6px 10px;border-radius:999px;font-size:11px;font-weight:900}.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}.chip{padding:7px 11px;border:1px solid rgba(255,255,255,.25);background:rgba(255,255,255,.11);border-radius:999px;font-size:12px;font-weight:800}.hero-card{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.22);border-radius:22px;padding:20px}.hero-card ul{padding-left:18px;line-height:1.75;font-size:14px}
+.wrap{max-width:1320px;margin:auto;padding:22px 20px 48px}.layout{display:grid;grid-template-columns:520px 1fr;gap:20px;align-items:start}.card{background:var(--card);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow)}.form-card{padding:18px;position:sticky;top:12px;max-height:calc(100vh - 24px);overflow:auto}.preview-card{padding:18px;min-height:760px}.section-title{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:12px}.section-title h2{font-size:18px;margin:0}.mini{font-size:12px;color:var(--muted)}.notice{background:var(--soft);color:#3730a3;border-radius:12px;padding:11px 12px;font-size:12.5px;line-height:1.55;margin-bottom:14px}.group{border-top:1px solid var(--line);padding-top:14px;margin-top:14px}.group:first-of-type{border-top:0;padding-top:0}.group h3{font-size:12px;text-transform:uppercase;letter-spacing:.07em;color:#475467;margin:0 0 7px}.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}.three{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}label{display:block;font-size:12.5px;font-weight:800;color:#344054;margin:10px 0 6px}input,select,textarea{width:100%;border:1px solid #d0d5dd;border-radius:10px;padding:10px 11px;background:#fff;color:#101828;outline:none}input:focus,select:focus,textarea:focus{border-color:#818cf8;box-shadow:0 0 0 3px #eef2ff}textarea{min-height:78px;resize:vertical;line-height:1.5}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.btn{border:0;border-radius:10px;padding:10px 13px;font-weight:850;cursor:pointer}.primary{background:linear-gradient(90deg,var(--p),var(--p2));color:#fff}.secondary{background:var(--soft);color:#3730a3}.ghost{background:#fff;border:1px solid var(--line);color:#344054}.danger{background:#fff1f3;color:#c01048}
+.semester-box,.calendar-box{border:1px solid #d8defe;border-radius:14px;padding:12px;margin-top:10px;background:#fbfcff}.semester-head{display:flex;align-items:center;justify-content:space-between;gap:8px}.chapter{border:1px solid var(--line);border-radius:12px;margin-top:10px;background:#fff;overflow:hidden}.chapter-head{display:flex;gap:8px;align-items:center;padding:10px;background:#f8fafc}.chapter-head input{font-weight:850}.iconbtn{width:38px;min-width:38px;height:38px;border:0;border-radius:10px;cursor:pointer;background:#fff;border:1px solid var(--line)}.iconbtn.red{color:var(--danger);background:#fff5f5}.sublist{padding:8px 10px 10px}.subrow{display:grid;grid-template-columns:1fr 92px 38px;gap:7px;align-items:center;margin-top:7px}.calendar-row{display:grid;grid-template-columns:1fr 92px 92px 1.2fr;gap:7px;align-items:center;margin-top:7px}.counter{font-size:11px;color:#667085;background:#f9fafb;border:1px solid var(--line);padding:5px 8px;border-radius:999px}
+.preview-toolbar{display:flex;gap:8px;flex-wrap:wrap;padding-bottom:14px;border-bottom:1px solid var(--line);margin-bottom:14px;position:sticky;top:0;background:#fff;z-index:5}.doc{max-width:920px;margin:auto}.doc[contenteditable="true"]{outline:2px dashed #a5b4fc;outline-offset:6px}.cover{min-height:980px;border:1px solid #d0d5dd;border-radius:14px;padding:70px 46px;text-align:center;background:linear-gradient(180deg,#f6f4ff,#fff);display:flex;flex-direction:column;justify-content:center;margin-bottom:24px;page-break-after:always}.cover .kicker,.divider .kicker{text-transform:uppercase;letter-spacing:.12em;color:#4f46e5;font-size:12px;font-weight:900}.cover h1{font-size:38px;line-height:1.15;margin:16px 0}.cover h2{border:0!important;font-size:22px!important;margin:8px 0!important}.cover .meta{margin-top:40px;line-height:1.9}.divider{min-height:620px;display:flex;align-items:center;justify-content:center;text-align:center;page-break-before:always;page-break-after:always;background:#f8f7ff;border-radius:14px}.divider h1{font-size:36px;color:#4338ca}.section-page{page-break-before:always}.module{page-break-before:always}.module-title{text-align:center;border-bottom:2px solid #111;padding-bottom:10px;margin-bottom:16px}.module-title h1{font-size:22px;margin:0 0 5px}.module-title p{margin:3px 0;font-size:12px}.doc h2{font-size:16px;margin:20px 0 9px;border-left:4px solid var(--p);padding-left:10px}.doc h3{font-size:13.5px;margin:15px 0 6px}.doc p,.doc li{font-size:12.5px;line-height:1.55}.doc table{width:100%;border-collapse:collapse;margin:8px 0 14px;font-size:11.3px}.doc td,.doc th{border:1px solid #b7bec8;padding:6px;vertical-align:top}.doc th{background:#f5f7fa;text-align:left}.tag{display:inline-block;background:#ecfdf3;color:#067647;padding:4px 8px;border-radius:999px;font-size:10.5px;font-weight:850;margin:2px}.toc ol{columns:2;column-gap:36px}.toc li{break-inside:avoid;margin:4px 0}.signature{margin-top:26px}.small-note{font-size:10.5px!important;color:#667085}.empty{display:grid;place-items:center;min-height:520px;text-align:center;color:var(--muted);padding:40px}.empty .icon{width:76px;height:76px;border-radius:22px;background:var(--soft);display:grid;place-items:center;font-size:34px;margin:auto auto 14px}.fab{display:none;position:fixed;right:18px;bottom:18px;z-index:20;border:0;background:linear-gradient(90deg,var(--p),var(--p2));color:#fff;border-radius:999px;padding:13px 16px;font-weight:900;box-shadow:0 14px 35px rgba(79,70,229,.35)}
+
+.lkpd-page{page-break-before:always;background:#fff;border:2px solid #e9d5ff;border-radius:22px;padding:18px;margin:16px 0 22px;position:relative;overflow:hidden}
+.lkpd-page:before{content:"";position:absolute;width:150px;height:150px;right:-40px;top:-40px;border-radius:50%;background:radial-gradient(circle,#fce7f3,#ede9fe 58%,transparent 72%);opacity:.75}
+.lkpd-page:after{content:"";position:absolute;width:130px;height:130px;left:-35px;bottom:-35px;border-radius:50%;background:radial-gradient(circle,#dcfce7,#dbeafe 58%,transparent 72%);opacity:.7}
+.lkpd-page>*{position:relative;z-index:1}
+.lkpd-head{display:grid;grid-template-columns:92px 1fr;gap:14px;align-items:center;background:linear-gradient(135deg,#fff1f2,#eef2ff 48%,#ecfeff);border:2px solid #c4b5fd;border-radius:22px;padding:14px;box-shadow:0 12px 28px rgba(79,70,229,.10)}
+.lkpd-badge{width:78px;height:78px;border-radius:24px;background:linear-gradient(135deg,#fb7185,#8b5cf6);color:#fff;display:grid;place-items:center;font-weight:950;font-size:18px;box-shadow:0 12px 24px rgba(139,92,246,.22)}
+.lkpd-head h1{font-size:23px;margin:0 0 4px;color:#312e81}.lkpd-head p{margin:2px 0;font-size:12px;color:#475467}
+.sticker-row{display:flex;gap:7px;flex-wrap:wrap;margin-top:8px}.sticker{padding:5px 9px;border-radius:999px;font-size:10.5px;font-weight:850;background:#faf5ff;color:#6b21a8;border:1px solid #d8b4fe}.sticker:nth-child(2){background:#eff6ff;color:#1d4ed8;border-color:#bfdbfe}.sticker:nth-child(3){background:#ecfdf5;color:#047857;border-color:#a7f3d0}
+.student-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0}.student-box{border:1.5px solid #d0d5dd;border-radius:14px;padding:9px;font-size:11.5px;background:#fff}
+.lkpd-section{margin-top:14px}.lkpd-section-title{display:flex;align-items:center;gap:8px;font-weight:900;color:#312e81;margin-bottom:7px}.lkpd-num{width:28px;height:28px;border-radius:10px;background:linear-gradient(135deg,#ede9fe,#dbeafe);display:grid;place-items:center;color:#4338ca;font-weight:950;border:1px solid #c7d2fe}
+.lkpd-tip{background:#fff9db;border:1.5px solid #fde68a;border-radius:16px;padding:10px 12px;font-size:11.5px;line-height:1.55}
+.lkpd-stimulus{display:grid;grid-template-columns:145px 1fr;gap:12px;align-items:center;background:#fcfcff;border:1.5px solid #ddd6fe;border-radius:16px;padding:12px}.lkpd-ill{min-height:128px;border-radius:18px;background:linear-gradient(135deg,#fdf2f8,#eef2ff,#ecfeff);display:grid;place-items:center;padding:8px;overflow:hidden;border:1px dashed #c4b5fd}.lkpd-ill svg{width:120px;height:110px}
+.lkpd-table{width:100%;border-collapse:collapse;font-size:11px}.lkpd-table th,.lkpd-table td{border:1px solid #b7bec8;padding:7px;vertical-align:top}.lkpd-table th{background:#eef2ff}.answer-box{border:2px dashed #c4b5fd;border-radius:16px;min-height:62px;padding:8px;margin-top:6px;background:#fff}.answer-lines{line-height:1.75;color:#98a2b3;letter-spacing:.03em}
+.selfcheck{display:grid;grid-template-columns:1fr auto;gap:0;border:1.5px solid #d0d5dd;border-radius:14px;overflow:hidden;background:#fff}.selfcheck>div{padding:8px;border-bottom:1px solid var(--line)}.selfcheck>div:nth-last-child(-n+2){border-bottom:0}
+.lkpd-formal .lkpd-head{background:#fff;border-color:#98a2b3}.lkpd-formal .lkpd-badge{background:#344054}.lkpd-formal .lkpd-ill{background:#fff;border:1px solid #98a2b3}.lkpd-formal .sticker-row{display:none}.lkpd-hemat .lkpd-head,.lkpd-hemat .lkpd-ill,.lkpd-hemat .lkpd-tip{background:#fff!important}.lkpd-hemat .lkpd-badge{background:#fff;color:#111;border:2px solid #111;box-shadow:none}.lkpd-hemat *{box-shadow:none!important}.lkpd-hemat .sticker-row{display:none}
+.calendar-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:8px}.calendar-row .iconbtn{height:36px;width:36px;min-width:36px}.calendar-row{grid-template-columns:1fr 88px 88px 1.25fr 38px}
+@media(max-width:600px){.lkpd-head{grid-template-columns:70px 1fr}.lkpd-badge{width:62px;height:62px;font-size:16px}.student-grid,.lkpd-stimulus{grid-template-columns:1fr}.lkpd-ill{min-height:100px}.calendar-row{grid-template-columns:1fr 72px 72px 38px}.calendar-row input:nth-child(4){grid-column:1/-1}}
+@media print{.lkpd-page{border:0;border-radius:0;padding:0;margin:0;page-break-before:always}.lkpd-head{break-inside:avoid}.lkpd-stimulus{break-inside:avoid}.lkpd-table{break-inside:auto}.lkpd-table tr{break-inside:avoid}}
+
+footer{text-align:center;color:#667085;font-size:12px;padding:24px 20px 40px}
+@media(max-width:1060px){.hero{grid-template-columns:1fr}.hero-card{display:none}.layout{grid-template-columns:1fr}.form-card{position:static;max-height:none}.preview-card{min-height:0}.fab{display:block}}@media(max-width:600px){.row,.three{grid-template-columns:1fr}.subrow{grid-template-columns:1fr 90px 38px}.calendar-row{grid-template-columns:1fr 72px 72px}.calendar-row input:last-child{grid-column:1/-1}.cover{min-height:760px;padding:45px 18px}.cover h1{font-size:30px}.toc ol{columns:1}}
+@media print{@page{size:A4;margin:17mm 15mm}body{background:#fff}.top,.form-card,.preview-toolbar,footer,.fab{display:none!important}.wrap{max-width:none;padding:0}.layout{display:block}.preview-card{border:0;box-shadow:none;padding:0}.doc{max-width:none}.cover{border:0;min-height:250mm}.divider{min-height:230mm}.section-page,.module{page-break-before:always}.doc h2{break-after:avoid}.doc table{break-inside:auto}.doc tr{break-inside:avoid}.signature{break-inside:avoid}}
+
+.premiumGate{position:fixed;inset:0;background:linear-gradient(135deg,#312e81,#4338ca 55%,#7c3aed);color:#fff;z-index:9999;display:grid;place-items:center;padding:20px}.premiumGate.hide{display:none}.gateCard{max-width:470px;width:100%;background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.25);border-radius:22px;padding:22px;text-align:center}.gateCard h2{font-size:25px;margin:0 0 8px}.gateCard p{line-height:1.6}.accountBar{position:fixed;right:14px;bottom:14px;z-index:35;background:#fff;border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);padding:9px 11px;font-size:11px}.demoRibbon{display:none;background:#fffaeb;color:#b54708;border:1px solid #fedf89;padding:8px 10px;border-radius:10px;margin-bottom:10px;font-size:12px}.demoRibbon.show{display:block}
+</style>
+</head>
+<body>
+<div id="premiumGate" class="premiumGate"><div class="gateCard"><h2>ModulKita Premium</h2><p id="gateText">Memeriksa akun dan status akses…</p><button class="navbtn" onclick="location.href='index.html'">Kembali ke Beranda</button></div></div>
+<div id="accountBar" class="accountBar" style="display:none"><b id="accountPlan">DEMO</b> • <span id="accountEmail"></span> <button class="btn ghost" style="padding:5px 7px;margin-left:5px" onclick="premiumLogout()">Keluar</button></div>
+
+<header class="top">
+  <div class="nav"><div class="brand"><div class="logo">M</div><div>ModulKita <span style="opacity:.8">V6.1</span></div></div><button class="navbtn" onclick="loadExample()">Muat Contoh VIII</button></div>
+  <div class="hero">
+    <div><span class="badge">Generator Buku Perangkat Pembelajaran Mendalam</span><h1>Isi Bab & Subbab.<br>Jadi perangkat 1 tahun.</h1><p>Generator menyusun Analisis CP→TP, ATP, Kalender Pendidikan kerja, Analisis Alokasi Waktu, PROTA, PROSEM, Modul Ajar lengkap, dan LKPD menarik untuk setiap subbab dalam satu buku siap diedit, dicetak, atau disimpan sebagai Word.</p><div class="chips"><span class="chip">CP → TP</span><span class="chip">ATP</span><span class="chip">Kalender</span><span class="chip">PROTA</span><span class="chip">PROSEM</span><span class="chip">Modul Ajar</span><span class="chip">LKPD Menarik</span></div></div>
+    <div class="hero-card"><b>Urutan buku otomatis:</b><ul><li>Cover, identitas, kata pengantar, daftar isi</li><li>Analisis CP menjadi TP</li><li>ATP Ganjil & Genap</li><li>Kalender Pendidikan kerja & Analisis Alokasi Waktu</li><li>Program Tahunan (PROTA) & Program Semester (PROSEM)</li><li>Modul Ajar Pembelajaran Mendalam per subbab</li><li>LKPD menarik per subbab + rubrik guru</li><li>Asesmen, remedial/pengayaan, dan refleksi</li></ul></div>
+  </div>
+</header>
+<main class="wrap"><div class="layout">
+<section class="card form-card"><div id="demoRibbon" class="demoRibbon"><b>Mode Demo:</b> maksimal 1 subbab dan download Word/PDF dikunci. Upgrade Premium untuk akses lengkap.</div>
+<div class="section-title"><h2>⚙️ Data Perangkat</h2><span class="mini">Tersimpan di browser</span></div>
+<div class="notice"><b>Catatan:</b> kalender yang dibuat adalah <b>kalender kerja/minggu efektif</b> berdasarkan data yang guru isi. Tanggal libur/agenda resmi tetap mengikuti kalender pendidikan pemerintah daerah/satuan pendidikan.</div>
+
+<div class="group"><h3>Identitas Utama</h3>
+<label>Nama Sekolah/Madrasah</label><input id="sekolah" placeholder="Contoh: SMP Negeri 9 Masni">
+<div class="row"><div><label>Nama Guru/Penyusun</label><input id="guru" placeholder="Nama lengkap, gelar"></div><div><label>NIP/NUPTK</label><input id="nip"></div></div>
+<div class="row"><div><label>Mata Pelajaran</label><input id="mapel" placeholder="Contoh: Bahasa Indonesia"></div><div><label>Fase/Kelas</label><input id="fasekelas" value="Fase D / Kelas VIII"></div></div>
+<div class="row"><div><label>Tahun Pelajaran</label><input id="tahun" value="2026/2027"></div><div><label>JP per Minggu</label><input id="jpMinggu" type="number" min="1" value="6"></div></div>
+<div class="row"><div><label>Kepala Sekolah</label><input id="kepsek"></div><div><label>NIP Kepala Sekolah</label><input id="nipKepsek"></div></div>
+<label>Tempat</label><input id="tempat" placeholder="Contoh: Manokwari">
+</div>
+
+<div class="group"><h3>Landasan Pembelajaran</h3>
+<label>CP Acuan/Resmi <span class="mini">(disarankan ditempel)</span></label><textarea id="cp" placeholder="Tempel CP resmi mata pelajaran/fase. Jika kosong, generator membuat CP kerja yang harus diverifikasi."></textarea>
+<label>Konteks Sekolah & Peserta Didik</label><textarea id="karakter">Lingkungan belajar dan kemampuan peserta didik beragam. Sebagian memerlukan contoh konkret, bimbingan bertahap, latihan berulang, serta kegiatan yang dekat dengan kehidupan sehari-hari.</textarea>
+<div class="row"><div><label>Lingkungan Pembelajaran</label><textarea id="lingkungan">Ruang kelas, perpustakaan, lingkungan sekolah, dan ruang terbuka yang relevan.</textarea></div><div><label>Pemanfaatan Digital</label><textarea id="digital">HP/laptop, proyektor, aplikasi pengolah kata/presentasi, dan sumber digital bila tersedia.</textarea></div></div>
+</div>
+
+<div class="group"><h3>Kalender Pendidikan Kerja</h3>
+<div class="calendar-box"><b>Semester Ganjil</b><div id="calGanjil"></div><div class="calendar-actions"><button class="btn ghost" type="button" onclick="addCalendarRow('ganjil')">+ Tambah Baris</button><button class="btn ghost" type="button" onclick="resetCalendar('ganjil')">Reset Bulan</button></div></div>
+<div class="calendar-box"><b>Semester Genap</b><div id="calGenap"></div><div class="calendar-actions"><button class="btn ghost" type="button" onclick="addCalendarRow('genap')">+ Tambah Baris</button><button class="btn ghost" type="button" onclick="resetCalendar('genap')">Reset Bulan</button></div></div>
+<p class="mini">Isi jumlah minggu efektif dan catatan agenda/libur sesuai kalender resmi sekolah/daerah.</p>
+</div>
+
+<div class="group"><h3>Semester Ganjil — Bab & Subbab</h3><div id="ganjil" class="semester-box"></div><div class="actions"><button class="btn secondary" onclick="addChapter('ganjil')">+ Tambah Bab Ganjil</button></div></div>
+<div class="group"><h3>Semester Genap — Bab & Subbab</h3><div id="genap" class="semester-box"></div><div class="actions"><button class="btn secondary" onclick="addChapter('genap')">+ Tambah Bab Genap</button></div></div>
+
+
+<div class="group"><h3>LKPD Peserta Didik</h3>
+<label style="display:flex;align-items:center;gap:8px;font-weight:850"><input id="includeLKPD" type="checkbox" checked style="width:auto"> Sertakan LKPD untuk setiap subbab</label>
+<div class="row">
+  <div><label>Gaya LKPD</label><select id="lkpdStyle"><option value="menarik" selected>Lucu & Bergambar</option><option value="formal">Formal & Rapi</option><option value="hemat">Hemat Tinta</option></select></div>
+  <div><label>Penempatan</label><select id="lkpdPlacement"><option value="setelah" selected>Setelah Setiap Modul</option><option value="akhir">Kumpulan di Akhir Buku</option></select></div>
+</div>
+<label style="display:flex;align-items:center;gap:8px;font-weight:850"><input id="lkpdIllustration" type="checkbox" checked style="width:auto"> Gunakan ilustrasi lucu pada LKPD</label>
+<p class="mini">LKPD dibuat otomatis sesuai subbab: tujuan, petunjuk, stimulus, kegiatan, ruang jawaban, refleksi, dan rubrik guru.</p>
+</div>
+
+<div class="group"><h3>Generate Buku Utuh</h3>
+<label>Catatan Penyusun <span class="mini">(opsional)</span></label><textarea id="catatan" placeholder="Konteks lokal, kebijakan sekolah, atau catatan lain."></textarea>
+<div class="actions"><button class="btn primary" onclick="generateBook()">✨ Generate Perangkat Lengkap</button><button class="btn ghost" onclick="saveData()">💾 Simpan Data</button><button class="btn danger" onclick="resetAll()">Reset</button></div>
+</div>
+</section>
+
+<section class="card preview-card">
+<div class="preview-toolbar"><button class="btn secondary" onclick="premiumPrint()">🖨️ Cetak / PDF</button><button class="btn secondary" onclick="downloadWord()">📝 Download Word</button><button class="btn ghost" onclick="toggleEdit()">✏️ Edit Hasil</button><button class="btn ghost" onclick="copyBook()">📋 Salin</button></div>
+<div id="hasil" class="doc"><div class="empty"><div><div class="icon">📚</div><b>Perangkat belum dibuat</b><p>Isi identitas, kalender, Bab dan Subbab, lalu tekan <b>Generate Perangkat Lengkap</b>.</p></div></div></div>
+</section>
+</div></main>
+<button class="fab" onclick="generateBook()">✨ Generate Buku</button>
+<footer>ModulKita V6.1 • Perangkat Lengkap + LKPD Lucu • Input Bab, Subbab, dan Kalender sudah diperbaiki.</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="config.js"></script>
+<script>
+const $=id=>document.getElementById(id);
+const esc=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+const baseIds=['sekolah','guru','nip','mapel','fasekelas','tahun','jpMinggu','kepsek','nipKepsek','tempat','cp','karakter','lingkungan','digital','catatan','lkpdStyle','lkpdPlacement'];
+let state={ganjil:[],genap:[]};
+let calendar={
+ ganjil:[['Juli',0,''],['Agustus',0,''],['September',0,''],['Oktober',0,''],['November',0,''],['Desember',0,'']],
+ genap:[['Januari',0,''],['Februari',0,''],['Maret',0,''],['April',0,''],['Mei',0,''],['Juni',0,'']]
+};
+function uid(){return Math.random().toString(36).slice(2,9)}
+function newChapter(name=''){return{id:uid(),name,subs:[]}}
+function newSub(name='',jp='6'){return{id:uid(),name,jp}}
+function parseJP(v){const m=String(v||'').match(/\d+(?:[.,]\d+)?/);return m?Number(m[0].replace(',','.')):0}
+function addChapter(sem,name=''){state[sem].push(newChapter(name||`Bab ${state[sem].length+1}`));renderSemester(sem);saveData()}
+function removeChapter(sem,id){state[sem]=state[sem].filter(x=>x.id!==id);renderSemester(sem);saveData()}
+function addSub(sem,cid,name='',jp=''){const c=state[sem].find(x=>x.id===cid);if(!c)return;c.subs.push(newSub(name,jp||$('jpMinggu').value));renderSemester(sem);saveData()}
+function removeSub(sem,cid,sid){const c=state[sem].find(x=>x.id===cid);if(!c)return;c.subs=c.subs.filter(x=>x.id!==sid);renderSemester(sem);saveData()}
+function updateChapter(sem,id,val){const c=state[sem].find(x=>x.id===id);if(c)c.name=val;saveData()}
+function updateSub(sem,cid,sid,key,val){const c=state[sem].find(x=>x.id===cid),s=c&&c.subs.find(x=>x.id===sid);if(s)s[key]=val;saveData()}
+
+function renderSemester(sem){
+ const box=$(sem);box.innerHTML='';
+ const title=sem==='ganjil'?'Semester Ganjil':'Semester Genap';
+ const total=state[sem].reduce((n,c)=>n+c.subs.length,0);
+ const totalJP=state[sem].reduce((n,c)=>n+c.subs.reduce((a,s)=>a+parseJP(s.jp),0),0);
+ const h=document.createElement('div');h.className='semester-head';h.innerHTML=`<b>${title}</b><span class="counter">${state[sem].length} bab • ${total} subbab • ${totalJP} JP</span>`;box.appendChild(h);
+ if(!state[sem].length){const p=document.createElement('p');p.className='mini';p.textContent='Belum ada Bab.';box.appendChild(p)}
+ state[sem].forEach((c,ci)=>{
+   const el=document.createElement('div');el.className='chapter';
+   el.innerHTML=`<div class="chapter-head"><input value="${esc(c.name)}" oninput="updateChapter('${sem}','${c.id}',this.value)" placeholder="Nama Bab"><button class="iconbtn red" onclick="removeChapter('${sem}','${c.id}')">✕</button></div><div class="sublist" id="subs-${c.id}"><div class="mini">Subbab — setiap baris = 1 modul. Isi alokasi dalam JP.</div></div>`;
+   box.appendChild(el);
+   const sl=el.querySelector(`#subs-${c.id}`);
+   c.subs.forEach((s,si)=>{
+     const r=document.createElement('div');r.className='subrow';
+     r.innerHTML=`<input value="${esc(s.name)}" oninput="updateSub('${sem}','${c.id}','${s.id}','name',this.value)" placeholder="Subbab ${si+1}"><input value="${esc(s.jp)}" oninput="updateSub('${sem}','${c.id}','${s.id}','jp',this.value)" placeholder="6 JP"><button class="iconbtn red" onclick="removeSub('${sem}','${c.id}','${s.id}')">✕</button>`;
+     sl.appendChild(r);
+   });
+   const a=document.createElement('div');a.className='actions';a.innerHTML=`<button class="btn ghost" onclick="addSub('${sem}','${c.id}')">+ Tambah Subbab</button>`;sl.appendChild(a);
+ });
+}
+function renderCalendar(sem){
+ const id=sem==='ganjil'?'calGanjil':'calGenap',box=$(id);
+ box.innerHTML='<div class="calendar-row mini"><b>Bulan/Periode</b><b>Minggu Efektif</b><b>JP/Minggu</b><b>Catatan/Agenda</b><b></b></div>';
+ calendar[sem].forEach((r,i)=>{
+   const d=document.createElement('div');d.className='calendar-row';
+   d.innerHTML=`<input value="${esc(r[0])}" oninput="updateCal('${sem}',${i},0,this.value)" placeholder="Bulan/periode"><input type="number" min="0" value="${Number(r[1]||0)}" oninput="updateCal('${sem}',${i},1,this.value)"><input type="number" min="0" value="${$('jpMinggu').value}" disabled><input value="${esc(r[2]||'')}" oninput="updateCal('${sem}',${i},2,this.value)" placeholder="Libur/PTS/PAS/agenda"><button class="iconbtn red" type="button" onclick="removeCalendarRow('${sem}',${i})">✕</button>`;
+   box.appendChild(d);
+ });
+}
+function updateCal(sem,i,k,val){if(!calendar[sem][i])return;calendar[sem][i][k]=k===1?Number(val||0):val;saveData()}
+function addCalendarRow(sem){calendar[sem].push(['Periode Baru',0,'']);renderCalendar(sem);saveData()}
+function removeCalendarRow(sem,i){calendar[sem].splice(i,1);renderCalendar(sem);saveData()}
+function resetCalendar(sem){
+ calendar[sem]=sem==='ganjil'?[['Juli',0,''],['Agustus',0,''],['September',0,''],['Oktober',0,''],['November',0,''],['Desember',0,'']]:[['Januari',0,''],['Februari',0,''],['Maret',0,''],['April',0,''],['Mei',0,''],['Juni',0,'']];
+ renderCalendar(sem);saveData();
+}
+
+function formData(){const d={};baseIds.forEach(id=>d[id]=$(id).value);d.includeLKPD=$('includeLKPD').checked;d.lkpdIllustration=$('lkpdIllustration').checked;d.state=state;d.calendar=calendar;return d}
+function saveData(){localStorage.setItem('modulkitaBookV61',JSON.stringify(formData()))}
+function loadData(){
+ try{const d=JSON.parse(localStorage.getItem('modulkitaBookV61')||localStorage.getItem('modulkitaBookV5')||localStorage.getItem('modulkitaBookV4')||'{}');baseIds.forEach(id=>{if(d[id]!=null)$(id).value=d[id]});if(d.includeLKPD!=null)$('includeLKPD').checked=d.includeLKPD;if(d.lkpdIllustration!=null)$('lkpdIllustration').checked=d.lkpdIllustration;if(d.state)state=d.state;if(d.calendar)calendar=d.calendar}catch(e){}
+ if(!state.ganjil.length)addChapter('ganjil','Bab 1');if(!state.genap.length)addChapter('genap','Bab 1');
+ renderSemester('ganjil');renderSemester('genap');renderCalendar('ganjil');renderCalendar('genap');
+}
+document.addEventListener('input',e=>{if(e.target.closest('.form-card')){if(e.target.id==='jpMinggu'){renderCalendar('ganjil');renderCalendar('genap')}saveData()}});
+
+function subjectKind(){const m=$('mapel').value.toLowerCase();if(m.includes('bahasa'))return'bahasa';if(m.includes('matematika'))return'matematika';if(m==='ipa'||m.includes('ilmu pengetahuan alam'))return'ipa';if(m==='ips'||m.includes('ilmu pengetahuan sosial'))return'ips';if(m.includes('pjok')||m.includes('jasmani'))return'pjok';if(m.includes('informatika'))return'informatika';if(m.includes('seni'))return'seni';return'umum'}
+function genericCP(){
+ const m=$('mapel').value||'mata pelajaran',k=subjectKind();
+ if(k==='bahasa')return`Peserta didik mengembangkan kemampuan menyimak, membaca dan memirsa, berbicara dan mempresentasikan, serta menulis untuk memahami, mengolah, menilai, dan menyampaikan informasi secara kritis, kreatif, dan sesuai konteks pada ${m}.`;
+ if(k==='matematika')return`Peserta didik mengembangkan pemahaman konsep, penalaran, pemecahan masalah, representasi, dan komunikasi matematis melalui materi yang dipelajari pada fase/kelas ini.`;
+ if(k==='ipa')return`Peserta didik memahami konsep sains, melakukan penyelidikan, menggunakan bukti, dan menerapkan pengetahuan untuk menjelaskan fenomena alam serta kehidupan sehari-hari.`;
+ if(k==='ips')return`Peserta didik memahami hubungan manusia, ruang, waktu, kegiatan ekonomi, dan kehidupan sosial serta menggunakan penalaran untuk menganalisis perubahan masyarakat.`;
+ return`Peserta didik mengembangkan pengetahuan, keterampilan, sikap, penalaran, komunikasi, dan kemampuan menerapkan konsep ${m} dalam konteks kehidupan nyata sesuai fase/kelas.`;
+}
+function inferElement(sub){
+ const x=sub.toLowerCase(),k=subjectKind();
+ if(k==='bahasa'){if(x.includes('menyimak')||x.includes('video')||x.includes('lisan'))return'Menyimak';if(x.includes('present')||x.includes('pidato')||x.includes('berbicara'))return'Berbicara dan Mempresentasikan';if(x.includes('menulis')||x.includes('menyusun')||x.includes('membuat')||x.includes('menyunting'))return'Menulis';return'Membaca dan Memirsa'}
+ if(k==='matematika')return'Pemahaman Konsep dan Penalaran Matematis';if(k==='ipa')return'Pemahaman IPA dan Keterampilan Proses';if(k==='ips')return'Pemahaman Konsep dan Keterampilan Proses';return'Elemen/Domain disesuaikan mata pelajaran';
+}
+function inferDPL(sub){const x=sub.toLowerCase();let a=['Penalaran Kritis','Kemandirian','Komunikasi'];if(/membuat|menulis|kreasi|proyek|desain|produk/.test(x))a.push('Kreativitas');if(/diskusi|kelompok|present|kolabor/.test(x))a.push('Kolaborasi');return[...new Set(a)]}
+function tpFor(sub){return`Peserta didik mampu memahami konsep utama ${sub}, menerapkannya melalui tugas yang kontekstual, menjelaskan hasilnya secara runtut, serta merefleksikan proses dan hasil belajar sesuai kriteria keberhasilan.`}
+function smartTP(sub){return[`Mengidentifikasi pengertian, ciri, unsur, atau informasi penting tentang ${sub}.`,`Menjelaskan konsep ${sub} dengan bahasa sendiri berdasarkan contoh/sumber yang diberikan.`,`Menganalisis contoh atau masalah yang berkaitan dengan ${sub}.`,`Menerapkan konsep ${sub} dalam tugas, produk, pemecahan masalah, atau unjuk kerja.`,`Menyajikan hasil dan melakukan refleksi/perbaikan berdasarkan umpan balik.`]}
+function inferModel(sub){const x=sub.toLowerCase();if(/membuat|menulis|proyek|produk|poster|artikel|laporan/.test(x))return'Project-Based Learning dan pembelajaran kontekstual';if(/masalah|kasus|problem/.test(x))return'Problem-Based Learning';return'Discovery Learning, diskusi terbimbing, dan pembelajaran kontekstual'}
+function inferCross(){const k=subjectKind();if(k==='bahasa')return'Informatika, IPA/IPS, Seni/Prakarya, atau mata pelajaran lain yang relevan dengan topik teks.';if(k==='ipa')return'Matematika, Informatika, IPS, atau mata pelajaran lain yang mendukung pengolahan data dan konteks.';if(k==='matematika')return'IPA, Informatika, Ekonomi/IPS, atau konteks lintas disiplin yang relevan.';return'Mata pelajaran lain yang relevan dengan topik dan konteks pembelajaran.'}
+function inferPartners(){return'Guru mata pelajaran, teman sebaya, orang tua/wali, pustakawan, atau mitra sekolah yang relevan dengan tujuan pembelajaran.'}
+function materialProfile(sub){return{jenis:`Pengetahuan deklaratif dan prosedural yang berkaitan dengan ${sub}.`,relevansi:`Relevan karena membantu peserta didik menghubungkan ${sub} dengan situasi nyata, literasi, pemecahan masalah, atau komunikasi dalam kehidupan sehari-hari.`,sulit:'Sedang; guru menyesuaikan kompleksitas dengan kesiapan peserta didik.',struktur:`Pengenalan konsep → analisis contoh → latihan/penerapan → produk/unjuk kerja → refleksi dan perbaikan.`,nilai:'Ketelitian, tanggung jawab, kejujuran, kreativitas, kemandirian, komunikasi, dan penghargaan terhadap umpan balik.'}}
+function activities(sub){const k=subjectKind();if(k==='bahasa')return{under:[`Peserta didik membaca, menyimak, atau memirsa contoh yang berkaitan dengan ${sub}.`,`Peserta didik menandai informasi, ciri, struktur, unsur, atau bahasa penting melalui LKPD.`],apply:[`Peserta didik mengerjakan latihan atau menghasilkan teks/produk sederhana yang menerapkan ${sub}.`,`Peserta didik berdiskusi atau bekerja mandiri dan mendapatkan umpan balik selama proses.`],reflect:[`Peserta didik membandingkan hasil dengan kriteria keberhasilan dan memperbaiki bagian yang belum tepat.`,`Peserta didik menuliskan satu pemahaman baru, satu kesulitan, dan satu rencana perbaikan.`]};return{under:[`Peserta didik mengamati contoh, data, demonstrasi, atau masalah yang berkaitan dengan ${sub}.`,`Guru memandu peserta didik menemukan konsep/pola penting.`],apply:[`Peserta didik menerapkan ${sub} pada latihan, eksperimen, studi kasus, proyek, atau pemecahan masalah.`,`Guru memberi umpan balik dan bantuan bertahap sesuai kebutuhan.`],reflect:[`Peserta didik memeriksa kembali strategi dan hasil kerja berdasarkan kriteria keberhasilan.`,`Peserta didik merefleksikan pemahaman, kesulitan, dan tindak lanjut.`]}}
+function list(a){return'<ol>'+a.map(x=>`<li>${esc(x)}</li>`).join('')+'</ol>'}
+
+function getModules(){
+ const out=[];let no=1,meet=1;
+ ['ganjil','genap'].forEach(sem=>state[sem].forEach(c=>c.subs.filter(s=>s.name.trim()).forEach(s=>out.push({semKey:sem,sem:sem==='ganjil'?'Semester Ganjil':'Semester Genap',chapter:c,sub:s,no:no++,meet:meet++}))));
+ return out;
+}
+function semesterModules(sem){return getModules().filter(x=>x.semKey===sem)}
+function semJP(sem){return semesterModules(sem).reduce((n,x)=>n+parseJP(x.sub.jp),0)}
+function calWeeks(sem){return calendar[sem].reduce((n,r)=>n+Number(r[1]||0),0)}
+function calJP(sem){return calWeeks(sem)*Number($('jpMinggu').value||0)}
+function monthSlots(sem){
+ const slots=[];calendar[sem].forEach(r=>{for(let i=0;i<Number(r[1]||0);i++)slots.push(r[0])});return slots;
+}
+function signatureHTML(){
+ const tt=new Date().toLocaleDateString('id-ID',{day:'numeric',month:'long',year:'numeric'});
+ return`<div class="signature"><table style="border:0"><tr><td style="border:0;text-align:center;width:50%">Mengetahui,<br>Kepala Sekolah<br><br><br><b>${esc($('kepsek').value||'................................')}</b>${$('nipKepsek').value?`<br>NIP. ${esc($('nipKepsek').value)}`:''}</td><td style="border:0;text-align:center;width:50%">${esc($('tempat').value||'....................')}, ${esc(tt)}<br>Guru Mata Pelajaran<br><br><br><b>${esc($('guru').value||'................................')}</b>${$('nip').value?`<br>NIP/NUPTK. ${esc($('nip').value)}`:''}</td></tr></table></div>`;
+}
+function analysisCPTable(){
+ const mods=getModules();return`<section class="section-page"><div class="module-title"><h1>ANALISIS CAPAIAN PEMBELAJARAN MENJADI TUJUAN PEMBELAJARAN (TP)</h1><p>${esc($('mapel').value)} • ${esc($('fasekelas').value)}</p></div><p><b>Konteks Sekolah dan Peserta Didik:</b> ${esc($('karakter').value)}</p><table><tr><th>Elemen/Domain</th><th>Kompetensi</th><th>Materi/Bab</th><th>Submateri</th><th>Tujuan Pembelajaran</th></tr>${mods.map(x=>`<tr><td>${esc(inferElement(x.sub.name))}</td><td>Memahami, menganalisis, menerapkan, dan mengomunikasikan pembelajaran.</td><td>${esc(x.chapter.name)}</td><td>${esc(x.sub.name)}</td><td>${esc(tpFor(x.sub.name))}</td></tr>`).join('')}</table>${signatureHTML()}</section>`}
+function atpSection(sem){
+ const mods=semesterModules(sem),title=sem==='ganjil'?'GANJIL':'GENAP';return`<section class="section-page"><div class="module-title"><h1>ALUR TUJUAN PEMBELAJARAN (ATP) — SEMESTER ${title}</h1><p>${esc($('mapel').value)} • ${esc($('fasekelas').value)} • ${esc($('tahun').value)}</p></div><p><b>Total Alokasi Materi:</b> ${semJP(sem)} JP • <b>Minggu Efektif:</b> ${calWeeks(sem)} • <b>Kapasitas Kalender:</b> ${calJP(sem)} JP</p><table><tr><th>Materi</th><th>Submateri</th><th>Tujuan Pembelajaran Umum</th><th>Tujuan Pembelajaran Khusus (SMART)</th><th>Alokasi</th><th>Dimensi Profil Lulusan</th><th>Asesmen</th><th>Sumber Belajar</th></tr>${mods.map(x=>`<tr><td>${esc(x.chapter.name)}</td><td>${esc(x.sub.name)}</td><td>${esc(tpFor(x.sub.name))}</td><td><ol>${smartTP(x.sub.name).map(t=>`<li>${esc(t)}</li>`).join('')}</ol></td><td>${parseJP(x.sub.jp)} JP</td><td>${inferDPL(x.sub.name).map(esc).join(', ')}</td><td>Awal: tanya jawab/diagnostik.<br>Proses: diskusi, LKPD, observasi, umpan balik.<br>Akhir: tes/produk/kinerja sesuai subbab.</td><td>Buku ajar, LKPD, lingkungan sekitar, media visual/digital, dan sumber relevan.</td></tr>`).join('')}</table>${signatureHTML()}</section>`}
+function calendarSection(){
+ function t(sem,label){return`<h2>Semester ${label}</h2><table><tr><th>Bulan</th><th>Minggu Efektif</th><th>JP/Minggu</th><th>Total JP</th><th>Catatan Agenda/Libur</th></tr>${calendar[sem].map(r=>`<tr><td>${esc(r[0])}</td><td>${r[1]}</td><td>${esc($('jpMinggu').value)}</td><td>${Number(r[1]||0)*Number($('jpMinggu').value||0)}</td><td>${esc(r[2])}</td></tr>`).join('')}<tr><th>Total</th><th>${calWeeks(sem)}</th><th>—</th><th>${calJP(sem)}</th><th>—</th></tr></table>`}
+ return`<section class="section-page"><div class="module-title"><h1>KALENDER PENDIDIKAN KERJA & MINGGU EFEKTIF</h1><p>Tahun Pelajaran ${esc($('tahun').value)}</p></div><p class="small-note"><i>Tabel ini merupakan kalender kerja berdasarkan minggu efektif yang diinput guru. Tanggal libur, asesmen, dan agenda resmi wajib disesuaikan dengan kalender pendidikan pemerintah daerah/satuan pendidikan.</i></p>${t('ganjil','Ganjil')}${t('genap','Genap')}${signatureHTML()}</section>`}
+function allocationSection(){
+ function s(sem,label){const mods=semesterModules(sem);let perBab={};mods.forEach(x=>perBab[x.chapter.name]=(perBab[x.chapter.name]||0)+parseJP(x.sub.jp));return`<h2>Semester ${label}</h2><p>Jumlah minggu efektif: <b>${calWeeks(sem)}</b> minggu • JP per minggu: <b>${esc($('jpMinggu').value)}</b> • Kapasitas kalender: <b>${calJP(sem)} JP</b> • Alokasi materi yang diinput: <b>${semJP(sem)} JP</b>.</p><table><tr><th>Bab/Materi Pokok</th><th>Jumlah Subbab</th><th>Alokasi JP</th></tr>${Object.entries(perBab).map(([b,j])=>`<tr><td>${esc(b)}</td><td>${mods.filter(x=>x.chapter.name===b).length}</td><td>${j} JP</td></tr>`).join('')}<tr><th>Total</th><th>${mods.length}</th><th>${semJP(sem)} JP</th></tr></table>`}return`<section class="section-page"><div class="module-title"><h1>ANALISIS ALOKASI WAKTU</h1></div>${s('ganjil','Ganjil')}${s('genap','Genap')}${signatureHTML()}</section>`}
+function distribute(sem){
+ const mods=semesterModules(sem),slots=monthSlots(sem),jpWeek=Number($('jpMinggu').value||1);let week=1;return mods.map(x=>{const weeks=Math.max(1,Math.ceil(parseJP(x.sub.jp)/jpWeek));const start=week,end=week+weeks-1;const months=[...new Set(Array.from({length:weeks},(_,i)=>slots[start-1+i]).filter(Boolean))];week=end+1;return{...x,start,end,weeks,months:months.length?months.join('–'):'Belum diatur'}})
+}
+function protaSection(){
+ const rows=[...distribute('ganjil'),...distribute('genap')];return`<section class="section-page"><div class="module-title"><h1>PROGRAM TAHUNAN (PROTA)</h1><p>${esc($('mapel').value)} • ${esc($('fasekelas').value)} • ${esc($('tahun').value)}</p></div><table><tr><th>Semester</th><th>Bulan</th><th>Materi Pokok/Bab</th><th>Submateri</th><th>Alokasi Waktu</th><th>Keterangan</th></tr>${rows.map(x=>`<tr><td>${esc(x.sem)}</td><td>${esc(x.months)}</td><td>${esc(x.chapter.name)}</td><td>${esc(x.sub.name)}</td><td>${parseJP(x.sub.jp)} JP</td><td>Penguasaan konsep, latihan/penerapan, asesmen, dan tindak lanjut.</td></tr>`).join('')}</table>${signatureHTML()}</section>`}
+function prosemSection(sem){
+ const title=sem==='ganjil'?'GANJIL':'GENAP',rows=distribute(sem);return`<section class="section-page"><div class="module-title"><h1>PROGRAM SEMESTER (PROSEM) — ${title}</h1><p>${esc($('mapel').value)} • ${esc($('fasekelas').value)}</p></div><table><tr><th>Minggu Ke-</th><th>Bulan</th><th>Materi Pokok</th><th>Submateri</th><th>Alokasi</th><th>Keterangan</th></tr>${rows.map(x=>`<tr><td>${x.start===x.end?x.start:`${x.start}–${x.end}`}</td><td>${esc(x.months)}</td><td>${esc(x.chapter.name)}</td><td>${esc(x.sub.name)}</td><td>${parseJP(x.sub.jp)} JP</td><td>Memahami → Mengaplikasi → Merefleksi; asesmen formatif dan tindak lanjut.</td></tr>`).join('')}</table>${signatureHTML()}</section>`}
+
+function moduleHTML(x){
+ const sub=x.sub,prof=materialProfile(sub.name),acts=activities(sub.name),cp=$('cp').value.trim()||genericCP(),dpl=inferDPL(sub.name),elem=inferElement(sub.name),model=inferModel(sub.name);
+ return`<section class="module"><div class="module-title"><h1>MODUL AJAR PEMBELAJARAN MENDALAM — MODUL ${x.no}</h1><p><b>${esc($('mapel').value)}</b> • ${esc($('fasekelas').value)} • ${esc(x.sem)}</p><p><b>${esc(x.chapter.name)}</b> — ${esc(sub.name)}</p></div>
+ <h2>A. Identitas Modul</h2><table><tr><td><b>Sekolah/Madrasah</b></td><td>${esc($('sekolah').value||'—')}</td></tr><tr><td><b>Mata Pelajaran</b></td><td>${esc($('mapel').value||'—')}</td></tr><tr><td><b>Tema/Subbab</b></td><td>${esc(sub.name)}</td></tr><tr><td><b>Fase/Kelas</b></td><td>${esc($('fasekelas').value)}</td></tr><tr><td><b>Alokasi Waktu</b></td><td>${parseJP(sub.jp)} JP</td></tr><tr><td><b>Tahun Pelajaran</b></td><td>${esc($('tahun').value)}</td></tr><tr><td><b>Nama Penyusun</b></td><td>${esc($('guru').value||'—')}</td></tr></table>
+ <h2>B. Identifikasi Peserta Didik</h2><p><b>Pengetahuan/Kesiapan Awal:</b> Peserta didik memiliki pengalaman awal yang beragam terkait ${esc(sub.name)} dan memerlukan pemetaan melalui pertanyaan diagnostik.</p><p><b>Minat & Latar Belakang:</b> ${esc($('karakter').value)}</p><p><b>Kebutuhan Belajar:</b> Contoh konkret, bimbingan bertahap, latihan kontekstual, umpan balik, dan kesempatan memperbaiki hasil.</p>
+ <h2>C. Materi Pelajaran</h2><table><tr><td><b>Jenis Pengetahuan</b></td><td>${esc(prof.jenis)}</td></tr><tr><td><b>Relevansi</b></td><td>${esc(prof.relevansi)}</td></tr><tr><td><b>Tingkat Kesulitan</b></td><td>${esc(prof.sulit)}</td></tr><tr><td><b>Struktur Materi</b></td><td>${esc(prof.struktur)}</td></tr><tr><td><b>Integrasi Nilai & Karakter</b></td><td>${esc(prof.nilai)}</td></tr></table>
+ <h2>D. Dimensi Profil Lulusan</h2><p>${dpl.map(x=>`<span class="tag">✓ ${esc(x)}</span>`).join(' ')}</p>
+ <h2>E. Desain Pembelajaran</h2><table><tr><td><b>Capaian Pembelajaran</b></td><td>${esc(cp)}</td></tr><tr><td><b>Elemen/Domain</b></td><td>${esc(elem)}</td></tr><tr><td><b>Lintas Disiplin Ilmu</b></td><td>${esc(inferCross())}</td></tr><tr><td><b>Tujuan Pembelajaran</b></td><td>${esc(tpFor(sub.name))}</td></tr><tr><td><b>Topik Pembelajaran</b></td><td>${esc(sub.name)}</td></tr><tr><td><b>Praktik Pedagogis</b></td><td>${esc(model)}</td></tr><tr><td><b>Kemitraan Pembelajaran</b></td><td>${esc(inferPartners())}</td></tr><tr><td><b>Lingkungan Pembelajaran</b></td><td>${esc($('lingkungan').value)}</td></tr><tr><td><b>Pemanfaatan Digital</b></td><td>${esc($('digital').value)}</td></tr></table>
+ <h2>F. Pengalaman Belajar</h2><h3>AWAL — Berkesadaran, Bermakna, Menggembirakan</h3>${list([`Guru membuka pembelajaran, mengecek kehadiran dan kesiapan belajar, serta membangun suasana nyaman dan inklusif.`,`Guru mengaitkan ${sub.name} dengan pengalaman nyata atau pembelajaran sebelumnya.`,`Guru memberikan pemantik berupa gambar, teks, video, demonstrasi, masalah, atau pertanyaan kontekstual.`,`Guru menyampaikan tujuan pembelajaran dan kriteria keberhasilan.`])}<h3>INTI — Memahami</h3>${list(acts.under)}<h3>INTI — Mengaplikasi</h3>${list(acts.apply)}<h3>INTI — Merefleksi</h3>${list(acts.reflect)}<h3>PENUTUP</h3>${list([`Guru dan peserta didik menyimpulkan inti pembelajaran ${sub.name}.`,`Guru memberikan umpan balik dan apresiasi.`,`Peserta didik menyampaikan refleksi singkat dan guru menjelaskan tindak lanjut.`])}
+ <h2>G. Asesmen Pembelajaran</h2><table><tr><th>Tahap</th><th>Metode/Teknik</th><th>Fungsi</th></tr><tr><td>Awal</td><td>Tanya jawab diagnostik, pertanyaan pemantik, atau kuis singkat.</td><td>Memetakan kesiapan belajar.</td></tr><tr><td>Proses</td><td>Observasi, LKPD, diskusi, unjuk kerja, pertanyaan reflektif, peer feedback.</td><td>Assessment for learning & assessment as learning.</td></tr><tr><td>Akhir</td><td>Tes lisan/tertulis, produk, proyek, presentasi, atau portofolio sesuai subbab.</td><td>Assessment of learning.</td></tr></table>
+ <h2>H. LKPD Ringkas</h2><ol><li>Tuliskan pengetahuan awalmu tentang ${esc(sub.name)}.</li><li>Amati/baca/simak contoh yang diberikan guru dan catat informasi penting.</li><li>Kerjakan tugas penerapan sesuai petunjuk.</li><li>Presentasikan atau tuliskan hasil secara runtut.</li><li>Refleksikan kekuatan, kesulitan, dan rencana perbaikan.</li></ol>
+ <h2>I. Rubrik Penilaian</h2><table><tr><th>Aspek</th><th>4</th><th>3</th><th>2</th><th>1</th></tr><tr><td>Pemahaman</td><td>Tepat, lengkap, mampu memberi alasan</td><td>Tepat dengan sedikit kekurangan</td><td>Sebagian tepat</td><td>Perlu bimbingan</td></tr><tr><td>Penerapan/Produk</td><td>Relevan, mandiri, berkualitas</td><td>Baik dengan sedikit bantuan</td><td>Masih perlu arahan</td><td>Belum sesuai</td></tr><tr><td>Komunikasi/Refleksi</td><td>Jelas, runtut, reflektif</td><td>Cukup jelas</td><td>Kurang runtut</td><td>Sulit dipahami</td></tr></table>
+ <h2>J. Diferensiasi, Remedial, Pengayaan, dan Refleksi</h2><p><b>Diferensiasi:</b> penyesuaian contoh, media, dukungan, tingkat kompleksitas, waktu, dan bentuk produk. <b>Remedial:</b> pemodelan ulang, latihan bertahap, bimbingan kelompok kecil/individual. <b>Pengayaan:</b> konteks baru atau tugas lebih kompleks.</p><table><tr><th>Refleksi Guru</th><th>Refleksi Peserta Didik</th></tr><tr><td>Apakah tujuan tercapai? Siapa yang perlu tindak lanjut? Strategi apa yang perlu diperbaiki?</td><td>Apa yang saya pahami? Apa yang sulit? Apa rencana perbaikan saya?</td></tr></table>
+ ${signatureHTML()}<p class="small-note"><i>Dokumen hasil generator wajib ditinjau dan disesuaikan dengan CP/ATP resmi, karakteristik peserta didik, serta kebijakan satuan pendidikan.</i></p></section>`;
+}
+
+
+function lkpdIllustrationSVG(kind){
+ if(!$('lkpdIllustration').checked)return '';
+ const star=`<circle cx="18" cy="20" r="4" fill="#facc15"/><circle cx="99" cy="22" r="4" fill="#f9a8d4"/><circle cx="100" cy="88" r="4" fill="#93c5fd"/>`;
+ if(kind==='bahasa')return `<svg viewBox="0 0 120 110" aria-label="Buku lucu">${star}<rect x="25" y="25" width="67" height="58" rx="10" fill="#fff" stroke="#4f46e5" stroke-width="3"/><path d="M58 26v56" stroke="#c4b5fd" stroke-width="3"/><path d="M33 40h18M33 49h16M66 40h17M66 49h14" stroke="#8b5cf6" stroke-width="3" stroke-linecap="round"/><circle cx="43" cy="63" r="3" fill="#111827"/><circle cx="51" cy="63" r="3" fill="#111827"/><path d="M42 70c3 3 7 3 10 0" stroke="#ec4899" stroke-width="2.5" fill="none" stroke-linecap="round"/><path d="M75 61l4 4 8-10" stroke="#10b981" stroke-width="3" fill="none" stroke-linecap="round"/></svg>`;
+ if(kind==='matematika')return `<svg viewBox="0 0 120 110" aria-label="Kalkulator lucu">${star}<rect x="31" y="22" width="58" height="66" rx="13" fill="#fff" stroke="#4f46e5" stroke-width="3"/><rect x="42" y="33" width="36" height="13" rx="5" fill="#ede9fe"/><circle cx="49" cy="58" r="5" fill="#93c5fd"/><circle cx="63" cy="58" r="5" fill="#f9a8d4"/><circle cx="77" cy="58" r="5" fill="#86efac"/><circle cx="49" cy="72" r="5" fill="#fde68a"/><circle cx="63" cy="72" r="5" fill="#c4b5fd"/><circle cx="77" cy="72" r="5" fill="#fdba74"/><circle cx="49" cy="40" r="2.5" fill="#111827"/><circle cx="58" cy="40" r="2.5" fill="#111827"/><path d="M48 45c3 2 7 2 10 0" stroke="#ec4899" stroke-width="2" fill="none"/></svg>`;
+ if(kind==='ipa')return `<svg viewBox="0 0 120 110" aria-label="Labu sains lucu">${star}<path d="M52 24h16M57 24v25L39 80a8 8 0 0 0 7 12h28a8 8 0 0 0 7-12L63 49V24" fill="#fff" stroke="#4f46e5" stroke-width="3"/><path d="M44 73h32l6 12H38z" fill="#d1fae5"/><circle cx="52" cy="75" r="4" fill="#60a5fa"/><circle cx="67" cy="82" r="4" fill="#f472b6"/><circle cx="55" cy="58" r="3" fill="#111827"/><circle cx="66" cy="58" r="3" fill="#111827"/><path d="M55 65c3 3 8 3 11 0" stroke="#ec4899" stroke-width="2.5" fill="none"/></svg>`;
+ if(kind==='ips')return `<svg viewBox="0 0 120 110" aria-label="Globe lucu">${star}<circle cx="60" cy="55" r="28" fill="#dbeafe" stroke="#4f46e5" stroke-width="3"/><path d="M43 49c9-14 24-10 34-16 1 14-8 14-5 24-11 2-10 11-20 11-5-5-12-8-9-19z" fill="#86efac" stroke="#10b981" stroke-width="2"/><circle cx="51" cy="56" r="3" fill="#111827"/><circle cx="65" cy="56" r="3" fill="#111827"/><path d="M51 64c3 3 11 3 14 0" stroke="#ec4899" stroke-width="2.5" fill="none"/><path d="M60 83v12M44 96h32" stroke="#4f46e5" stroke-width="3" stroke-linecap="round"/></svg>`;
+ return `<svg viewBox="0 0 120 110" aria-label="Lampu ide lucu">${star}<path d="M60 23c-15 0-27 11-27 25 0 10 6 17 13 22 4 3 5 7 5 11h18c0-4 2-8 6-11 7-5 12-12 12-22 0-14-12-25-27-25z" fill="#fff7cc" stroke="#d97706" stroke-width="3"/><path d="M52 86h16M53 93h14" stroke="#4f46e5" stroke-width="4" stroke-linecap="round"/><circle cx="53" cy="52" r="3" fill="#111827"/><circle cx="67" cy="52" r="3" fill="#111827"/><path d="M53 60c3 4 11 4 14 0" stroke="#ec4899" stroke-width="2.5" fill="none"/></svg>`;
+}
+
+function lkpdStickers(sub){
+ const x=sub.toLowerCase(),k=subjectKind();
+ if(k==='bahasa'){
+   if(x.includes('poster')||x.includes('iklan')||x.includes('slogan'))return ['💡 Banyak ide','🎨 Kreatif','🗣️ Komunikatif'];
+   if(x.includes('laporan')||x.includes('observasi'))return ['🔎 Teliti','📝 Catat fakta','🌿 Dekat dengan sekitar'];
+   return ['📚 Suka membaca','✍️ Rapi menulis','💬 Berani berpendapat'];
+ }
+ if(k==='matematika')return ['🧠 Logis','➗ Teliti','✨ Pecahkan masalah'];
+ if(k==='ipa')return ['🧪 Mengamati','🔬 Mencoba','📊 Menyimpulkan'];
+ if(k==='ips')return ['🌍 Kontekstual','👥 Sosial','🗺️ Peka lingkungan'];
+ return ['🌟 Semangat','🎯 Fokus','😊 Menyenangkan'];
+}
+
+function lkpdStimulus(sub){
+ const k=subjectKind(),x=sub.toLowerCase();
+ if(k==='bahasa'){
+   if(x.includes('laporan')||x.includes('observasi')||x.includes('lho'))return `<b>Stimulus:</b> Amati satu objek di lingkungan sekitar sekolah, misalnya tanaman, perpustakaan, kantin, atau lapangan. Catat fakta yang benar-benar terlihat/diketahui, lalu hubungkan dengan materi <b>${esc(sub)}</b>.`;
+   if(x.includes('iklan')||x.includes('slogan')||x.includes('poster'))return `<b>Stimulus:</b> Bayangkan sekolah akan membuat kampanye “Jaga Kebersihan Sekolah”. Tentukan pesan, sasaran, dan pilihan kata/visual yang paling sesuai dengan materi <b>${esc(sub)}</b>.`;
+   if(x.includes('artikel'))return `<b>Stimulus:</b> Pilih satu isu dekat dengan kehidupan siswa—lingkungan, kesehatan, teknologi, atau kebiasaan belajar. Temukan informasi penting yang dapat dikembangkan sesuai materi <b>${esc(sub)}</b>.`;
+   return `<b>Stimulus:</b> Bacalah atau amatilah contoh yang diberikan guru, lalu temukan informasi, ciri, struktur, atau penggunaan bahasa yang berkaitan dengan <b>${esc(sub)}</b>.`;
+ }
+ if(k==='matematika')return `<b>Stimulus:</b> Gunakan situasi sederhana di sekitar sekolah atau rumah untuk menemukan masalah yang dapat diselesaikan dengan konsep <b>${esc(sub)}</b>. Tuliskan informasi yang diketahui, yang ditanyakan, dan strategi penyelesaiannya.`;
+ if(k==='ipa')return `<b>Stimulus:</b> Amati fenomena/objek di lingkungan sekitar. Catat hasil pengamatan yang relevan dengan <b>${esc(sub)}</b>, kemudian buat dugaan awal berdasarkan bukti yang terlihat.`;
+ if(k==='ips')return `<b>Stimulus:</b> Cermati peristiwa, peta, data, atau kegiatan masyarakat di sekitar. Hubungkan temuanmu dengan konsep <b>${esc(sub)}</b>.`;
+ return `<b>Stimulus:</b> Amati contoh, data, demonstrasi, gambar, atau situasi yang diberikan guru. Tuliskan tiga informasi penting yang berkaitan dengan <b>${esc(sub)}</b>.`;
+}
+function lkpdQuestionSet(sub){
+ const k=subjectKind();
+ if(k==='bahasa')return[
+   `Apa informasi atau konsep terpenting yang kamu temukan tentang ${sub}?`,
+   `Tuliskan bukti/contoh yang mendukung jawabanmu.`,
+   `Bagaimana kamu menerapkan ${sub} pada contoh atau tugas baru?`
+ ];
+ if(k==='matematika')return[
+   `Informasi apa yang diketahui dan apa yang ditanyakan pada masalah terkait ${sub}?`,
+   `Strategi atau rumus apa yang kamu gunakan? Jelaskan alasanmu.`,
+   `Tuliskan penyelesaian dan periksa kembali hasilnya.`
+ ];
+ if(k==='ipa')return[
+   `Apa yang kamu amati berkaitan dengan ${sub}?`,
+   `Data atau bukti apa yang mendukung penjelasanmu?`,
+   `Tuliskan kesimpulan berdasarkan hasil pengamatan/analisis.`
+ ];
+ return[
+   `Apa hal utama yang kamu pahami tentang ${sub}?`,
+   `Jelaskan hubungan konsep tersebut dengan kehidupan sehari-hari.`,
+   `Terapkan konsep pada contoh/kasus baru dan tuliskan hasilnya.`
+ ];
+}
+function lkpdTask(sub){
+ const k=subjectKind();
+ if(k==='bahasa')return `Buat hasil kerja sederhana yang menunjukkan pemahamanmu tentang ${sub}: teks singkat, tabel analisis, poster, ringkasan, atau presentasi sesuai arahan guru.`;
+ if(k==='matematika')return `Buat satu contoh masalah kontekstual tentang ${sub}, lalu selesaikan secara runtut dan jelaskan strategimu.`;
+ if(k==='ipa')return `Lakukan pengamatan/analisis sederhana yang berkaitan dengan ${sub}, catat data, lalu tuliskan kesimpulan berbasis bukti.`;
+ if(k==='ips')return `Buat ringkasan analisis kasus/data yang berkaitan dengan ${sub} dan jelaskan kaitannya dengan kehidupan masyarakat.`;
+ return `Buat produk/tugas sederhana yang menerapkan ${sub}, kemudian presentasikan atau jelaskan prosesnya.`;
+}
+function lkpdHTML(x){
+ const sub=x.sub.name, style=$('lkpdStyle').value, cls=style==='formal'?'lkpd-formal':style==='hemat'?'lkpd-hemat':'';
+ const qs=lkpdQuestionSet(sub),tp=smartTP(sub).slice(0,3),kind=subjectKind();
+ return `<section class="lkpd-page ${cls}">
+ <div class="lkpd-head"><div class="lkpd-badge">LKPD</div><div><h1>${esc(sub)}</h1><p><b>${esc($('mapel').value)}</b> • ${esc($('fasekelas').value)} • ${esc(x.sem)}</p><p>${esc(x.chapter.name)} • Pendamping Modul ${x.no}</p><div class="sticker-row">${lkpdStickers(sub).map(v=>`<span class="sticker">${v}</span>`).join('')}</div></div></div>
+ <div class="student-grid"><div class="student-box"><b>Nama:</b> ................................................</div><div class="student-box"><b>Kelas:</b> ........................</div><div class="student-box"><b>Kelompok:</b> ....................................</div><div class="student-box"><b>Tanggal:</b> ........................</div></div>
+
+ <div class="lkpd-section"><div class="lkpd-section-title"><span class="lkpd-num">A</span> Tujuan Kegiatan</div>${list(tp)}</div>
+ <div class="lkpd-section"><div class="lkpd-section-title"><span class="lkpd-num">B</span> Petunjuk Kerja</div><div class="lkpd-tip">Baca/amati stimulus dengan teliti. Kerjakan langkah secara urut. Diskusikan jika diminta. Gunakan bahasa/rumus/data secara tepat. Periksa kembali hasil sebelum dikumpulkan.</div></div>
+ <div class="lkpd-section"><div class="lkpd-section-title"><span class="lkpd-num">C</span> Yuk Mengamati</div><div class="lkpd-stimulus"><div class="lkpd-ill">${lkpdIllustrationSVG(kind)}</div><div>${lkpdStimulus(sub)}<div style="margin-top:8px"><b>Catat 3 temuan awal:</b><div class="answer-lines">1. ........................................................................................<br>2. ........................................................................................<br>3. ........................................................................................</div></div></div></div></div>
+ <div class="lkpd-section"><div class="lkpd-section-title"><span class="lkpd-num">D</span> Yuk Berpikir & Mencoba</div><table class="lkpd-table"><tr><th style="width:8%">No.</th><th style="width:46%">Pertanyaan/Tugas</th><th>Jawaban</th></tr>${qs.map((q,i)=>`<tr><td>${i+1}</td><td>${esc(q)}</td><td style="height:74px"></td></tr>`).join('')}</table></div>
+ <div class="lkpd-section"><div class="lkpd-section-title"><span class="lkpd-num">E</span> Kreasi Mini</div><div class="lkpd-tip">${esc(lkpdTask(sub))}</div><div class="answer-box"><span class="answer-lines">...............................................................................................................................<br>...............................................................................................................................<br>...............................................................................................................................</span></div></div>
+ <div class="lkpd-section"><div class="lkpd-section-title"><span class="lkpd-num">F</span> Catatan Belajarku</div><table class="lkpd-table"><tr><th>Pertanyaan Refleksi</th><th>Jawaban Singkat</th></tr><tr><td>Apa hal baru yang saya pahami?</td><td style="height:46px"></td></tr><tr><td>Bagian apa yang masih sulit?</td><td style="height:46px"></td></tr><tr><td>Apa rencana perbaikan saya?</td><td style="height:46px"></td></tr></table></div>
+ <div class="lkpd-section"><div class="lkpd-section-title"><span class="lkpd-num">G</span> Aku Sudah Bisa?</div><div class="selfcheck"><div>Saya mengikuti petunjuk dengan sungguh-sungguh.</div><div>☐ Ya &nbsp; ☐ Belum</div><div>Saya mampu menjelaskan kembali ${esc(sub)}.</div><div>☐ Ya &nbsp; ☐ Belum</div><div>Saya menyelesaikan tugas/produk.</div><div>☐ Ya &nbsp; ☐ Belum</div></div></div>
+ <div class="lkpd-section"><div class="lkpd-section-title"><span class="lkpd-num">H</span> Penilaian Guru</div><table class="lkpd-table"><tr><th>Aspek</th><th>4 — Sangat Baik</th><th>3 — Baik</th><th>2 — Cukup</th><th>1 — Perlu Bimbingan</th></tr><tr><td>Pemahaman</td><td>Tepat, lengkap, beralasan</td><td>Tepat, sedikit kekurangan</td><td>Sebagian tepat</td><td>Belum memahami</td></tr><tr><td>Penerapan/Produk</td><td>Relevan, mandiri, berkualitas</td><td>Baik dengan sedikit bantuan</td><td>Perlu beberapa arahan</td><td>Perlu bimbingan intensif</td></tr><tr><td>Komunikasi/Refleksi</td><td>Jelas, runtut, reflektif</td><td>Cukup jelas</td><td>Kurang runtut</td><td>Sulit dipahami</td></tr></table><p style="text-align:right"><b>Nilai: .......... / 100 &nbsp;&nbsp; Paraf Guru: ....................</b></p></div>
+ </section>`;
+}
+
+function generateBook(){
+ saveData();const mods=getModules();if(window.__MK_PLAN==='demo'&&mods.length>1)return alert('Mode Demo hanya dapat membuat 1 subbab. Hapus subbab lain atau upgrade ke Premium.');if(!mods.length)return alert('Tambahkan minimal satu subbab.');
+ const m=$('mapel').value||'Mata Pelajaran';
+ let h=`<section class="cover"><div class="kicker">Buku Perangkat Pembelajaran & Modul Ajar Pembelajaran Mendalam</div><h1>${esc(m)}</h1><h2>${esc($('fasekelas').value)}</h2><div class="meta">Tahun Pelajaran <b>${esc($('tahun').value)}</b><br>${esc($('sekolah').value||'Nama Sekolah/Madrasah')}<br><br>Disusun oleh<br><b>${esc($('guru').value||'Nama Guru/Penyusun')}</b></div></section>`;
+ h+=`<section class="section-page" style="page-break-before:auto"><div class="module-title"><h1>IDENTITAS PERANGKAT</h1></div><table><tr><td><b>Satuan Pendidikan</b></td><td>${esc($('sekolah').value||'—')}</td></tr><tr><td><b>Mata Pelajaran</b></td><td>${esc(m)}</td></tr><tr><td><b>Fase/Kelas</b></td><td>${esc($('fasekelas').value)}</td></tr><tr><td><b>Tahun Pelajaran</b></td><td>${esc($('tahun').value)}</td></tr><tr><td><b>Penyusun</b></td><td>${esc($('guru').value||'—')}</td></tr></table><h2>Kata Pengantar</h2><p>Buku perangkat pembelajaran ini menghimpun Analisis CP menjadi TP, ATP, kalender pendidikan kerja, analisis alokasi waktu, Program Tahunan, Program Semester, dan Modul Ajar Pembelajaran Mendalam. Setiap subbab disusun sebagai satu modul yang dapat diedit dan disesuaikan dengan kondisi satuan pendidikan.</p>${$('catatan').value?`<h2>Catatan Penyusun</h2><p>${esc($('catatan').value)}</p>`:''}<h2>Daftar Isi</h2><ol><li>Analisis CP menjadi TP</li><li>ATP Semester Ganjil</li><li>ATP Semester Genap</li><li>Kalender Pendidikan Kerja & Minggu Efektif</li><li>Analisis Alokasi Waktu</li><li>Program Tahunan (PROTA)</li><li>Program Semester Ganjil (PROSEM)</li><li>Program Semester Genap (PROSEM)</li><li>Modul Ajar Pembelajaran Mendalam per Subbab</li><li>LKPD Menarik per Subbab</li></ol></section>`;
+ h+=analysisCPTable()+atpSection('ganjil')+atpSection('genap')+calendarSection()+allocationSection()+protaSection()+prosemSection('ganjil')+prosemSection('genap');
+ let current='';const includeLKPD=$('includeLKPD').checked,placement=$('lkpdPlacement').value;mods.forEach(x=>{if(x.sem!==current){current=x.sem;h+=`<section class="divider"><div><div class="kicker">Modul Ajar Pembelajaran Mendalam</div><h1>${esc(current)}</h1><p>${esc(m)} • ${esc($('fasekelas').value)}</p></div></section>`}h+=moduleHTML(x);if(includeLKPD&&placement==='setelah')h+=lkpdHTML(x)});
+ if(includeLKPD&&placement==='akhir'){h+=`<section class="divider"><div><div class="kicker">Lampiran Peserta Didik</div><h1>Kumpulan LKPD</h1><p>${esc(m)} • ${esc($('fasekelas').value)}</p></div></section>`;mods.forEach(x=>h+=lkpdHTML(x))}
+ $('hasil').innerHTML=h;$('hasil').dataset.generated='1';$('hasil').contentEditable='false';window.scrollTo({top:$('hasil').getBoundingClientRect().top+window.scrollY-10,behavior:'smooth'});
+}
+function toggleEdit(){if($('hasil').dataset.generated!=='1')return alert('Generate perangkat terlebih dahulu.');const on=$('hasil').contentEditable==='true';$('hasil').contentEditable=on?'false':'true';alert(on?'Mode edit dimatikan.':'Mode edit aktif. Ketuk isi hasil untuk memperbaiki teks sebelum dicetak.')}
+function copyBook(){if($('hasil').dataset.generated!=='1')return alert('Generate perangkat terlebih dahulu.');navigator.clipboard.writeText($('hasil').innerText).then(()=>alert('Isi perangkat berhasil disalin.'))}
+function downloadWord(){
+ if(window.__MK_PLAN==='demo')return alert('Download Word tersedia untuk akun Premium.');
+ if($('hasil').dataset.generated!=='1')return alert('Generate perangkat terlebih dahulu.');
+ const css=`@page{size:A4;margin:1.7cm}body{font-family:Arial,sans-serif;font-size:10pt;line-height:1.42;color:#111}h1{text-align:center;font-size:16pt}h2{font-size:12pt;margin-top:15pt;border-bottom:1px solid #777;padding-bottom:3pt}h3{font-size:10.5pt}table{border-collapse:collapse;width:100%}td,th{border:1px solid #555;padding:4.5pt;vertical-align:top}th{background:#eee}.cover{text-align:center;padding-top:140pt;page-break-after:always}.cover h1{font-size:26pt}.section-page,.module{page-break-before:always}.divider{page-break-before:always;page-break-after:always;text-align:center;padding-top:170pt}.tag{display:inline-block;border:1px solid #777;padding:2pt 4pt;margin:2pt}.small-note{font-size:8pt;color:#555}.lkpd-page{page-break-before:always}.lkpd-head{border:1px solid #999;padding:10pt}.lkpd-badge{font-weight:bold;font-size:16pt}.student-grid{margin:8pt 0}.student-box{border:1px solid #999;padding:5pt;margin:2pt 0}.lkpd-section-title{font-weight:bold;margin-top:10pt}.lkpd-tip,.lkpd-stimulus,.answer-box{border:1px solid #999;padding:7pt;margin:5pt 0}.lkpd-table{border-collapse:collapse;width:100%}.lkpd-table td,.lkpd-table th{border:1px solid #777;padding:4pt}.lkpd-table th{background:#eee}.lkpd-ill{display:none}`;
+ const doc=`<html><head><meta charset="utf-8"><style>${css}</style></head><body>${$('hasil').innerHTML}</body></html>`;
+ const blob=new Blob([doc],{type:'application/msword'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`Perangkat_Modul_Ajar_${($('mapel').value||'Mapel').replace(/\s+/g,'_')}_${$('tahun').value.replace('/','-')}.doc`;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),700);
+}
+function resetAll(){if(!confirm('Hapus seluruh data perangkat yang tersimpan di browser ini?'))return;localStorage.removeItem('modulkitaBookV61');localStorage.removeItem('modulkitaBookV5');localStorage.removeItem('modulkitaBookV4');location.reload()}
+function loadExample(){
+ if(!confirm('Muat contoh Bahasa Indonesia Kelas VIII berdasarkan pola perangkat 2026? Data saat ini akan diganti.'))return;
+ $('sekolah').value='SMP Negeri 9 Masni';$('mapel').value='Bahasa Indonesia';$('fasekelas').value='Fase D / Kelas VIII';$('tahun').value='2026/2027';$('jpMinggu').value='6';
+ calendar.ganjil=[['Juli',3,'Awal semester'],['Agustus',3,''],['September',4,'PTS menyesuaikan kalender sekolah'],['Oktober',5,''],['November',4,'PAS/persiapan akhir semester menyesuaikan'],['Desember',0,'Libur semester menyesuaikan kalender resmi']];
+ calendar.genap=[['Januari',0,'Isi sesuai kalender resmi'],['Februari',0,''],['Maret',0,''],['April',0,''],['Mei',0,''],['Juni',0,'']];
+ state={ganjil:[
+ {id:uid(),name:'Bab 1 — Teks Laporan Hasil Observasi',subs:['Pengertian, tujuan, dan ciri LHO','Topik dan gagasan utama','Data, fakta, dan opini; cara menemukan data','Struktur LHO','Kebahasaan: deskripsi, eksposisi, ejaan dan tanda baca','Menulis LHO: draf, revisi, dan presentasi'].map(x=>newSub(x,'6 JP'))},
+ {id:uid(),name:'Bab 2 — Iklan, Slogan, dan Poster',subs:['Seluk-beluk iklan, slogan, dan poster','Pesan iklan komersial dan nonkomersial','Struktur, pola penyajian, dan kebahasaan','Produksi iklan, slogan, dan poster'].map(x=>newSub(x,'6 JP'))},
+ {id:uid(),name:'Bab 3 — Artikel Ilmiah Populer',subs:['Menentukan informasi penting dalam artikel','Ciri-ciri artikel; fakta dan opini','Mengumpulkan data: observasi, wawancara, dan pustaka','Langkah penulisan artikel: struktur dan koherensi','Menulis draf artikel dengan data','Presentasi artikel dan peer review'].map(x=>newSub(x,'6 JP'))}
+ ],genap:[{id:uid(),name:'Bab 4 — Semester Genap',subs:[newSub('Isi subbab semester genap di sini','6 JP')]}]};
+ renderSemester('ganjil');renderSemester('genap');renderCalendar('ganjil');renderCalendar('genap');saveData();alert('Contoh dimuat. Lengkapi Semester Genap dan kalender sesuai kalender pendidikan resmi.');
+}
+
+let mkSupabase=null;window.__MK_PLAN='locked';
+async function initPremiumAccess(){
+ const c=window.MODULKITA_CONFIG||{};
+ if(!c.supabaseUrl||!c.supabasePublishableKey){document.getElementById('gateText').textContent='Supabase belum dikonfigurasi. Hubungi pemilik aplikasi.';return}
+ mkSupabase=window.supabase.createClient(c.supabaseUrl,c.supabasePublishableKey);
+ const {data:{session}}=await mkSupabase.auth.getSession();
+ if(!session){location.href='index.html';return}
+ const {data:p,error}=await mkSupabase.from('modulkita_profiles').select('*').eq('id',session.user.id).single();
+ if(error||!p){document.getElementById('gateText').textContent='Profil akun belum siap. Silakan kembali ke beranda.';return}
+ const premium=p.is_active&&(p.plan==='lifetime'||(['premium_30','premium_year'].includes(p.plan)&&(!p.access_until||new Date(p.access_until)>new Date())));
+ window.__MK_PLAN=premium?'premium':'demo';
+ document.getElementById('accountPlan').textContent=premium?'PREMIUM':'DEMO';
+ document.getElementById('accountEmail').textContent=p.email||session.user.email||'';
+ document.getElementById('accountBar').style.display='block';
+ if(!premium)document.getElementById('demoRibbon').classList.add('show');
+ document.getElementById('premiumGate').classList.add('hide');
+}
+async function premiumLogout(){if(mkSupabase)await mkSupabase.auth.signOut();location.href='index.html'}
+function premiumPrint(){if(window.__MK_PLAN==='demo')return alert('Cetak/PDF tersedia untuk akun Premium.');window.print()}
+
+loadData();initPremiumAccess();
+</script>
+</body>
+</html>

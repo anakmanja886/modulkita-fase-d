@@ -1,0 +1,35 @@
+<!doctype html><html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Admin ModulKita</title>
+<style>
+:root{--p:#4338ca;--line:#e4e7ec;--bg:#f7f8fc;--ink:#172033;--muted:#667085}*{box-sizing:border-box}body{margin:0;background:var(--bg);font-family:Inter,system-ui,Arial;color:var(--ink)}button,input{font:inherit}.top{background:#312e81;color:#fff;padding:16px 20px}.topin{max-width:1200px;margin:auto;display:flex;justify-content:space-between;align-items:center}.wrap{max-width:1200px;margin:auto;padding:22px 20px}.card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px;margin-bottom:16px}.btn{border:0;border-radius:9px;padding:8px 10px;font-weight:850;cursor:pointer}.p{background:var(--p);color:#fff}.g{background:#eef2ff;color:#3730a3}.r{background:#fff1f3;color:#c01048}.tablewrap{overflow:auto}table{width:100%;border-collapse:collapse;font-size:12px}th,td{border-bottom:1px solid var(--line);padding:8px;text-align:left;white-space:nowrap}th{background:#f8fafc}.muted{color:var(--muted);font-size:12px}.msg{padding:10px;border-radius:10px;background:#fffaeb;color:#b54708;margin-bottom:12px}.hidden{display:none}
+</style></head><body>
+<div class="top"><div class="topin"><b>Admin ModulKita Premium</b><div><button class="btn g" onclick="location.href='index.html'">Beranda</button> <button class="btn r" onclick="logout()">Keluar</button></div></div></div>
+<main class="wrap"><div id="msg" class="msg">Memeriksa akses admin…</div>
+<section id="adminArea" class="hidden">
+<div class="card"><h2>Permintaan Pembelian</h2><div class="tablewrap"><table><thead><tr><th>Waktu</th><th>Nama/Email</th><th>Paket</th><th>WhatsApp</th><th>Referensi</th><th>Status</th><th>Aksi</th></tr></thead><tbody id="requests"></tbody></table></div></div>
+<div class="card"><h2>Pengguna</h2><div class="tablewrap"><table><thead><tr><th>Nama</th><th>Email</th><th>Plan</th><th>Aktif s.d.</th><th>Role</th><th>Aktivasi</th></tr></thead><tbody id="users"></tbody></table></div></div>
+</section></main>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="config.js"></script>
+<script>
+const cfg=window.MODULKITA_CONFIG||{},$=x=>document.getElementById(x);let sb,user;
+function show(t){$('msg').textContent=t}
+async function init(){
+ if(!cfg.supabaseUrl||!cfg.supabasePublishableKey)return show('Supabase belum dikonfigurasi.');
+ sb=window.supabase.createClient(cfg.supabaseUrl,cfg.supabasePublishableKey);
+ const {data:{session}}=await sb.auth.getSession();if(!session)return location.href='index.html';user=session.user;
+ const {data:p}=await sb.from('modulkita_profiles').select('role').eq('id',user.id).single();if(!p||p.role!=='admin')return show('Akses ditolak. Akun ini bukan admin.');
+ $('adminArea').classList.remove('hidden');show('Akses admin aktif.');loadAll()
+}
+async function loadAll(){await loadRequests();await loadUsers()}
+async function loadRequests(){
+ const {data,error}=await sb.rpc('modulkita_admin_list_purchase_requests');if(error)return show(error.message);
+ $('requests').innerHTML=(data||[]).map(x=>`<tr><td>${new Date(x.created_at).toLocaleString('id-ID')}</td><td>${x.full_name||'-'}<br><span class="muted">${x.email||''}</span></td><td>${x.package}</td><td>${x.phone||'-'}</td><td>${x.transaction_ref||'-'}</td><td>${x.status}</td><td><button class="btn p" onclick="approve(${x.id},'${x.user_id}','${x.package}')">Setujui</button> <button class="btn r" onclick="setReq(${x.id},'rejected')">Tolak</button></td></tr>`).join('')
+}
+async function loadUsers(){
+ const {data,error}=await sb.rpc('modulkita_admin_list_users');if(error)return show(error.message);
+ $('users').innerHTML=(data||[]).map(x=>`<tr><td>${x.full_name||'-'}</td><td>${x.email||'-'}</td><td>${x.plan}</td><td>${x.access_until?new Date(x.access_until).toLocaleDateString('id-ID'):'-'}</td><td>${x.role}</td><td><button class="btn g" onclick="setAccess('${x.id}','premium_30',30)">30 hari</button> <button class="btn g" onclick="setAccess('${x.id}','premium_year',365)">1 tahun</button> <button class="btn p" onclick="setAccess('${x.id}','lifetime',null)">Lifetime</button> <button class="btn r" onclick="setAccess('${x.id}','demo',0)">Demo</button></td></tr>`).join('')
+}
+async function setAccess(uid,plan,days){const {error}=await sb.rpc('modulkita_admin_set_access',{target_user:uid,new_plan:plan,days_count:days});if(error)return alert(error.message);loadAll()}
+async function setReq(id,status){const {error}=await sb.rpc('modulkita_admin_update_purchase_request',{req_id:id,new_status:status});if(error)return alert(error.message);loadRequests()}
+async function approve(id,uid,pkg){let days=pkg==='premium_30'?30:pkg==='premium_year'?365:null;await setAccess(uid,pkg,days);await setReq(id,'approved')}
+async function logout(){await sb.auth.signOut();location.href='index.html'}init()
+</script></body></html>
