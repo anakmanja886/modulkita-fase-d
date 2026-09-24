@@ -65,9 +65,9 @@ footer{text-align:center;color:#667085;font-size:12px;padding:34px 20px 45px}
   </div>
   <div class="hero">
     <div>
-      <span class="badge">Untuk Guru SMP & Sederajat</span>
+      <span class="badge">Semua Mapel SMP Kelas 7, 8 & 9</span>
       <h1>Perangkat ajar lebih cepat. Tetap kendali di tangan guru.</h1>
-      <p>Susun CP–TP, ATP, Kalender Pendidikan kerja, PROTA, PROSEM, Modul Ajar Pembelajaran Mendalam, serta LKPD dalam satu alur yang rapi dan mudah digunakan dari HP maupun laptop.</p>
+      <p>Susun CP–TP, ATP, Kalender Pendidikan kerja, PROTA, PROSEM, Modul Ajar Pembelajaran Mendalam, serta LKPD untuk berbagai mata pelajaran SMP kelas 7, 8, dan 9 dalam satu alur yang rapi.</p>
       <div class="heroBtns">
         <button class="heroPrimary" onclick="openAuth('register')">Coba Gratis</button>
         <a class="heroGhost" href="#paket">Lihat Paket Premium</a>
@@ -110,6 +110,20 @@ footer{text-align:center;color:#667085;font-size:12px;padding:34px 20px 45px}
       <div class="card"><div class="featureIcon">🎨</div><h3>LKPD Menarik</h3><p>LKPD peserta didik yang rapi, mudah dipahami, dan dapat disertai ilustrasi.</p></div>
       <div class="card"><div class="featureIcon">📝</div><h3>Edit Sebelum Digunakan</h3><p>Hasil dapat ditinjau dan disesuaikan dengan kondisi siswa serta kebijakan sekolah.</p></div>
       <div class="card"><div class="featureIcon">📱</div><h3>HP & Laptop</h3><p>Gunakan akun yang sama dari perangkat yang mendukung browser modern.</p></div>
+    </div>
+  </section>
+
+  <section style="margin-top:58px">
+    <div class="sectionTitle"><h2>Dukungan Mata Pelajaran SMP</h2><p>Tujuan, kegiatan, dan LKPD menyesuaikan jenis mata pelajaran. Untuk hasil terbaik, tempel CP resmi sesuai fase dan mapel.</p></div>
+    <div class="grid4">
+      <div class="card"><div class="featureIcon">📖</div><h3>Bahasa</h3><p>Bahasa Indonesia, Bahasa Inggris, Bahasa Daerah/Muatan Lokal.</p></div>
+      <div class="card"><div class="featureIcon">🧮</div><h3>Matematika & IPA</h3><p>Numerasi, pemecahan masalah, penyelidikan, data, dan bukti.</p></div>
+      <div class="card"><div class="featureIcon">🌍</div><h3>IPS & Pancasila</h3><p>Sumber, data sosial, kewargaan, nilai, norma, hak, dan tanggung jawab.</p></div>
+      <div class="card"><div class="featureIcon">🙏</div><h3>Agama & Budi Pekerti</h3><p>Pemahaman materi, nilai, refleksi, dan penerapan dalam kehidupan.</p></div>
+      <div class="card"><div class="featureIcon">🏃</div><h3>PJOK</h3><p>Keterampilan gerak, kebugaran, kesehatan, keselamatan, dan sportivitas.</p></div>
+      <div class="card"><div class="featureIcon">💻</div><h3>Informatika</h3><p>Berpikir komputasional, algoritma, data, sistem, dan etika digital.</p></div>
+      <div class="card"><div class="featureIcon">🎨</div><h3>Seni</h3><p>Seni Rupa, Musik, Tari, Teater, eksplorasi, karya, dan apresiasi.</p></div>
+      <div class="card"><div class="featureIcon">🛠️</div><h3>Prakarya</h3><p>Kerajinan, pengolahan, budidaya, rekayasa, desain, produksi, evaluasi.</p></div>
     </div>
   </section>
 
@@ -263,17 +277,28 @@ async function refreshSession(){
  $('accountBtn').textContent='Akun Saya';$('accountBtn').onclick=()=>document.getElementById('dashboard').scrollIntoView({behavior:'smooth'});
  const {data,error}=await sb.from('modulkita_profiles').select('*').eq('id',currentUser.id).single();
  if(error){console.error(error);return}
- currentProfile=data;$('dashboard').classList.add('show');$('dashName').textContent=data.full_name||'Guru';$('dashEmail').textContent=data.email||currentUser.email;$('planTag').textContent=(data.plan||'demo').replaceAll('_',' ').toUpperCase();
- const premium=data.is_active&&(data.plan==='lifetime'||['premium_30','premium_year'].includes(data.plan)&&(!data.access_until||new Date(data.access_until)>new Date()));
+ currentProfile=data;$('dashboard').classList.add('show');$('dashName').textContent=data.full_name||'Guru';$('dashEmail').textContent=data.email||currentUser.email;$('planTag').textContent=data.role==='admin'?'ADMIN':(data.plan||'demo').replaceAll('_',' ').toUpperCase();
+ const premium=data.role==='admin'||(data.is_active&&(data.plan==='lifetime'||['premium_30','premium_year'].includes(data.plan)&&(!data.access_until||new Date(data.access_until)>new Date())));
  if(data.role==='admin')$('adminBtn').style.display='inline-block';
- if(premium){msg('accessInfo',data.plan==='lifetime'?'Akses Premium Lifetime aktif.':`Akses Premium aktif sampai ${new Date(data.access_until).toLocaleDateString('id-ID')}.`,'ok')}
- else{msg('accessInfo','Akun Demo aktif. Anda dapat mencoba 1 subbab. Pilih Premium untuk fitur lengkap.','warn')}
+ if(!data.is_active&&data.role!=='admin'){
+   msg('accessInfo','Akun ini dinonaktifkan oleh admin. Hubungi admin ModulKita jika Anda memerlukan akses kembali.','bad');
+   $('openGeneratorBtn').disabled=true;
+   $('openGeneratorBtn').style.opacity='.55';
+ }else if(data.role==='admin'){
+   msg('accessInfo','Akses Admin penuh aktif. Admin tidak perlu membeli paket Premium.','ok');
+ }else if(premium){
+   msg('accessInfo',data.plan==='lifetime'?'Akses Premium Lifetime aktif.':`Akses Premium aktif sampai ${new Date(data.access_until).toLocaleDateString('id-ID')}.`,'ok')
+ }else{
+   msg('accessInfo','Akun Demo aktif. Anda dapat mencoba 1 subbab. Pilih Premium untuk fitur lengkap.','warn')
+ }
 }
-function openGenerator(){if(!currentUser)return openAuth();location.href='generator.html'}
+function openGenerator(){if(!currentUser)return openAuth();if(currentProfile&&!currentProfile.is_active&&currentProfile.role!=='admin')return alert('Akun ini sedang dinonaktifkan. Hubungi admin ModulKita.');location.href='generator.html'}
 
 function startBuy(id){
  selectedPackage=(cfg.packages||[]).find(x=>x.id===id);if(!selectedPackage)return;
  if(!currentUser){openAuth('login');return}
+ if(currentProfile?.role==='admin')return alert('Akun Admin sudah memiliki akses penuh dan tidak perlu membeli Premium.');
+ if(currentProfile&&!currentProfile.is_active)return alert('Akun ini sedang dinonaktifkan. Hubungi admin ModulKita.');
  $('buyPackage').innerHTML=(cfg.packages||[]).map(p=>`<option value="${p.id}" ${p.id===id?'selected':''}>${p.name} — ${p.price}</option>`).join('');
  $('payMethod').textContent=cfg.paymentMethod||'DANA';
  $('payName').textContent=cfg.danaName||'-';

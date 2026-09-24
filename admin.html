@@ -13,7 +13,7 @@
 @media(max-width:720px){.grid{grid-template-columns:1fr}.kv{grid-template-columns:95px 1fr}.topin{align-items:flex-start}.topin>div:last-child{display:flex;gap:5px;flex-wrap:wrap;justify-content:flex-end}}
 </style></head>
 <body>
-<div class="top"><div class="topin"><div class="brand">Admin ModulKita Premium</div><div><button class="btn g" onclick="location.href='index.html'">Beranda</button> <button class="btn r" onclick="logout()">Keluar</button></div></div></div>
+<div class="top"><div class="topin"><div class="brand">Admin ModulKita — Kelola Akun & Premium</div><div><button class="btn g" onclick="location.href='index.html'">Beranda</button> <button class="btn r" onclick="logout()">Keluar</button></div></div></div>
 <main class="wrap">
   <div id="msg" class="msg">Memeriksa akses admin…</div>
   <section id="adminArea" class="hidden">
@@ -53,9 +53,18 @@ async function loadUsers(){
  const {data,error}=await sb.rpc('modulkita_admin_list_users');if(error)return show(error.message);
  $('userCount').textContent=`${(data||[]).length} pengguna`;
  $('users').innerHTML=(data||[]).length?(data||[]).map(x=>`<div class="card">
-   <div style="display:flex;justify-content:space-between;gap:8px"><div><h3>${x.full_name||'Tanpa nama'}</h3><div class="muted">${x.email||'-'}</div></div><span class="chip">${x.role==='admin'?'ADMIN':planLabel(x.plan)}</span></div>
+   <div style="display:flex;justify-content:space-between;gap:8px"><div><h3>${x.full_name||'Tanpa nama'}</h3><div class="muted">${x.email||'-'}</div></div><span class="chip ${!x.is_active&&x.role!=='admin'?'rejected':''}">${x.role==='admin'?'ADMIN':(!x.is_active?'NONAKTIF':planLabel(x.plan))}</span></div>
    <div class="kv"><b>Paket</b><span>${planLabel(x.plan)}</span><b>Aktif s.d.</b><span>${x.plan==='lifetime'?'Lifetime':x.access_until?new Date(x.access_until).toLocaleDateString('id-ID'):'-'}</span><b>Role</b><span>${x.role}</span></div>
-   <div class="actions"><button class="btn g" onclick="setAccess('${x.id}','premium_30',30)">30 Hari</button><button class="btn g" onclick="setAccess('${x.id}','premium_year',365)">1 Tahun</button><button class="btn p" onclick="setAccess('${x.id}','lifetime',null)">Lifetime</button><button class="btn r" onclick="setAccess('${x.id}','demo',0)">Demo</button></div>
+   <div class="actions">${x.role==='admin'
+ ? `<button class="btn p" disabled>Admin — Akses Penuh</button>`
+ : `<button class="btn g" onclick="setAccess('${x.id}','premium_30',30)">30 Hari</button>
+    <button class="btn g" onclick="setAccess('${x.id}','premium_year',365)">1 Tahun</button>
+    <button class="btn p" onclick="setAccess('${x.id}','lifetime',null)">Lifetime</button>
+    <button class="btn w" onclick="setAccess('${x.id}','demo',0)">Cabut Premium</button>
+    ${x.is_active
+      ? `<button class="btn r" onclick="suspendUser('${x.id}','${(x.email||'').replace(/'/g,"&#39;")}')">Nonaktifkan Akun</button>`
+      : `<button class="btn g" onclick="setAccess('${x.id}','demo',0)">Aktifkan Kembali</button>`}`
+}</div>
  </div>`).join(''):'<div class="empty">Belum ada pengguna.</div>'
 }
 async function setAccess(uid,plan,days){
@@ -71,6 +80,13 @@ async function approve(id,uid,pkg){
  const {error:e1}=await sb.rpc('modulkita_admin_set_access',{target_user:uid,new_plan:pkg,days_count:days});if(e1)return alert(e1.message);
  const {error:e2}=await sb.rpc('modulkita_admin_update_purchase_request',{req_id:id,new_status:'approved'});if(e2)return alert(e2.message);
  alert('Pembayaran disetujui. Akses Premium sudah aktif.');loadAll()
+}
+async function suspendUser(uid,email){
+ if(!confirm(`Nonaktifkan akun ${email || 'ini'}? Akses Premium akan dicabut dan akun tidak dapat menggunakan generator sampai diaktifkan kembali.`))return;
+ const {error}=await sb.rpc('modulkita_admin_suspend_user',{target_user:uid});
+ if(error)return alert(error.message);
+ alert('Akun sudah dinonaktifkan dan akses Premium dicabut.');
+ loadAll();
 }
 async function logout(){await sb.auth.signOut();location.href='index.html'}
 init()
