@@ -65,6 +65,40 @@ footer{text-align:center;color:#667085;font-size:12px;padding:24px 20px 40px}
  .divider.cute-divider{-webkit-print-color-adjust:exact;print-color-adjust:exact}
 }
 
+
+/* V10.1 — Print Bersih Total */
+@media print{
+  #accountBar,
+  .accountBar,
+  #premiumGate,
+  .premiumGate,
+  #demoRibbon,
+  .demoRibbon,
+  .top,
+  .form-card,
+  .preview-toolbar,
+  footer,
+  .fab,
+  button,
+  .navbtn{
+    display:none!important;
+    visibility:hidden!important;
+  }
+
+  /* Pastikan hanya dokumen yang tercetak */
+  body{background:#fff!important}
+  .wrap{max-width:none!important;padding:0!important;margin:0!important}
+  .layout{display:block!important}
+  .preview-card{border:0!important;box-shadow:none!important;padding:0!important;margin:0!important}
+  .doc{max-width:none!important;margin:0!important}
+
+  /* Hindari URL/email/status aplikasi muncul sebagai elemen konten */
+  [id*="account"],
+  [class*="accountBar"]{
+    display:none!important;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -126,7 +160,13 @@ footer{text-align:center;color:#667085;font-size:12px;padding:24px 20px 40px}
 </section>
 
 <section class="card preview-card">
-<div class="preview-toolbar"><button class="btn secondary" onclick="premiumPrint()">🖨️ Cetak / PDF</button><button class="btn secondary" onclick="downloadWord()">📝 Download Word</button><button class="btn ghost" onclick="toggleEdit()">✏️ Edit Hasil</button><button class="btn ghost" onclick="copyBook()">📋 Salin</button></div>
+<div class="preview-toolbar">
+<button class="btn secondary" onclick="premiumPrint()">🖨️ Cetak / PDF Bersih</button>
+<button class="btn secondary" onclick="downloadWord()">📝 Download Word</button>
+<button class="btn ghost" onclick="toggleEdit()">✏️ Edit Hasil</button>
+<button class="btn ghost" onclick="copyBook()">📋 Salin</button>
+<div style="width:100%;font-size:10.5px;color:#667085;margin-top:2px">Agar URL, tanggal, dan nomor halaman dari Chrome tidak ikut tercetak: pada dialog cetak buka <b>More settings / Setelan lainnya</b> lalu matikan <b>Headers and footers / Header dan footer</b>.</div>
+</div>
 <div id="hasil" class="doc"><div class="empty"><div><div class="icon">📚</div><b>Perangkat belum dibuat</b><p>Isi identitas, kalender, Bab dan Subbab, lalu tekan <b>Generate Perangkat Lengkap</b>.</p></div></div></div>
 </section>
 </div></main>
@@ -417,12 +457,32 @@ async function initPremiumAccess(){
 async function premiumLogout(){if(mkSupabase)await mkSupabase.auth.signOut();location.href='index.html'}
 function premiumPrint(){
  if(window.__MK_PLAN==='demo')return alert('Cetak/PDF tersedia untuk akun Premium.');
+
  const oldTitle=document.title;
+ const account=document.getElementById('accountBar');
+ const gate=document.getElementById('premiumGate');
+ const ribbon=document.getElementById('demoRibbon');
+
+ const oldAccountDisplay=account?account.style.display:'';
+ const oldGateDisplay=gate?gate.style.display:'';
+ const oldRibbonDisplay=ribbon?ribbon.style.display:'';
+
  document.title=' ';
- const restore=()=>{document.title=oldTitle;window.removeEventListener('afterprint',restore)};
+ if(account)account.style.display='none';
+ if(gate)gate.style.display='none';
+ if(ribbon)ribbon.style.display='none';
+
+ const restore=()=>{
+   document.title=oldTitle;
+   if(account)account.style.display=oldAccountDisplay;
+   if(gate)gate.style.display=oldGateDisplay;
+   if(ribbon)ribbon.style.display=oldRibbonDisplay;
+   window.removeEventListener('afterprint',restore);
+ };
+
  window.addEventListener('afterprint',restore);
- setTimeout(()=>window.print(),60);
- setTimeout(()=>{if(document.title===' ')document.title=oldTitle},3000);
+ setTimeout(()=>window.print(),80);
+ setTimeout(()=>{ if(document.title===' ') restore(); },5000);
 }
 
 
