@@ -108,8 +108,8 @@ footer{text-align:center;color:#667085;font-size:12px;padding:24px 20px 40px}
 <header class="top">
   <div class="nav"><div class="brand"><div class="logo">M</div><div>ModulKita <span style="opacity:.8">Premium</span></div></div><button class="navbtn" onclick="loadExample()">Muat Contoh VIII</button></div>
   <div class="hero">
-    <div><span class="badge">Generator Buku Perangkat Pembelajaran Mendalam</span><h1>Isi Bab & Subbab.<br>Jadi perangkat 1 tahun.</h1><p>Generator menyusun Analisis CP→TP, ATP, Kalender Pendidikan kerja, Analisis Alokasi Waktu, PROTA, PROSEM, Modul Ajar lengkap, dan LKPD menarik untuk setiap subbab dalam satu buku siap diedit, dicetak, atau disimpan sebagai Word.</p><div class="chips"><span class="chip">CP → TP</span><span class="chip">ATP</span><span class="chip">Kalender</span><span class="chip">PROTA</span><span class="chip">PROSEM</span><span class="chip">Modul Ajar</span><span class="chip">LKPD Menarik</span><span class="chip">SD • SMP • SMA/SMK</span><span class="chip">Cover Variatif per Guru</span></div></div>
-    <div class="hero-card"><b>Urutan buku otomatis:</b><ul><li>Cover, identitas, kata pengantar, daftar isi</li><li>Analisis CP menjadi TP</li><li>ATP Ganjil & Genap</li><li>Kalender Pendidikan kerja & Analisis Alokasi Waktu</li><li>Program Tahunan (PROTA) & Program Semester (PROSEM)</li><li>Modul Ajar Pembelajaran Mendalam per subbab</li><li>LKPD menarik per subbab + rubrik guru</li><li>Asesmen, remedial/pengayaan, dan refleksi</li></ul></div>
+    <div><span class="badge">Generator Buku Perangkat Pembelajaran Mendalam</span><h1>Isi Bab & Subbab.<br>Jadi perangkat 1 tahun.</h1><p>Generator menyusun Analisis CP→TP, ATP, Kalender Pendidikan kerja, Analisis Alokasi Waktu, PROTA, PROSEM, Modul Ajar lengkap, dan LKPD. Jika Madrasah Aliyah dipilih, integrasi Kurikulum Berbasis Cinta (KBC) dan Panca Cinta otomatis tersedia.</p><div class="chips"><span class="chip">CP → TP</span><span class="chip">ATP</span><span class="chip">Kalender</span><span class="chip">PROTA</span><span class="chip">PROSEM</span><span class="chip">Modul Ajar</span><span class="chip">LKPD Menarik</span><span class="chip">SD • SMP/MTs • SMA • MA • SMK</span><span class="chip">Cover Variatif per Guru</span></div></div>
+    <div class="hero-card"><b>Urutan buku otomatis:</b><ul><li>Cover, identitas, kata pengantar, daftar isi</li><li>Analisis CP menjadi TP</li><li>ATP Ganjil & Genap</li><li>Kalender Pendidikan kerja & Analisis Alokasi Waktu</li><li>Program Tahunan (PROTA) & Program Semester (PROSEM)</li><li>Modul Ajar Pembelajaran Mendalam per subbab</li><li>Khusus MA: Integrasi KBC & Panca Cinta</li><li>LKPD menarik per subbab + rubrik guru</li><li>Asesmen, remedial/pengayaan, dan refleksi</li></ul></div>
   </div>
 </header>
 <main class="wrap"><div class="layout">
@@ -120,11 +120,54 @@ footer{text-align:center;color:#667085;font-size:12px;padding:24px 20px 40px}
 <div class="group"><h3>Identitas Utama</h3>
 <label>Nama Sekolah/Madrasah</label><input id="sekolah" placeholder="Contoh: SMP Negeri 9 Masni">
 <div class="row"><div><label>Nama Guru/Penyusun</label><input id="guru" placeholder="Nama lengkap, gelar"></div><div><label>NIP/NUPTK</label><input id="nip"></div></div>
-<div class="row"><div><label>Jenjang</label><select id="jenjang"><option>SD/MI</option><option selected>SMP/MTs</option><option>SMA/MA</option><option>SMK/MAK</option></select></div><div><label>Fase/Kelas</label><input id="fasekelas" list="kelasList" value="Fase D / Kelas VIII"><datalist id="kelasList"><option value="Fase A / Kelas I"><option value="Fase A / Kelas II"><option value="Fase B / Kelas III"><option value="Fase B / Kelas IV"><option value="Fase C / Kelas V"><option value="Fase C / Kelas VI"><option value="Fase D / Kelas VII"><option value="Fase D / Kelas VIII"><option value="Fase D / Kelas IX"><option value="Fase E / Kelas X"><option value="Fase F / Kelas XI"><option value="Fase F / Kelas XII"></datalist></div></div>
+<div class="row"><div><label>Jenjang</label><select id="jenjang">
+<option>SD/MI</option>
+<option selected>SMP/MTs</option>
+<option>SMA</option>
+<option>Madrasah Aliyah (MA)</option>
+<option>SMK</option>
+<option>Madrasah Aliyah Kejuruan (MAK)</option>
+</select></div><div><label>Fase/Kelas</label><input id="fasekelas" list="kelasList" value="Fase D / Kelas VIII"><datalist id="kelasList"><option value="Fase A / Kelas I"><option value="Fase A / Kelas II"><option value="Fase B / Kelas III"><option value="Fase B / Kelas IV"><option value="Fase C / Kelas V"><option value="Fase C / Kelas VI"><option value="Fase D / Kelas VII"><option value="Fase D / Kelas VIII"><option value="Fase D / Kelas IX"><option value="Fase E / Kelas X"><option value="Fase F / Kelas XI"><option value="Fase F / Kelas XII"></datalist></div></div>
 <div class="row"><div><label>Mata Pelajaran</label><input id="mapel" list="mapelList" placeholder="Pilih atau ketik mata pelajaran"><datalist id="mapelList"><option value="Bahasa Indonesia"><option value="Bahasa Inggris"><option value="Matematika"><option value="Ilmu Pengetahuan Alam (IPA)"><option value="Ilmu Pengetahuan Sosial (IPS)"><option value="Pendidikan Pancasila"><option value="PPKn"><option value="Pendidikan Agama dan Budi Pekerti"><option value="PJOK"><option value="Informatika"><option value="Seni Rupa"><option value="Seni Musik"><option value="Seni Tari"><option value="Seni Teater"><option value="Prakarya"><option value="Muatan Lokal"><option value="Bahasa Daerah"></datalist><div class="mini">Mendukung berbagai mapel dan jenjang. Untuk hasil terbaik, tempel CP resmi sesuai fase/mapel.</div></div><div><label>Gaya Cover & Halaman</label><select id="temaVisual"><option value="auto" selected>✨ Otomatis — berbeda tiap guru</option><option value="kawaii">🌈 Kawaii Pastel</option><option value="taman">🌿 Taman Ceria</option><option value="angkasa">🚀 Jelajah Antariksa</option><option value="ceria">🎒 Kelas Pelangi</option><option value="formal">📄 Formal Tanpa Gambar</option></select><div class="mini">Mode otomatis memilih tema dari nama guru, sekolah, dan mapel.</div></div></div>
 <div class="row"><div><label>Tahun Pelajaran</label><input id="tahun" value="2026/2027"></div><div><label>JP per Minggu</label><input id="jpMinggu" type="number" min="1" value="6"></div></div>
 <div class="row"><div><label>Kepala Sekolah</label><input id="kepsek"></div><div><label>NIP Kepala Sekolah</label><input id="nipKepsek"></div></div>
 <label>Tempat</label><input id="tempat" placeholder="Contoh: Manokwari">
+</div>
+
+<div class="group" id="kbcGroup" style="display:none;border:2px solid #bbf7d0;background:linear-gradient(135deg,#f0fdf4,#ffffff)">
+<h3>💚 Khusus Madrasah Aliyah — Kurikulum Berbasis Cinta (KBC)</h3>
+<div class="notice" style="background:#ecfdf3;border-color:#86efac;color:#166534">
+<b>Mode MA aktif.</b> Modul ajar akan mengintegrasikan Panca Cinta ke tujuan, materi, proses belajar, refleksi, dan asesmen. CP resmi tetap ditempel sesuai mata pelajaran/fase.
+</div>
+<label style="display:flex;align-items:center;gap:8px;font-weight:850">
+<input id="includeKBC" type="checkbox" checked style="width:auto"> Integrasikan Kurikulum Berbasis Cinta (KBC)
+</label>
+<div class="row">
+<div>
+<label>Fokus Panca Cinta</label>
+<select id="pancaCintaMode">
+<option value="auto" selected>✨ Otomatis sesuai materi/mapel</option>
+<option value="all">💚 Panca Cinta lengkap</option>
+<option value="allah">Cinta Allah Swt. dan Rasul-Nya</option>
+<option value="ilmu">Cinta Ilmu</option>
+<option value="lingkungan">Cinta Lingkungan</option>
+<option value="diri">Cinta Diri dan Sesama Manusia</option>
+<option value="tanahair">Cinta Tanah Air</option>
+</select>
+</div>
+<div>
+<label>Pendekatan KBC</label>
+<select id="kbcApproach">
+<option value="deep" selected>Pembelajaran Mendalam (Mindful–Meaningful–Joyful)</option>
+<option value="fids">Project Based Learning — FIDS (Feel–Imagine–Do–Share)</option>
+<option value="experiential">Experiential Learning</option>
+<option value="problem">Problem/Project Based Learning</option>
+</select>
+</div>
+</div>
+<label>Catatan Integrasi KBC <span class="mini">(opsional)</span></label>
+<textarea id="kbcNote" placeholder="Contoh: tekankan empati, kepedulian lingkungan, adab mencari ilmu, cinta tanah air, atau konteks khas madrasah."></textarea>
+<p class="mini">Pilihan ini hanya muncul untuk Madrasah Aliyah/MAK. Jika “Otomatis”, sistem memilih 1–2 topik Panca Cinta yang relevan dengan materi.</p>
 </div>
 
 <div class="group"><h3>Landasan Pembelajaran</h3>
@@ -171,13 +214,13 @@ footer{text-align:center;color:#667085;font-size:12px;padding:24px 20px 40px}
 </section>
 </div></main>
 <button class="fab" onclick="generateBook()">✨ Generate Buku</button>
-<footer>ModulKita Premium • SD, SMP, SMA/SMK • Cover variatif per guru • Hasil wajib ditinjau guru.</footer>
+<footer>ModulKita Premium • SD, SMP/MTs, SMA, MA, dan SMK • Cover variatif per guru • Hasil wajib ditinjau guru.</footer>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="config.js"></script>
 <script>
 const $=id=>document.getElementById(id);
 const esc=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
-const baseIds=['sekolah','guru','nip','jenjang','mapel','fasekelas','temaVisual','tahun','jpMinggu','kepsek','nipKepsek','tempat','cp','karakter','lingkungan','digital','catatan','lkpdStyle','lkpdPlacement'];
+const baseIds=['sekolah','guru','nip','jenjang','mapel','fasekelas','temaVisual','tahun','jpMinggu','kepsek','nipKepsek','tempat','cp','karakter','lingkungan','digital','catatan','lkpdStyle','lkpdPlacement','pancaCintaMode','kbcApproach','kbcNote'];
 let state={ganjil:[],genap:[]};
 let calendar={
  ganjil:[['Juli',0,''],['Agustus',0,''],['September',0,''],['Oktober',0,''],['November',0,''],['Desember',0,'']],
@@ -231,10 +274,10 @@ function resetCalendar(sem){
  renderCalendar(sem);saveData();
 }
 
-function formData(){const d={};baseIds.forEach(id=>d[id]=$(id).value);d.includeLKPD=$('includeLKPD').checked;d.lkpdIllustration=$('lkpdIllustration').checked;d.state=state;d.calendar=calendar;return d}
+function formData(){const d={};baseIds.forEach(id=>d[id]=$(id).value);d.includeLKPD=$('includeLKPD').checked;d.lkpdIllustration=$('lkpdIllustration').checked;d.includeKBC=$('includeKBC').checked;d.state=state;d.calendar=calendar;return d}
 function saveData(){localStorage.setItem('modulkitaBookV61',JSON.stringify(formData()))}
 function loadData(){
- try{const d=JSON.parse(localStorage.getItem('modulkitaBookV61')||localStorage.getItem('modulkitaBookV5')||localStorage.getItem('modulkitaBookV4')||'{}');baseIds.forEach(id=>{if(d[id]!=null)$(id).value=d[id]});if(d.includeLKPD!=null)$('includeLKPD').checked=d.includeLKPD;if(d.lkpdIllustration!=null)$('lkpdIllustration').checked=d.lkpdIllustration;if(d.state)state=d.state;if(d.calendar)calendar=d.calendar}catch(e){}
+ try{const d=JSON.parse(localStorage.getItem('modulkitaBookV61')||localStorage.getItem('modulkitaBookV5')||localStorage.getItem('modulkitaBookV4')||'{}');baseIds.forEach(id=>{if(d[id]!=null)$(id).value=d[id]});if(d.includeLKPD!=null)$('includeLKPD').checked=d.includeLKPD;if(d.lkpdIllustration!=null)$('lkpdIllustration').checked=d.lkpdIllustration;if(d.includeKBC!=null)$('includeKBC').checked=d.includeKBC;if(d.state)state=d.state;if(d.calendar)calendar=d.calendar}catch(e){}
  if(!state.ganjil.length)addChapter('ganjil','Bab 1');if(!state.genap.length)addChapter('genap','Bab 1');
  renderSemester('ganjil');renderSemester('genap');renderCalendar('ganjil');renderCalendar('genap');
 }
@@ -627,7 +670,7 @@ function syncJenjangFromFase(){
  const f=($('fasekelas')?.value||'').toUpperCase();
  if(/FASE A|FASE B|FASE C|KELAS I\b|KELAS II\b|KELAS III|KELAS IV|KELAS V\b|KELAS VI\b/.test(f))$('jenjang').value='SD/MI';
  else if(/FASE D|KELAS VII|KELAS VIII|KELAS IX/.test(f))$('jenjang').value='SMP/MTs';
- else if(/FASE E|FASE F|KELAS X\b|KELAS XI\b|KELAS XII/.test(f)&&$('jenjang').value!=='SMK/MAK')$('jenjang').value='SMA/MA';
+ else if(/FASE E|FASE F|KELAS X\b|KELAS XI\b|KELAS XII/.test(f)&&!['SMK','Madrasah Aliyah (MA)','Madrasah Aliyah Kejuruan (MAK)','SMA'].includes($('jenjang').value))$('jenjang').value='SMA';
 }
 document.addEventListener('change',e=>{if(e.target?.id==='fasekelas')syncJenjangFromFase()});
 
@@ -636,13 +679,13 @@ const mkBaseTpFor=tpFor, mkBaseSmartTP=smartTP, mkBaseActivities=activities, mkB
 tpFor=function(sub){
  let t=mkBaseTpFor(sub),j=mkLevel();
  if(j==='SD/MI')return `Dengan contoh konkret, bahasa sederhana, dan bimbingan bertahap, ${t.charAt(0).toLowerCase()+t.slice(1)}`;
- if(j==='SMA/MA'||j==='SMK/MAK')return `${t} Pembelajaran diarahkan pada kemandirian, analisis lebih mendalam, penggunaan bukti/sumber, dan penerapan pada konteks yang lebih kompleks.`;
+ if(['SMA','SMK','Madrasah Aliyah (MA)','Madrasah Aliyah Kejuruan (MAK)'].includes(j))return `${t} Pembelajaran diarahkan pada kemandirian, analisis lebih mendalam, penggunaan bukti/sumber, dan penerapan pada konteks yang lebih kompleks.`;
  return t;
 };
 smartTP=function(sub){
  let a=mkBaseSmartTP(sub),j=mkLevel();
  if(j==='SD/MI')return a.map((x,i)=>i<2?x:`Dengan bantuan contoh/alat visual, ${x.charAt(0).toLowerCase()+x.slice(1)}`);
- if(j==='SMA/MA'||j==='SMK/MAK')return a.map((x,i)=>i>=2?`${x} dengan alasan, bukti, atau justifikasi yang relevan.`:x);
+ if(['SMA','SMK','Madrasah Aliyah (MA)','Madrasah Aliyah Kejuruan (MAK)'].includes(j))return a.map((x,i)=>i>=2?`${x} dengan alasan, bukti, atau justifikasi yang relevan.`:x);
  return a;
 };
 activities=function(sub){
@@ -660,7 +703,7 @@ activities=function(sub){
 materialProfile=function(sub){
  const p=mkBaseMaterialProfile(sub),j=mkLevel();
  if(j==='SD/MI'){p.sulit='Disesuaikan usia; konkret, bertahap, singkat, dan banyak contoh visual/praktik.';p.nilai+=' Pembelajaran dibuat ramah anak dan memberi penguatan positif.'}
- if(j==='SMA/MA'||j==='SMK/MAK'){p.sulit='Menengah–lanjut; menekankan analisis, argumentasi, kemandirian, transfer konsep, dan konteks nyata/kejuruan bila relevan.'}
+ if(['SMA','SMK','Madrasah Aliyah (MA)','Madrasah Aliyah Kejuruan (MAK)'].includes(j)){p.sulit='Menengah–lanjut; menekankan analisis, argumentasi, kemandirian, transfer konsep, dan konteks nyata/kejuruan bila relevan.'}
  return p;
 };
 
@@ -700,7 +743,110 @@ const mkBaseGenerateBook=generateBook;
 generateBook=function(){mkBaseGenerateBook();decorateGeneratedBook()};
 
 
-loadData();initPremiumAccess();
+
+/* ===== ModulKita V10.2 — Madrasah Aliyah + KBC ===== */
+function isMA(){
+ const j=$('jenjang')?.value||'';
+ return j==='Madrasah Aliyah (MA)'||j==='Madrasah Aliyah Kejuruan (MAK)';
+}
+function updateKbcUI(){
+ const box=$('kbcGroup');
+ if(box)box.style.display=isMA()?'block':'none';
+}
+document.addEventListener('change',e=>{
+ if(e.target?.id==='jenjang'){updateKbcUI();saveData()}
+ if(['pancaCintaMode','kbcApproach','includeKBC'].includes(e.target?.id))saveData();
+});
+
+function pancaLabel(v){
+ return ({
+  all:'Cinta Allah Swt. dan Rasul-Nya; Cinta Ilmu; Cinta Lingkungan; Cinta Diri dan Sesama Manusia; Cinta Tanah Air',
+  allah:'Cinta Allah Swt. dan Rasul-Nya',
+  ilmu:'Cinta Ilmu',
+  lingkungan:'Cinta Lingkungan',
+  diri:'Cinta Diri dan Sesama Manusia',
+  tanahair:'Cinta Tanah Air'
+ })[v]||v;
+}
+function inferPancaCinta(sub){
+ const mode=$('pancaCintaMode')?.value||'auto';
+ if(mode!=='auto')return pancaLabel(mode);
+ const x=(sub||'').toLowerCase(),k=subjectKind();
+ if(/allah|rasul|ibadah|salat|shalat|wudu|zakat|puasa|qur|hadis|akidah|aqidah|fikih|fiqih|akhlak/.test(x)||k==='agama')
+   return 'Cinta Allah Swt. dan Rasul-Nya; Cinta Ilmu';
+ if(/lingkungan|alam|ekosistem|air|energi|sampah|iklim|tumbuhan|hewan|bumi/.test(x)||k==='ipa')
+   return 'Cinta Ilmu; Cinta Lingkungan';
+ if(/bangsa|negara|pancasila|kemerdekaan|sejarah indonesia|kewarganegaraan|persatuan/.test(x)||k==='pancasila')
+   return 'Cinta Tanah Air; Cinta Diri dan Sesama Manusia';
+ if(k==='ips')return 'Cinta Diri dan Sesama Manusia; Cinta Tanah Air';
+ if(k==='pjok')return 'Cinta Diri dan Sesama Manusia; Cinta Ilmu';
+ return 'Cinta Ilmu; Cinta Diri dan Sesama Manusia';
+}
+function kbcMaterial(sub){
+ const pc=inferPancaCinta(sub),note=($('kbcNote')?.value||'').trim();
+ let m=`Menghubungkan materi ${sub} dengan nilai ${pc}; menumbuhkan adab belajar, empati, tanggung jawab, kepedulian, dan tindakan nyata yang relevan dengan konteks pembelajaran.`;
+ if(pc.includes('Cinta Lingkungan'))m+=` Peserta didik diarahkan menjaga keseimbangan, kebersihan, dan keberlanjutan lingkungan.`;
+ if(pc.includes('Cinta Tanah Air'))m+=` Peserta didik diarahkan menghargai keberagaman, persatuan, dan kontribusi positif bagi bangsa.`;
+ if(pc.includes('Cinta Allah'))m+=` Peserta didik diarahkan memaknai pembelajaran sebagai bagian dari syukur, keteladanan, dan penguatan akhlak.`;
+ if(note)m+=` Catatan guru: ${note}`;
+ return m;
+}
+function kbcProcess(sub){
+ const a=$('kbcApproach')?.value||'deep';
+ if(a==='fids')return `FIDS (Feel–Imagine–Do–Share): murid merasakan/menemukan persoalan terkait ${sub}, membayangkan solusi, melakukan aksi nyata, lalu membagikan pembelajaran dan nilai cinta yang diperoleh.`;
+ if(a==='experiential')return `Experiential Learning: murid memperoleh pengalaman langsung terkait ${sub}, merefleksikan makna dan nilai cinta, menghubungkan dengan konsep, lalu menerapkannya pada situasi baru.`;
+ if(a==='problem')return `Problem/Project Based Learning: murid mengkaji masalah autentik terkait ${sub}, bekerja kolaboratif, menghasilkan solusi/produk, serta merefleksikan dampaknya bagi diri, sesama, lingkungan, ilmu, dan/atau bangsa.`;
+ return `Pembelajaran Mendalam: kegiatan dirancang berkesadaran (mindful), bermakna (meaningful), dan menggembirakan (joyful), sehingga pemahaman akademik pada ${sub} terhubung dengan internalisasi dan praktik nilai Panca Cinta.`;
+}
+function kbcAssessment(sub){
+ return `Asesmen proses dan hasil: pemahaman materi ${sub}, kualitas penerapan/produk, refleksi nilai, kepedulian/kolaborasi, serta bukti tindakan nyata yang relevan.`;
+}
+function kbcMatrixHTML(){
+ if(!isMA()||!$('includeKBC')?.checked)return '';
+ const mods=getModules();
+ return `<section class="section-page">
+ <div class="module-title"><h1>MATRIKS INTEGRASI KURIKULUM BERBASIS CINTA (KBC)</h1><p>Madrasah Aliyah • ${esc($('mapel').value)} • ${esc($('fasekelas').value)}</p></div>
+ <p class="small-note"><i>KBC diintegrasikan ke kurikulum/mata pelajaran yang ada. Fokus Panca Cinta dapat dipilih guru atau ditentukan otomatis sesuai materi.</i></p>
+ <table><tr><th>Bab/Subbab</th><th>Topik Panca Cinta</th><th>Materi Integrasi KBC</th><th>Pendekatan/Proses Belajar</th><th>Asesmen Nilai & Proses</th></tr>
+ ${mods.map(x=>`<tr><td><b>${esc(x.chapter.name)}</b><br>${esc(x.sub.name)}</td><td>${esc(inferPancaCinta(x.sub.name))}</td><td>${esc(kbcMaterial(x.sub.name))}</td><td>${esc(kbcProcess(x.sub.name))}</td><td>${esc(kbcAssessment(x.sub.name))}</td></tr>`).join('')}
+ </table>${signatureHTML()}</section>`;
+}
+
+const mkBaseModuleHTML_KBC=moduleHTML;
+moduleHTML=function(x){
+ let h=mkBaseModuleHTML_KBC(x);
+ if(!isMA()||!$('includeKBC')?.checked)return h;
+ const sub=x.sub.name,pc=inferPancaCinta(sub);
+ h=h.replace('<h2>F. Pengalaman Belajar</h2>','<h2>G. Pengalaman Belajar</h2>')
+    .replace('<h2>G. Asesmen Pembelajaran</h2>','<h2>H. Asesmen Pembelajaran</h2>')
+    .replace('<h2>H. LKPD Ringkas</h2>','<h2>I. LKPD Ringkas</h2>')
+    .replace('<h2>I. Rubrik Penilaian</h2>','<h2>J. Rubrik Penilaian</h2>')
+    .replace('<h2>J. Diferensiasi, Remedial, Pengayaan, dan Refleksi</h2>','<h2>K. Diferensiasi, Remedial, Pengayaan, dan Refleksi</h2>');
+ const block=`<h2>F. Integrasi Kurikulum Berbasis Cinta (KBC)</h2>
+ <table>
+ <tr><td><b>Topik Panca Cinta</b></td><td>${esc(pc)}</td></tr>
+ <tr><td><b>Materi Integrasi KBC</b></td><td>${esc(kbcMaterial(sub))}</td></tr>
+ <tr><td><b>Pendekatan/Metode</b></td><td>${esc($('kbcApproach').selectedOptions[0]?.textContent||'Pembelajaran Mendalam')}</td></tr>
+ <tr><td><b>Proses Belajar</b></td><td>${esc(kbcProcess(sub))}</td></tr>
+ <tr><td><b>Asesmen KBC</b></td><td>${esc(kbcAssessment(sub))}</td></tr>
+ </table>`;
+ h=h.replace('<h2>G. Pengalaman Belajar</h2>',block+'<h2>G. Pengalaman Belajar</h2>');
+ return h;
+};
+
+const mkBaseGenerateBook_KBC=generateBook;
+generateBook=function(){
+ mkBaseGenerateBook_KBC();
+ if($('hasil').dataset.generated!=='1'||!isMA()||!$('includeKBC')?.checked)return;
+ const firstDivider=$('hasil').querySelector('.divider');
+ if(firstDivider)firstDivider.insertAdjacentHTML('beforebegin',kbcMatrixHTML());
+ else $('hasil').insertAdjacentHTML('beforeend',kbcMatrixHTML());
+};
+
+const mkBaseLoadExample_KBC=loadExample;
+loadExample=function(){mkBaseLoadExample_KBC();updateKbcUI()};
+
+loadData();updateKbcUI();initPremiumAccess();
 </script>
 </body>
 </html>
