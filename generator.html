@@ -128,7 +128,33 @@ footer{text-align:center;color:#667085;font-size:12px;padding:24px 20px 40px}
 <option>SMK</option>
 <option>Madrasah Aliyah Kejuruan (MAK)</option>
 </select></div><div><label>Fase/Kelas</label><input id="fasekelas" list="kelasList" value="Fase D / Kelas VIII"><datalist id="kelasList"><option value="Fase A / Kelas I"><option value="Fase A / Kelas II"><option value="Fase B / Kelas III"><option value="Fase B / Kelas IV"><option value="Fase C / Kelas V"><option value="Fase C / Kelas VI"><option value="Fase D / Kelas VII"><option value="Fase D / Kelas VIII"><option value="Fase D / Kelas IX"><option value="Fase E / Kelas X"><option value="Fase F / Kelas XI"><option value="Fase F / Kelas XII"></datalist></div></div>
-<div class="row"><div><label>Mata Pelajaran</label><input id="mapel" list="mapelList" placeholder="Pilih atau ketik mata pelajaran"><datalist id="mapelList"><option value="Bahasa Indonesia"><option value="Bahasa Inggris"><option value="Matematika"><option value="Ilmu Pengetahuan Alam (IPA)"><option value="Ilmu Pengetahuan Sosial (IPS)"><option value="Pendidikan Pancasila"><option value="PPKn"><option value="Pendidikan Agama dan Budi Pekerti"><option value="PJOK"><option value="Informatika"><option value="Seni Rupa"><option value="Seni Musik"><option value="Seni Tari"><option value="Seni Teater"><option value="Prakarya"><option value="Muatan Lokal"><option value="Bahasa Daerah"></datalist><div class="mini">Mendukung berbagai mapel dan jenjang. Untuk hasil terbaik, tempel CP resmi sesuai fase/mapel.</div></div><div><label>Gaya Cover & Halaman</label><select id="temaVisual"><option value="auto" selected>✨ Otomatis — berbeda tiap guru</option><option value="kawaii">🌈 Kawaii Pastel</option><option value="taman">🌿 Taman Ceria</option><option value="angkasa">🚀 Jelajah Antariksa</option><option value="ceria">🎒 Kelas Pelangi</option><option value="formal">📄 Formal Tanpa Gambar</option></select><div class="mini">Mode otomatis memilih tema dari nama guru, sekolah, dan mapel.</div></div></div>
+<div class="row"><div><label>Mata Pelajaran</label><input id="mapel" list="mapelList" placeholder="Pilih atau ketik mata pelajaran"><datalist id="mapelList">
+<option value="Bahasa Indonesia">
+<option value="Bahasa Inggris">
+<option value="Matematika">
+<option value="Ilmu Pengetahuan Alam (IPA)">
+<option value="Ilmu Pengetahuan Sosial (IPS)">
+<option value="Pendidikan Pancasila">
+<option value="Pendidikan Agama Islam dan Budi Pekerti">
+<option value="Pendidikan Agama Kristen dan Budi Pekerti">
+<option value="Pendidikan Agama Katolik dan Budi Pekerti">
+<option value="Pendidikan Agama Hindu dan Budi Pekerti">
+<option value="Pendidikan Agama Buddha dan Budi Pekerti">
+<option value="Pendidikan Agama Khonghucu dan Budi Pekerti">
+<option value="Pendidikan Kepercayaan terhadap Tuhan Yang Maha Esa dan Budi Pekerti">
+<option value="Pendidikan Jasmani, Olahraga, dan Kesehatan (PJOK)">
+<option value="Informatika">
+<option value="Seni Rupa">
+<option value="Seni Musik">
+<option value="Seni Tari">
+<option value="Seni Teater">
+<option value="Prakarya Kerajinan">
+<option value="Prakarya Rekayasa">
+<option value="Prakarya Budidaya">
+<option value="Prakarya Pengolahan">
+<option value="Muatan Lokal">
+<option value="Bahasa Daerah">
+</datalist><div class="mini">Untuk SMP/MTs Fase D, CP acuan otomatis akan terisi setelah mata pelajaran dipilih. Guru tetap dapat mengeditnya.</div></div><div><label>Gaya Cover & Halaman</label><select id="temaVisual"><option value="auto" selected>✨ Otomatis — berbeda tiap guru</option><option value="kawaii">🌈 Kawaii Pastel</option><option value="taman">🌿 Taman Ceria</option><option value="angkasa">🚀 Jelajah Antariksa</option><option value="ceria">🎒 Kelas Pelangi</option><option value="formal">📄 Formal Tanpa Gambar</option></select><div class="mini">Mode otomatis memilih tema dari nama guru, sekolah, dan mapel.</div></div></div>
 <div class="row"><div><label>Tahun Pelajaran</label><input id="tahun" value="2026/2027"></div><div><label>JP per Minggu</label><input id="jpMinggu" type="number" min="1" value="6"></div></div>
 <div class="row"><div><label>Kepala Sekolah</label><input id="kepsek"></div><div><label>NIP Kepala Sekolah</label><input id="nipKepsek"></div></div>
 <label>Tempat</label><input id="tempat" placeholder="Contoh: Manokwari">
@@ -171,7 +197,19 @@ footer{text-align:center;color:#667085;font-size:12px;padding:24px 20px 40px}
 </div>
 
 <div class="group"><h3>Landasan Pembelajaran</h3>
-<label>CP Acuan/Resmi <span class="mini">(disarankan ditempel)</span></label><textarea id="cp" placeholder="Tempel CP resmi mata pelajaran/fase. Jika kosong, generator membuat CP kerja yang harus diverifikasi."></textarea>
+<label>CP Fase / Capaian Pembelajaran</label>
+<div id="cpAutoBox" class="notice" style="display:none;background:#eff6ff;border-color:#93c5fd;color:#1e3a8a;margin-bottom:10px">
+  <b>📘 CP Fase D Otomatis SMP/MTs</b>
+  <div id="cpAutoStatus" class="mini" style="margin-top:5px;color:#1e40af">Pilih mata pelajaran untuk mengisi CP acuan otomatis.</div>
+  <div class="actions" style="margin-top:8px">
+    <button class="btn ghost" type="button" onclick="fillAutoCP(true)">↻ Isi / Pulihkan CP Otomatis</button>
+    <button class="btn ghost" type="button" onclick="enableManualCP()">✏️ Edit Manual</button>
+  </div>
+  <div class="mini" style="margin-top:6px;color:#475569">
+    Acuan kebijakan: Keputusan Kepala BSKAP No. 046/H/KR/2025. Khusus Pendidikan Agama dan Budi Pekerti mengikuti pembaruan Keputusan Kepala BKPDM No. 020 Tahun 2026. Teks otomatis merupakan ringkasan operasional CP untuk membantu penyusunan perangkat, bukan kutipan verbatim keputusan.
+  </div>
+</div>
+<textarea id="cp" placeholder="Untuk SMP/MTs Fase D, pilih mata pelajaran dan CP akan terisi otomatis. Guru dapat mengedit bila diperlukan."></textarea>
 <label>Konteks Sekolah & Peserta Didik</label><textarea id="karakter">Lingkungan belajar dan kemampuan peserta didik beragam. Sebagian memerlukan contoh konkret, bimbingan bertahap, latihan berulang, serta kegiatan yang dekat dengan kehidupan sehari-hari.</textarea>
 <div class="row"><div><label>Lingkungan Pembelajaran</label><textarea id="lingkungan">Ruang kelas, perpustakaan, lingkungan sekolah, dan ruang terbuka yang relevan.</textarea></div><div><label>Pemanfaatan Digital</label><textarea id="digital">HP/laptop, proyektor, aplikasi pengolah kata/presentasi, dan sumber digital bila tersedia.</textarea></div></div>
 </div>
@@ -744,6 +782,186 @@ generateBook=function(){mkBaseGenerateBook();decorateGeneratedBook()};
 
 
 
+
+/* ===== ModulKita V10.4 — CP Fase D Otomatis SMP/MTs ===== */
+const CP_D_SOURCE = 'Acuan: Keputusan Kepala BSKAP No. 046/H/KR/2025; khusus Pendidikan Agama dan Budi Pekerti mengikuti pembaruan Keputusan Kepala BKPDM No. 020 Tahun 2026.';
+
+function cpPhaseDActive(){
+  const j=($('jenjang')?.value||'').toLowerCase();
+  const f=($('fasekelas')?.value||'').toLowerCase();
+  return (j.includes('smp') || j.includes('mts')) && f.includes('fase d');
+}
+function normalizeMapelCP(){
+  const m=($('mapel')?.value||'').toLowerCase().trim();
+  if(/bahasa indonesia|bindo/.test(m)) return 'bahasa_indonesia';
+  if(/bahasa inggris|english/.test(m)) return 'bahasa_inggris';
+  if(/matematika|math/.test(m)) return 'matematika';
+  if(m==='ipa'||/ilmu pengetahuan alam|sains/.test(m)) return 'ipa';
+  if(m==='ips'||/ilmu pengetahuan sosial/.test(m)) return 'ips';
+  if(/pancasila|ppkn|pkn|kewarganegaraan/.test(m)) return 'pancasila';
+  if(/islam/.test(m)) return 'agama_islam';
+  if(/kristen/.test(m)) return 'agama_kristen';
+  if(/katolik/.test(m)) return 'agama_katolik';
+  if(/hindu/.test(m)) return 'agama_hindu';
+  if(/buddha|budha/.test(m)) return 'agama_buddha';
+  if(/khonghucu|konghucu/.test(m)) return 'agama_khonghucu';
+  if(/kepercayaan/.test(m)) return 'kepercayaan';
+  if(/agama|budi pekerti/.test(m)) return 'agama_umum';
+  if(/pjok|penjas|jasmani|olahraga/.test(m)) return 'pjok';
+  if(/informatika|komputer|tik/.test(m)) return 'informatika';
+  if(/seni rupa/.test(m)) return 'seni_rupa';
+  if(/seni musik/.test(m)) return 'seni_musik';
+  if(/seni tari/.test(m)) return 'seni_tari';
+  if(/seni teater/.test(m)) return 'seni_teater';
+  if(/prakarya.*kerajinan|kerajinan/.test(m)) return 'prakarya_kerajinan';
+  if(/prakarya.*rekayasa|rekayasa/.test(m)) return 'prakarya_rekayasa';
+  if(/prakarya.*budidaya|budi daya/.test(m)) return 'prakarya_budidaya';
+  if(/prakarya.*pengolahan|pengolahan/.test(m)) return 'prakarya_pengolahan';
+  if(/prakarya/.test(m)) return 'prakarya_umum';
+  if(/muatan lokal|mulok|bahasa daerah/.test(m)) return 'mulok';
+  return '';
+}
+
+const CP_D_AUTO = {
+  bahasa_indonesia:
+`Pada akhir Fase D, murid mampu berkomunikasi dan bernalar sesuai tujuan, konteks sosial, dan akademis melalui kegiatan menyimak, membaca dan memirsa, berbicara dan mempresentasikan, serta menulis. Murid mampu menganalisis gagasan, pandangan, arahan, pesan, dan unsur teks sastra maupun nonsastra; menilai informasi dari teks cetak, visual, audiovisual, dan multimodal; menggunakan kosakata denotatif, konotatif, dan kiasan secara tepat; menyampaikan gagasan secara logis, kritis, kreatif, dan santun; serta menghasilkan berbagai teks untuk menjelaskan, menanggapi, meyakinkan, dan mengekspresikan gagasan dengan memperhatikan struktur, kebahasaan, dan konteks.`,
+
+  bahasa_inggris:
+`Pada akhir Fase D, murid menggunakan Bahasa Inggris untuk berinteraksi dan bertukar gagasan, pengalaman, minat, pendapat, serta pandangan dalam konteks yang familiar. Murid memahami informasi utama, detail relevan, tujuan, dan makna dari teks lisan, tulis, visual, serta multimodal; menggunakan strategi untuk memahami dan merespons teks; serta menghasilkan teks lisan dan tulis sederhana hingga lebih terstruktur dengan kosakata, ungkapan, dan unsur kebahasaan yang sesuai untuk tujuan komunikasi sehari-hari dan akademik awal.`,
+
+  matematika:
+`Pada akhir Fase D, murid menunjukkan pemahaman dan penalaran matematis melalui bilangan, aljabar, pengukuran, geometri, serta analisis data dan peluang. Murid menggunakan bilangan rasional dan irasional, rasio dan proporsi, bentuk aljabar, persamaan/pertidaksamaan serta relasi dan fungsi untuk memodelkan dan menyelesaikan masalah; menerapkan konsep pengukuran dan geometri pada bangun datar maupun ruang, transformasi dan hubungan antarunsur geometri; serta mengumpulkan, menyajikan, menganalisis, dan menafsirkan data dan peluang sederhana untuk membuat keputusan berbasis alasan.`,
+
+  ipa:
+`Pada akhir Fase D, murid memahami dan menerapkan konsep IPA tentang klasifikasi dan karakteristik makhluk hidup; organisasi kehidupan dan sistem organ; interaksi makhluk hidup dan lingkungan; pewarisan sifat dan bioteknologi konvensional; zat, sifat, dan perubahannya; pengukuran; gerak, gaya, tekanan, usaha, energi, kalor, gelombang, kelistrikan/kemagnetan, serta fenomena bumi dan antariksa yang relevan. Murid mengembangkan keterampilan proses melalui mengamati, mempertanyakan dan memprediksi, merencanakan serta melakukan penyelidikan, memproses dan menganalisis data, mengevaluasi dan merefleksi, serta mengomunikasikan hasil berbasis bukti.`,
+
+  ips:
+`Pada akhir Fase D, murid memahami keberagaman kondisi geografis Indonesia dan konektivitas antarruang, pemanfaatan serta pelestarian sumber daya alam, perubahan iklim dan kebencanaan; kegiatan ekonomi, harga, pasar, lembaga keuangan, perdagangan, pertumbuhan ekonomi dan perkembangan ekonomi digital; interaksi, lembaga, dinamika dan perubahan sosial budaya dalam masyarakat majemuk; serta konsep dasar sejarah, keterhubungan masa lalu–masa kini–masa depan, sejarah lokal, asal-usul nenek moyang dan jalur rempah. Murid menerapkan keterampilan proses dengan mengamati, menanya, mengumpulkan dan mengolah informasi, menyelidiki, menguji konsep melalui kasus/simulasi, mengevaluasi, merefleksi, mengomunikasikan, dan menyusun tindak lanjut.`,
+
+  pancasila:
+`Pada akhir Fase D, murid memahami sejarah kelahiran Pancasila, kedudukannya sebagai dasar negara, pandangan hidup bangsa, dan ideologi negara serta keterkaitannya dengan UUD NRI Tahun 1945, Bhinneka Tunggal Ika, dan NKRI. Murid menerapkan norma dan aturan, menggunakan hak dan menjalankan kewajiban sebagai warga negara, memahami sejarah/fungsi/kedudukan UUD NRI Tahun 1945, menerima dan menjaga keberagaman suku, agama/kepercayaan, ras, dan antargolongan, serta menunjukkan partisipasi dan tanggung jawab dalam menjaga persatuan, demokrasi, dan kehidupan bermasyarakat, berbangsa, dan bernegara.`,
+
+  agama_islam:
+`Pada akhir Fase D, murid mengembangkan pemahaman dan pengamalan Pendidikan Agama Islam dan Budi Pekerti melalui Al-Qur'an dan Hadis, akidah, akhlak, fikih, serta sejarah peradaban Islam. Murid diarahkan untuk memahami ajaran Islam secara kontekstual, membiasakan ibadah dan akhlak mulia, menghargai sesama, menjaga persatuan, bersikap moderat dan bertanggung jawab, serta menerapkan nilai-nilai keislaman dalam kehidupan pribadi, sosial, kebangsaan, dan perkembangan zaman. Ringkasan ini harus dibaca bersama pembaruan CP Agama dan Budi Pekerti Tahun 2026.`,
+
+  agama_kristen:
+`Pada akhir Fase D, murid mengembangkan pemahaman iman Kristen, Alkitab, karya Allah, nilai kasih, keteladanan Yesus Kristus, kehidupan bergereja, relasi dengan sesama, serta tanggung jawab terhadap masyarakat dan ciptaan. Murid menerapkan nilai iman, kasih, keadilan, perdamaian, kepedulian, integritas, dan tanggung jawab dalam kehidupan pribadi maupun sosial. Ringkasan ini harus dibaca bersama pembaruan CP Agama dan Budi Pekerti Tahun 2026.`,
+
+  agama_katolik:
+`Pada akhir Fase D, murid mengembangkan pemahaman iman Katolik mengenai pribadi dan martabat manusia, Yesus Kristus, Gereja, Kitab Suci, sakramen, kehidupan beriman, serta panggilan untuk hidup dalam kasih dan pelayanan. Murid merefleksikan iman dan mewujudkannya melalui sikap menghargai martabat manusia, kepedulian, tanggung jawab, perdamaian, keadilan, dan keterlibatan dalam kehidupan bersama. Ringkasan ini harus dibaca bersama pembaruan CP Agama dan Budi Pekerti Tahun 2026.`,
+
+  agama_hindu:
+`Pada akhir Fase D, murid mengembangkan pemahaman dan pengamalan ajaran Hindu melalui sraddha dan bhakti, susila, kitab suci, acara/ritual keagamaan, sejarah dan nilai-nilai Hindu, serta hubungan harmonis dengan Tuhan, sesama, dan alam. Murid menerapkan dharma, tanggung jawab, toleransi, pengendalian diri, kepedulian, dan karakter luhur dalam kehidupan sehari-hari. Ringkasan ini harus dibaca bersama pembaruan CP Agama dan Budi Pekerti Tahun 2026.`,
+
+  agama_buddha:
+`Pada akhir Fase D, murid mengembangkan pemahaman Dhamma, Tiratana, nilai moral, meditasi/perhatian penuh, sejarah dan praktik Buddhis, serta penerapan kebajikan dalam kehidupan. Murid membiasakan perilaku penuh kasih, welas asih, kebijaksanaan, tanggung jawab, toleransi, dan kepedulian terhadap sesama serta lingkungan. Ringkasan ini harus dibaca bersama pembaruan CP Agama dan Budi Pekerti Tahun 2026.`,
+
+  agama_khonghucu:
+`Pada akhir Fase D, murid mengembangkan pemahaman ajaran dan kitab suci Khonghucu, keimanan kepada Tian, keteladanan Nabi Kongzi, nilai kebajikan, tata ibadah, kesusilaan, keluarga, masyarakat, dan tanggung jawab sosial. Murid menerapkan sikap bakti, dapat dipercaya, santun, adil, harmonis, bertanggung jawab, dan menghargai sesama. Ringkasan ini harus dibaca bersama pembaruan CP Agama dan Budi Pekerti Tahun 2026.`,
+
+  kepercayaan:
+`Pada akhir Fase D, murid mengembangkan pemahaman nilai spiritual, budi pekerti luhur, identitas dan ajaran Kepercayaan terhadap Tuhan Yang Maha Esa, hubungan dengan Tuhan, sesama, alam, budaya, serta kehidupan bermasyarakat. Murid menerapkan sikap bertanggung jawab, toleran, gotong royong, berintegritas, menjaga harmoni, dan menghargai kebinekaan. Ringkasan ini perlu disesuaikan dengan CP Kepercayaan yang berlaku pada satuan pendidikan.`,
+
+  agama_umum:
+`Pada akhir Fase D, murid mengembangkan pengetahuan, sikap, kepribadian, dan keterampilan untuk memahami serta mengamalkan ajaran agama dan budi pekerti dalam kehidupan sehari-hari. Pilih jenis Pendidikan Agama yang spesifik agar CP otomatis lebih sesuai. Untuk Tahun 2026, CP Pendidikan Agama dan Budi Pekerti mengalami pembaruan khusus melalui Keputusan Kepala BKPDM No. 020 Tahun 2026.`,
+
+  pjok:
+`Pada akhir Fase D, murid mengembangkan keterampilan gerak dan pengetahuan gerak melalui permainan/olahraga, aktivitas senam, gerak berirama, aktivitas air bila tersedia, dan aktivitas kebugaran. Murid menganalisis serta mempraktikkan strategi gerak secara aman, menunjukkan sportivitas dan tanggung jawab personal-sosial, mengembangkan kebugaran jasmani, serta memahami dan menerapkan perilaku hidup sehat, pencegahan risiko, keselamatan, dan pengambilan keputusan yang mendukung kesehatan.`,
+
+  informatika:
+`Pada akhir Fase D, murid mampu menerapkan proses berpikir efektif dan efisien untuk menyelesaikan persoalan berlatar informatika yang didasari data terstruktur; menyusun langkah/instruksi yang dapat dijalankan manusia atau mesin; memanfaatkan perangkat, sistem, jaringan, dan data secara optimal; memahami representasi serta pengolahan data; mengembangkan artefak/solusi komputasional secara bertahap; serta berkomunikasi, berkolaborasi, berkreasi, menjaga keamanan, dan bertindak etis di dunia digital.`,
+
+  seni_rupa:
+`Pada akhir Fase D, murid mampu mengalami, menciptakan, merefleksikan, berpikir dan bekerja artistik, serta berdampak melalui seni rupa. Murid mengeksplorasi unsur rupa, prinsip desain, media, alat, teknik, tema, konteks budaya dan lingkungan; mengembangkan gagasan menjadi karya dua/tiga dimensi atau bentuk visual lainnya; mendokumentasikan proses; memberi dan menerima tanggapan; serta mempresentasikan dan merefleksikan karya secara bertanggung jawab.`,
+
+  seni_musik:
+`Pada akhir Fase D, murid mampu mengalami, menciptakan, merefleksikan, berpikir dan bekerja artistik, serta berdampak melalui musik. Murid mengenali dan menggunakan unsur musik, mengeksplorasi bunyi, ritme, melodi, harmoni, bentuk dan ekspresi; memainkan/menyanyikan serta menciptakan atau mengembangkan karya musik; bekerja individual maupun kolaboratif; mengapresiasi keragaman musik; dan merefleksikan proses serta hasil karya.`,
+
+  seni_tari:
+`Pada akhir Fase D, murid mampu mengalami, menciptakan, merefleksikan, berpikir dan bekerja artistik, serta berdampak melalui tari. Murid mengeksplorasi unsur gerak, ruang, waktu, tenaga, pola, ekspresi, iringan, dan konteks budaya; menyusun serta menampilkan rangkaian tari; bekerja kreatif dan kolaboratif; mengapresiasi keberagaman tari; serta mengevaluasi dan merefleksikan proses maupun hasil pertunjukan.`,
+
+  seni_teater:
+`Pada akhir Fase D, murid mampu mengalami, menciptakan, merefleksikan, berpikir dan bekerja artistik, serta berdampak melalui teater. Murid mengeksplorasi tubuh, suara, ruang, karakter, konflik, alur, naskah, improvisasi dan unsur pementasan; mengembangkan gagasan menjadi adegan/pertunjukan; bekerja kolaboratif; mengapresiasi beragam praktik teater; serta mengevaluasi dan merefleksikan proses maupun karya.`,
+
+  prakarya_kerajinan:
+`Pada akhir Fase D, murid mampu mengamati kebutuhan dan potensi lingkungan, mengeksplorasi bahan, alat, teknik, fungsi, bentuk dan nilai estetis; merancang, membuat, menguji, mengevaluasi, serta memperbaiki produk kerajinan dengan memperhatikan keselamatan kerja, keberlanjutan, budaya lokal, kreativitas, kualitas, dan peluang pemanfaatan/kewirausahaan.`,
+
+  prakarya_rekayasa:
+`Pada akhir Fase D, murid mampu mengidentifikasi kebutuhan dan masalah, mengeksplorasi konsep, bahan, alat, mekanisme dan teknologi; merancang serta membuat produk/sistem rekayasa sederhana; melakukan pengujian fungsi, keselamatan, efisiensi dan perbaikan; serta mengomunikasikan proses dan hasil dengan memperhatikan konteks lingkungan dan keberlanjutan.`,
+
+  prakarya_budidaya:
+`Pada akhir Fase D, murid mampu mengidentifikasi potensi sumber daya dan kebutuhan budidaya; memahami sarana, teknik, pemeliharaan, kesehatan, keselamatan, serta keberlanjutan; merancang dan melaksanakan kegiatan budidaya; mengamati perkembangan, mencatat data, mengevaluasi hasil, melakukan perbaikan, dan mengomunikasikan proses/produk secara bertanggung jawab.`,
+
+  prakarya_pengolahan:
+`Pada akhir Fase D, murid mampu mengeksplorasi bahan pangan/nonpangan, karakteristik, alat, teknik, proses, sanitasi, keamanan dan kemasan; merancang, membuat, menguji, mengevaluasi dan memperbaiki produk pengolahan dengan memperhatikan mutu, gizi/fungsi, kreativitas, potensi lokal, keberlanjutan, dan peluang pemanfaatan/kewirausahaan.`,
+
+  prakarya_umum:
+`Pada akhir Fase D, murid mengembangkan kemampuan mengamati, mengeksplorasi, merancang, membuat, menguji, mengevaluasi, dan memperbaiki karya/produk Prakarya secara aman, kreatif, fungsional, kontekstual, dan berkelanjutan. Untuk hasil lebih tepat, pilih salah satu: Prakarya Kerajinan, Rekayasa, Budidaya, atau Pengolahan.`,
+
+  mulok:
+`Capaian Pembelajaran Muatan Lokal/Bahasa Daerah ditetapkan dan dikembangkan sesuai kebijakan pemerintah daerah serta karakteristik satuan pendidikan. Gunakan CP daerah/sekolah yang berlaku. Generator tidak mengganti ketentuan CP Muatan Lokal yang ditetapkan daerah.`
+};
+
+function autoCPText(){
+  return CP_D_AUTO[normalizeMapelCP()] || '';
+}
+function updateCPAutoUI(){
+  const box=$('cpAutoBox'),status=$('cpAutoStatus');
+  if(!box||!status)return;
+  if(cpPhaseDActive()){
+    box.style.display='block';
+    const key=normalizeMapelCP(), text=autoCPText();
+    if(text){
+      status.innerHTML=`✅ CP acuan otomatis tersedia untuk <b>${esc($('mapel').value||'mata pelajaran ini')}</b>. ${CP_D_SOURCE}`;
+    }else{
+      status.innerHTML=`⚠️ Mata pelajaran belum dikenali. Ketik/pilih nama mapel dari daftar atau isi CP secara manual. ${CP_D_SOURCE}`;
+    }
+  }else{
+    box.style.display='none';
+  }
+}
+function fillAutoCP(force=false){
+  updateCPAutoUI();
+  if(!cpPhaseDActive())return;
+  const text=autoCPText();
+  if(!text)return;
+  const area=$('cp');
+  const previous=area.dataset.autoValue||'';
+  const current=(area.value||'').trim();
+  if(force || !current || current===previous){
+    area.value=text;
+    area.dataset.autoValue=text;
+    area.dataset.cpMode='auto';
+    area.style.background='#f8fbff';
+    saveData();
+  }
+}
+function enableManualCP(){
+  const area=$('cp');
+  area.dataset.cpMode='manual';
+  area.style.background='';
+  area.focus();
+}
+function maybeAutoCP(){
+  updateCPAutoUI();
+  if(!cpPhaseDActive())return;
+  const area=$('cp'), prev=area.dataset.autoValue||'';
+  if(!(area.value||'').trim() || area.value===prev || area.dataset.cpMode==='auto'){
+    fillAutoCP(false);
+  }
+}
+document.addEventListener('input',e=>{
+  if(e.target?.id==='mapel') maybeAutoCP();
+  if(e.target?.id==='fasekelas') maybeAutoCP();
+  if(e.target?.id==='cp'){
+    const a=$('cp');
+    if(a.value!==a.dataset.autoValue){a.dataset.cpMode='manual';a.style.background='';}
+  }
+});
+document.addEventListener('change',e=>{
+  if(['jenjang','fasekelas','mapel'].includes(e.target?.id)) maybeAutoCP();
+});
+
 /* ===== ModulKita V10.2 — Madrasah Aliyah + KBC ===== */
 function isMA(){
  const j=$('jenjang')?.value||'';
@@ -905,9 +1123,9 @@ generateBook=function(){
 };
 
 const mkBaseLoadExample_KBC=loadExample;
-loadExample=function(){mkBaseLoadExample_KBC();updateKbcUI()};
+loadExample=function(){mkBaseLoadExample_KBC();updateKbcUI();updateCPAutoUI();fillAutoCP(true)};
 
-loadData();updateKbcUI();initPremiumAccess();
+loadData();updateKbcUI();updateCPAutoUI();if(cpPhaseDActive()&&!($('cp').value||'').trim())fillAutoCP(false);initPremiumAccess();
 </script>
 </body>
 </html>
