@@ -137,7 +137,7 @@ footer{text-align:center;color:#667085;font-size:12px;padding:24px 20px 40px}
 <div class="group" id="kbcGroup" style="display:none;border:2px solid #bbf7d0;background:linear-gradient(135deg,#f0fdf4,#ffffff)">
 <h3>💚 Khusus Madrasah Aliyah — Kurikulum Berbasis Cinta (KBC)</h3>
 <div class="notice" style="background:#ecfdf3;border-color:#86efac;color:#166534">
-<b>Mode MA aktif.</b> Modul ajar akan mengintegrasikan Panca Cinta ke tujuan, materi, proses belajar, refleksi, dan asesmen. CP resmi tetap ditempel sesuai mata pelajaran/fase.
+<b>Mode MA aktif.</b> Modul ajar akan mengintegrasikan Panca Cinta ke tujuan, materi, pengalaman belajar (awal–memahami–mengaplikasi–merefleksi–penutup), refleksi, dan asesmen. CP resmi tetap ditempel sesuai mata pelajaran/fase.
 </div>
 <label style="display:flex;align-items:center;gap:8px;font-weight:850">
 <input id="includeKBC" type="checkbox" checked style="width:auto"> Integrasikan Kurikulum Berbasis Cinta (KBC)
@@ -812,6 +812,66 @@ function kbcMatrixHTML(){
  </table>${signatureHTML()}</section>`;
 }
 
+
+function kbcExperienceInsert(sub){
+ const pc=inferPancaCinta(sub);
+ return {
+  awal:[
+   `Guru membangun suasana belajar yang aman, ramah, penuh penghargaan, dan menghadirkan nilai ${pc} sejak awal pembelajaran.`,
+   `Peserta didik menghubungkan materi ${sub} dengan pengalaman nyata serta mengidentifikasi bentuk cinta, kepedulian, adab, atau tanggung jawab yang relevan.`
+  ],
+  memahami:[
+   `Peserta didik menelaah konsep ${sub} sekaligus menemukan hubungan materi dengan nilai ${pc}.`,
+   `Guru memandu peserta didik memahami bahwa ilmu tidak berhenti pada pengetahuan, tetapi mendorong sikap, adab, empati, tanggung jawab, dan kemanfaatan.`
+  ],
+  mengaplikasi:[
+   `Peserta didik menerapkan pemahaman ${sub} melalui tugas, praktik, studi kasus, produk, atau aksi nyata yang mencerminkan ${pc}.`,
+   `Dalam kegiatan individu/kelompok, peserta didik membiasakan sikap saling menghargai, peduli, bertanggung jawab, dan menggunakan ilmu untuk memberi manfaat.`
+  ],
+  merefleksi:[
+   `Peserta didik merefleksikan: “Nilai Panca Cinta apa yang saya pelajari dari ${sub}, dan bagaimana saya dapat menerapkannya?”`,
+   `Peserta didik menuliskan satu perubahan sikap atau tindakan nyata yang akan dilakukan setelah pembelajaran sebagai wujud ${pc}.`
+  ],
+  penutup:[
+   `Guru menguatkan kembali keterkaitan antara pemahaman materi ${sub} dan ${pc}.`,
+   `Peserta didik menyampaikan komitmen tindakan sederhana yang menunjukkan ilmu, kepedulian, adab, dan cinta dalam kehidupan sehari-hari.`
+  ]
+ };
+}
+function injectKbcLearningExperience(h,sub){
+ if(!isMA()||!$('includeKBC')?.checked)return h;
+ const e=kbcExperienceInsert(sub), pc=inferPancaCinta(sub);
+
+ h=h.replace(
+  '<h3>AWAL — Berkesadaran, Bermakna, Menggembirakan</h3>',
+  `<h3>AWAL — Berkesadaran, Bermakna, Menggembirakan + Panca Cinta</h3>
+   <div class="notice" style="background:#ecfdf3;border-color:#86efac;color:#166534"><b>Fokus KBC:</b> ${esc(pc)}</div>
+   ${list(e.awal)}`
+ );
+
+ h=h.replace(
+  '<h3>INTI — Memahami</h3>',
+  `<h3>INTI — Memahami + Menghayati Nilai Cinta</h3>${list(e.memahami)}`
+ );
+
+ h=h.replace(
+  '<h3>INTI — Mengaplikasi</h3>',
+  `<h3>INTI — Mengaplikasi + Aksi Panca Cinta</h3>${list(e.mengaplikasi)}`
+ );
+
+ h=h.replace(
+  '<h3>INTI — Merefleksi</h3>',
+  `<h3>INTI — Merefleksi + Internalisasi Panca Cinta</h3>${list(e.merefleksi)}`
+ );
+
+ h=h.replace(
+  '<h3>PENUTUP</h3>',
+  `<h3>PENUTUP — Penguatan Nilai dan Komitmen</h3>${list(e.penutup)}`
+ );
+
+ return h;
+}
+
 const mkBaseModuleHTML_KBC=moduleHTML;
 moduleHTML=function(x){
  let h=mkBaseModuleHTML_KBC(x);
@@ -831,6 +891,7 @@ moduleHTML=function(x){
  <tr><td><b>Asesmen KBC</b></td><td>${esc(kbcAssessment(sub))}</td></tr>
  </table>`;
  h=h.replace('<h2>G. Pengalaman Belajar</h2>',block+'<h2>G. Pengalaman Belajar</h2>');
+ h=injectKbcLearningExperience(h,sub);
  return h;
 };
 
