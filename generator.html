@@ -156,6 +156,11 @@ footer{text-align:center;color:#667085;font-size:12px;padding:24px 20px 40px}
 <option value="Bahasa Daerah">
 </datalist><div class="mini">Untuk SMP/MTs Fase D, CP acuan otomatis akan terisi setelah mata pelajaran dipilih. Guru tetap dapat mengeditnya.</div></div><div><label>Gaya Cover & Halaman</label><select id="temaVisual"><option value="auto" selected>✨ Otomatis — berbeda tiap guru</option><option value="kawaii">🌈 Kawaii Pastel</option><option value="taman">🌿 Taman Ceria</option><option value="angkasa">🚀 Jelajah Antariksa</option><option value="ceria">🎒 Kelas Pelangi</option><option value="formal">📄 Formal Tanpa Gambar</option></select><div class="mini">Mode otomatis memilih tema dari nama guru, sekolah, dan mapel.</div></div></div>
 <div class="row"><div><label>Tahun Pelajaran</label><input id="tahun" value="2026/2027"></div><div><label>JP per Minggu</label><input id="jpMinggu" type="number" min="1" value="6"></div></div>
+<label style="display:flex;align-items:flex-start;gap:8px;font-weight:850;margin-top:8px">
+  <input id="autoAllocation" type="checkbox" checked style="width:auto;margin-top:3px">
+  <span>Otomatis sesuaikan alokasi materi dengan seluruh JP efektif semester
+  <span class="mini" style="display:block;font-weight:500">Contoh: 19 minggu × 6 JP = 114 JP. Sistem membagi 114 JP ke seluruh subbab secara proporsional sehingga ATP, Analisis Alokasi Waktu, PROTA, PROSEM, dan Modul Ajar memiliki total yang sama.</span></span>
+</label>
 <div class="row"><div><label>Kepala Sekolah</label><input id="kepsek"></div><div><label>NIP Kepala Sekolah</label><input id="nipKepsek"></div></div>
 <label>Tempat</label><input id="tempat" placeholder="Contoh: Manokwari">
 </div>
@@ -217,7 +222,7 @@ footer{text-align:center;color:#667085;font-size:12px;padding:24px 20px 40px}
 <div class="group"><h3>Kalender Pendidikan Kerja</h3>
 <div class="calendar-box"><b>Semester Ganjil</b><div id="calGanjil"></div><div class="calendar-actions"><button class="btn ghost" type="button" onclick="addCalendarRow('ganjil')">+ Tambah Baris</button><button class="btn ghost" type="button" onclick="resetCalendar('ganjil')">Reset Bulan</button></div></div>
 <div class="calendar-box"><b>Semester Genap</b><div id="calGenap"></div><div class="calendar-actions"><button class="btn ghost" type="button" onclick="addCalendarRow('genap')">+ Tambah Baris</button><button class="btn ghost" type="button" onclick="resetCalendar('genap')">Reset Bulan</button></div></div>
-<p class="mini">Isi jumlah minggu efektif dan catatan agenda/libur sesuai kalender resmi sekolah/daerah.</p>
+<p class="mini">Isi jumlah minggu efektif dan catatan agenda/libur sesuai kalender resmi sekolah/daerah. Jika Alokasi Otomatis aktif, total JP materi akan disamakan dengan kapasitas semester.</p>
 </div>
 
 <div class="group"><h3>Semester Ganjil — Bab & Subbab</h3><div id="ganjil" class="semester-box"></div><div class="actions"><button class="btn secondary" onclick="addChapter('ganjil')">+ Tambah Bab Ganjil</button></div></div>
@@ -280,7 +285,9 @@ function renderSemester(sem){
  const title=sem==='ganjil'?'Semester Ganjil':'Semester Genap';
  const total=state[sem].reduce((n,c)=>n+c.subs.length,0);
  const totalJP=state[sem].reduce((n,c)=>n+c.subs.reduce((a,s)=>a+parseJP(s.jp),0),0);
- const h=document.createElement('div');h.className='semester-head';h.innerHTML=`<b>${title}</b><span class="counter">${state[sem].length} bab • ${total} subbab • ${totalJP} JP</span>`;box.appendChild(h);
+ const cap=(typeof calJP==='function')?calJP(sem):0;
+ const shown=(typeof useAutoAllocation==='function'&&useAutoAllocation()&&cap>0)?`${cap} JP otomatis <span style="opacity:.7">(bobot input ${totalJP} JP)</span>`:`${totalJP} JP`;
+ const h=document.createElement('div');h.className='semester-head';h.innerHTML=`<b>${title}</b><span class="counter">${state[sem].length} bab • ${total} subbab • ${shown}</span>`;box.appendChild(h);
  if(!state[sem].length){const p=document.createElement('p');p.className='mini';p.textContent='Belum ada Bab.';box.appendChild(p)}
  state[sem].forEach((c,ci)=>{
    const el=document.createElement('div');el.className='chapter';
@@ -304,7 +311,7 @@ function renderCalendar(sem){
    box.appendChild(d);
  });
 }
-function updateCal(sem,i,k,val){if(!calendar[sem][i])return;calendar[sem][i][k]=k===1?Number(val||0):val;saveData()}
+function updateCal(sem,i,k,val){if(!calendar[sem][i])return;calendar[sem][i][k]=k===1?Number(val||0):val;renderSemester(sem);saveData()}
 function addCalendarRow(sem){calendar[sem].push(['Periode Baru',0,'']);renderCalendar(sem);saveData()}
 function removeCalendarRow(sem,i){calendar[sem].splice(i,1);renderCalendar(sem);saveData()}
 function resetCalendar(sem){
@@ -312,14 +319,15 @@ function resetCalendar(sem){
  renderCalendar(sem);saveData();
 }
 
-function formData(){const d={};baseIds.forEach(id=>d[id]=$(id).value);d.includeLKPD=$('includeLKPD').checked;d.lkpdIllustration=$('lkpdIllustration').checked;d.includeKBC=$('includeKBC').checked;d.state=state;d.calendar=calendar;return d}
+function formData(){const d={};baseIds.forEach(id=>d[id]=$(id).value);d.includeLKPD=$('includeLKPD').checked;d.lkpdIllustration=$('lkpdIllustration').checked;d.includeKBC=$('includeKBC').checked;d.autoAllocation=$('autoAllocation').checked;d.state=state;d.calendar=calendar;return d}
 function saveData(){localStorage.setItem('modulkitaBookV61',JSON.stringify(formData()))}
 function loadData(){
- try{const d=JSON.parse(localStorage.getItem('modulkitaBookV61')||localStorage.getItem('modulkitaBookV5')||localStorage.getItem('modulkitaBookV4')||'{}');baseIds.forEach(id=>{if(d[id]!=null)$(id).value=d[id]});if(d.includeLKPD!=null)$('includeLKPD').checked=d.includeLKPD;if(d.lkpdIllustration!=null)$('lkpdIllustration').checked=d.lkpdIllustration;if(d.includeKBC!=null)$('includeKBC').checked=d.includeKBC;if(d.state)state=d.state;if(d.calendar)calendar=d.calendar}catch(e){}
+ try{const d=JSON.parse(localStorage.getItem('modulkitaBookV61')||localStorage.getItem('modulkitaBookV5')||localStorage.getItem('modulkitaBookV4')||'{}');baseIds.forEach(id=>{if(d[id]!=null)$(id).value=d[id]});if(d.includeLKPD!=null)$('includeLKPD').checked=d.includeLKPD;if(d.lkpdIllustration!=null)$('lkpdIllustration').checked=d.lkpdIllustration;if(d.includeKBC!=null)$('includeKBC').checked=d.includeKBC;if(d.autoAllocation!=null)$('autoAllocation').checked=d.autoAllocation;if(d.state)state=d.state;if(d.calendar)calendar=d.calendar}catch(e){}
  if(!state.ganjil.length)addChapter('ganjil','Bab 1');if(!state.genap.length)addChapter('genap','Bab 1');
  renderSemester('ganjil');renderSemester('genap');renderCalendar('ganjil');renderCalendar('genap');
 }
-document.addEventListener('input',e=>{if(e.target.closest('.form-card')){if(e.target.id==='jpMinggu'){renderCalendar('ganjil');renderCalendar('genap')}saveData()}});
+document.addEventListener('input',e=>{if(e.target.closest('.form-card')){if(e.target.id==='jpMinggu'){renderCalendar('ganjil');renderCalendar('genap');renderSemester('ganjil');renderSemester('genap')}saveData()}});
+document.addEventListener('change',e=>{if(e.target?.id==='autoAllocation'){renderSemester('ganjil');renderSemester('genap');saveData()}});
 
 function subjectKind(){const m=$('mapel').value.toLowerCase();if(m.includes('bahasa'))return'bahasa';if(m.includes('matematika'))return'matematika';if(m==='ipa'||m.includes('ilmu pengetahuan alam'))return'ipa';if(m==='ips'||m.includes('ilmu pengetahuan sosial'))return'ips';if(m.includes('pjok')||m.includes('jasmani'))return'pjok';if(m.includes('informatika'))return'informatika';if(m.includes('seni'))return'seni';return'umum'}
 function genericCP(){
@@ -351,9 +359,57 @@ function getModules(){
  return out;
 }
 function semesterModules(sem){return getModules().filter(x=>x.semKey===sem)}
-function semJP(sem){return semesterModules(sem).reduce((n,x)=>n+parseJP(x.sub.jp),0)}
+function manualSemJP(sem){return semesterModules(sem).reduce((n,x)=>n+parseJP(x.sub.jp),0)}
 function calWeeks(sem){return calendar[sem].reduce((n,r)=>n+Number(r[1]||0),0)}
 function calJP(sem){return calWeeks(sem)*Number($('jpMinggu').value||0)}
+function useAutoAllocation(){return $('autoAllocation') ? $('autoAllocation').checked : true}
+
+/* Membagi seluruh kapasitas JP semester ke subbab secara proporsional.
+   Nilai JP yang diketik guru menjadi bobot, sedangkan total akhir selalu sama
+   dengan minggu efektif × JP per minggu saat mode otomatis aktif. */
+function allocationMap(sem){
+ const mods=semesterModules(sem), map={};
+ if(!mods.length)return map;
+ const cap=calJP(sem);
+ if(!useAutoAllocation() || cap<=0){
+   mods.forEach(x=>map[x.sub.id]=parseJP(x.sub.jp));
+   return map;
+ }
+ const unit=(cap%2===0)?2:1;
+ const totalUnits=Math.max(0,Math.round(cap/unit));
+ const n=mods.length;
+ const weights=mods.map(x=>Math.max(parseJP(x.sub.jp),1));
+ const sumW=weights.reduce((a,b)=>a+b,0)||n;
+ const units=new Array(n).fill(0);
+
+ // Jika cukup, beri setiap subbab minimal 1 unit agar tidak ada modul 0 JP.
+ let remaining=totalUnits;
+ if(totalUnits>=n){
+   for(let i=0;i<n;i++)units[i]=1;
+   remaining-=n;
+ }
+ const raw=weights.map(w=>remaining*w/sumW);
+ const floor=raw.map(Math.floor);
+ floor.forEach((v,i)=>units[i]+=v);
+ let left=remaining-floor.reduce((a,b)=>a+b,0);
+ const order=raw.map((v,i)=>({i,f:v-Math.floor(v)})).sort((a,b)=>b.f-a.f||a.i-b.i);
+ for(let k=0;k<left;k++)units[order[k%order.length].i]++;
+
+ mods.forEach((x,i)=>map[x.sub.id]=units[i]*unit);
+
+ // Koreksi pengaman agar jumlah benar-benar sama dengan kapasitas.
+ const current=Object.values(map).reduce((a,b)=>a+b,0);
+ const diff=cap-current;
+ if(diff!==0 && mods.length) map[mods[mods.length-1].sub.id]+=diff;
+ return map;
+}
+function allocatedJP(x){
+ const m=allocationMap(x.semKey);
+ return Number(m[x.sub.id] ?? parseJP(x.sub.jp));
+}
+function semJP(sem){
+ return useAutoAllocation() && calJP(sem)>0 ? calJP(sem) : manualSemJP(sem);
+}
 function monthSlots(sem){
  const slots=[];calendar[sem].forEach(r=>{for(let i=0;i<Number(r[1]||0);i++)slots.push(r[0])});return slots;
 }
@@ -364,24 +420,43 @@ function signatureHTML(){
 function analysisCPTable(){
  const mods=getModules();return`<section class="section-page"><div class="module-title"><h1>ANALISIS CAPAIAN PEMBELAJARAN MENJADI TUJUAN PEMBELAJARAN (TP)</h1><p>${esc($('mapel').value)} • ${esc($('fasekelas').value)}</p></div><p><b>Konteks Sekolah dan Peserta Didik:</b> ${esc($('karakter').value)}</p><table><tr><th>Elemen/Domain</th><th>Kompetensi</th><th>Materi/Bab</th><th>Submateri</th><th>Tujuan Pembelajaran</th></tr>${mods.map(x=>`<tr><td>${esc(inferElement(x.sub.name))}</td><td>Memahami, menganalisis, menerapkan, dan mengomunikasikan pembelajaran.</td><td>${esc(x.chapter.name)}</td><td>${esc(x.sub.name)}</td><td>${esc(tpFor(x.sub.name))}</td></tr>`).join('')}</table>${signatureHTML()}</section>`}
 function atpSection(sem){
- const mods=semesterModules(sem),title=sem==='ganjil'?'GANJIL':'GENAP';return`<section class="section-page"><div class="module-title"><h1>ALUR TUJUAN PEMBELAJARAN (ATP) — SEMESTER ${title}</h1><p>${esc($('mapel').value)} • ${esc($('fasekelas').value)} • ${esc($('tahun').value)}</p></div><p><b>Total Alokasi Materi:</b> ${semJP(sem)} JP • <b>Minggu Efektif:</b> ${calWeeks(sem)} • <b>Kapasitas Kalender:</b> ${calJP(sem)} JP</p><table><tr><th>Materi</th><th>Submateri</th><th>Tujuan Pembelajaran Umum</th><th>Tujuan Pembelajaran Khusus (SMART)</th><th>Alokasi</th><th>Dimensi Profil Lulusan</th><th>Asesmen</th><th>Sumber Belajar</th></tr>${mods.map(x=>`<tr><td>${esc(x.chapter.name)}</td><td>${esc(x.sub.name)}</td><td>${esc(tpFor(x.sub.name))}</td><td><ol>${smartTP(x.sub.name).map(t=>`<li>${esc(t)}</li>`).join('')}</ol></td><td>${parseJP(x.sub.jp)} JP</td><td>${inferDPL(x.sub.name).map(esc).join(', ')}</td><td>Awal: tanya jawab/diagnostik.<br>Proses: diskusi, LKPD, observasi, umpan balik.<br>Akhir: tes/produk/kinerja sesuai subbab.</td><td>Buku ajar, LKPD, lingkungan sekitar, media visual/digital, dan sumber relevan.</td></tr>`).join('')}</table>${signatureHTML()}</section>`}
+ const mods=semesterModules(sem),title=sem==='ganjil'?'GANJIL':'GENAP';return`<section class="section-page"><div class="module-title"><h1>ALUR TUJUAN PEMBELAJARAN (ATP) — SEMESTER ${title}</h1><p>${esc($('mapel').value)} • ${esc($('fasekelas').value)} • ${esc($('tahun').value)}</p></div><p><b>Total Alokasi Materi:</b> ${semJP(sem)} JP • <b>Minggu Efektif:</b> ${calWeeks(sem)} • <b>Kapasitas Kalender:</b> ${calJP(sem)} JP</p><table><tr><th>Materi</th><th>Submateri</th><th>Tujuan Pembelajaran Umum</th><th>Tujuan Pembelajaran Khusus (SMART)</th><th>Alokasi</th><th>Dimensi Profil Lulusan</th><th>Asesmen</th><th>Sumber Belajar</th></tr>${mods.map(x=>`<tr><td>${esc(x.chapter.name)}</td><td>${esc(x.sub.name)}</td><td>${esc(tpFor(x.sub.name))}</td><td><ol>${smartTP(x.sub.name).map(t=>`<li>${esc(t)}</li>`).join('')}</ol></td><td>${allocatedJP(x)} JP</td><td>${inferDPL(x.sub.name).map(esc).join(', ')}</td><td>Awal: tanya jawab/diagnostik.<br>Proses: diskusi, LKPD, observasi, umpan balik.<br>Akhir: tes/produk/kinerja sesuai subbab.</td><td>Buku ajar, LKPD, lingkungan sekitar, media visual/digital, dan sumber relevan.</td></tr>`).join('')}</table>${signatureHTML()}</section>`}
 function calendarSection(){
  function t(sem,label){return`<h2>Semester ${label}</h2><table><tr><th>Bulan</th><th>Minggu Efektif</th><th>JP/Minggu</th><th>Total JP</th><th>Catatan Agenda/Libur</th></tr>${calendar[sem].map(r=>`<tr><td>${esc(r[0])}</td><td>${r[1]}</td><td>${esc($('jpMinggu').value)}</td><td>${Number(r[1]||0)*Number($('jpMinggu').value||0)}</td><td>${esc(r[2])}</td></tr>`).join('')}<tr><th>Total</th><th>${calWeeks(sem)}</th><th>—</th><th>${calJP(sem)}</th><th>—</th></tr></table>`}
  return`<section class="section-page"><div class="module-title"><h1>KALENDER PENDIDIKAN KERJA & MINGGU EFEKTIF</h1><p>Tahun Pelajaran ${esc($('tahun').value)}</p></div><p class="small-note"><i>Tabel ini merupakan kalender kerja berdasarkan minggu efektif yang diinput guru. Tanggal libur, asesmen, dan agenda resmi wajib disesuaikan dengan kalender pendidikan pemerintah daerah/satuan pendidikan.</i></p>${t('ganjil','Ganjil')}${t('genap','Genap')}${signatureHTML()}</section>`}
 function allocationSection(){
- function s(sem,label){const mods=semesterModules(sem);let perBab={};mods.forEach(x=>perBab[x.chapter.name]=(perBab[x.chapter.name]||0)+parseJP(x.sub.jp));return`<h2>Semester ${label}</h2><p>Jumlah minggu efektif: <b>${calWeeks(sem)}</b> minggu • JP per minggu: <b>${esc($('jpMinggu').value)}</b> • Kapasitas kalender: <b>${calJP(sem)} JP</b> • Alokasi materi yang diinput: <b>${semJP(sem)} JP</b>.</p><table><tr><th>Bab/Materi Pokok</th><th>Jumlah Subbab</th><th>Alokasi JP</th></tr>${Object.entries(perBab).map(([b,j])=>`<tr><td>${esc(b)}</td><td>${mods.filter(x=>x.chapter.name===b).length}</td><td>${j} JP</td></tr>`).join('')}<tr><th>Total</th><th>${mods.length}</th><th>${semJP(sem)} JP</th></tr></table>`}return`<section class="section-page"><div class="module-title"><h1>ANALISIS ALOKASI WAKTU</h1></div>${s('ganjil','Ganjil')}${s('genap','Genap')}${signatureHTML()}</section>`}
+ function s(sem,label){
+   const mods=semesterModules(sem);let perBab={};
+   mods.forEach(x=>perBab[x.chapter.name]=(perBab[x.chapter.name]||0)+allocatedJP(x));
+   const auto=useAutoAllocation()&&calJP(sem)>0;
+   const info=auto
+     ? `Alokasi otomatis: <b>${semJP(sem)} JP</b> (disesuaikan penuh dengan kapasitas kalender; bobot awal input ${manualSemJP(sem)} JP).`
+     : `Alokasi manual materi: <b>${semJP(sem)} JP</b>.`;
+   return`<h2>Semester ${label}</h2><p>Jumlah minggu efektif: <b>${calWeeks(sem)}</b> minggu • JP per minggu: <b>${esc($('jpMinggu').value)}</b> • Kapasitas kalender: <b>${calJP(sem)} JP</b> • ${info}</p><table><tr><th>Bab/Materi Pokok</th><th>Jumlah Subbab</th><th>Alokasi JP</th></tr>${Object.entries(perBab).map(([b,j])=>`<tr><td>${esc(b)}</td><td>${mods.filter(x=>x.chapter.name===b).length}</td><td>${j} JP</td></tr>`).join('')}<tr><th>Total</th><th>${mods.length}</th><th>${semJP(sem)} JP</th></tr></table>`;
+ }
+ return`<section class="section-page"><div class="module-title"><h1>ANALISIS ALOKASI WAKTU</h1></div>${s('ganjil','Ganjil')}${s('genap','Genap')}${signatureHTML()}</section>`;
+}
 function distribute(sem){
- const mods=semesterModules(sem),slots=monthSlots(sem),jpWeek=Number($('jpMinggu').value||1);let week=1;return mods.map(x=>{const weeks=Math.max(1,Math.ceil(parseJP(x.sub.jp)/jpWeek));const start=week,end=week+weeks-1;const months=[...new Set(Array.from({length:weeks},(_,i)=>slots[start-1+i]).filter(Boolean))];week=end+1;return{...x,start,end,weeks,months:months.length?months.join('–'):'Belum diatur'}})
+ const mods=semesterModules(sem),slots=monthSlots(sem),jpWeek=Math.max(1,Number($('jpMinggu').value||1));
+ let usedJP=0;
+ return mods.map(x=>{
+   const jp=allocatedJP(x);
+   const start=Math.floor(usedJP/jpWeek)+1;
+   const end=Math.max(start,Math.ceil((usedJP+jp)/jpWeek));
+   const months=[...new Set(Array.from({length:Math.max(1,end-start+1)},(_,i)=>slots[start-1+i]).filter(Boolean))];
+   usedJP+=jp;
+   return{...x,start,end,weeks:Math.max(1,end-start+1),allocJP:jp,months:months.length?months.join('–'):'Belum diatur'};
+ });
 }
 function protaSection(){
- const rows=[...distribute('ganjil'),...distribute('genap')];return`<section class="section-page"><div class="module-title"><h1>PROGRAM TAHUNAN (PROTA)</h1><p>${esc($('mapel').value)} • ${esc($('fasekelas').value)} • ${esc($('tahun').value)}</p></div><table><tr><th>Semester</th><th>Bulan</th><th>Materi Pokok/Bab</th><th>Submateri</th><th>Alokasi Waktu</th><th>Keterangan</th></tr>${rows.map(x=>`<tr><td>${esc(x.sem)}</td><td>${esc(x.months)}</td><td>${esc(x.chapter.name)}</td><td>${esc(x.sub.name)}</td><td>${parseJP(x.sub.jp)} JP</td><td>Penguasaan konsep, latihan/penerapan, asesmen, dan tindak lanjut.</td></tr>`).join('')}</table>${signatureHTML()}</section>`}
+ const rows=[...distribute('ganjil'),...distribute('genap')];return`<section class="section-page"><div class="module-title"><h1>PROGRAM TAHUNAN (PROTA)</h1><p>${esc($('mapel').value)} • ${esc($('fasekelas').value)} • ${esc($('tahun').value)}</p></div><table><tr><th>Semester</th><th>Bulan</th><th>Materi Pokok/Bab</th><th>Submateri</th><th>Alokasi Waktu</th><th>Keterangan</th></tr>${rows.map(x=>`<tr><td>${esc(x.sem)}</td><td>${esc(x.months)}</td><td>${esc(x.chapter.name)}</td><td>${esc(x.sub.name)}</td><td>${x.allocJP} JP</td><td>Penguasaan konsep, latihan/penerapan, asesmen, dan tindak lanjut.</td></tr>`).join('')}</table>${signatureHTML()}</section>`}
 function prosemSection(sem){
- const title=sem==='ganjil'?'GANJIL':'GENAP',rows=distribute(sem);return`<section class="section-page"><div class="module-title"><h1>PROGRAM SEMESTER (PROSEM) — ${title}</h1><p>${esc($('mapel').value)} • ${esc($('fasekelas').value)}</p></div><table><tr><th>Minggu Ke-</th><th>Bulan</th><th>Materi Pokok</th><th>Submateri</th><th>Alokasi</th><th>Keterangan</th></tr>${rows.map(x=>`<tr><td>${x.start===x.end?x.start:`${x.start}–${x.end}`}</td><td>${esc(x.months)}</td><td>${esc(x.chapter.name)}</td><td>${esc(x.sub.name)}</td><td>${parseJP(x.sub.jp)} JP</td><td>Memahami → Mengaplikasi → Merefleksi; asesmen formatif dan tindak lanjut.</td></tr>`).join('')}</table>${signatureHTML()}</section>`}
+ const title=sem==='ganjil'?'GANJIL':'GENAP',rows=distribute(sem);return`<section class="section-page"><div class="module-title"><h1>PROGRAM SEMESTER (PROSEM) — ${title}</h1><p>${esc($('mapel').value)} • ${esc($('fasekelas').value)}</p></div><table><tr><th>Minggu Ke-</th><th>Bulan</th><th>Materi Pokok</th><th>Submateri</th><th>Alokasi</th><th>Keterangan</th></tr>${rows.map(x=>`<tr><td>${x.start===x.end?x.start:`${x.start}–${x.end}`}</td><td>${esc(x.months)}</td><td>${esc(x.chapter.name)}</td><td>${esc(x.sub.name)}</td><td>${x.allocJP} JP</td><td>Memahami → Mengaplikasi → Merefleksi; asesmen formatif dan tindak lanjut.</td></tr>`).join('')}</table>${signatureHTML()}</section>`}
 
 function moduleHTML(x){
  const sub=x.sub,prof=materialProfile(sub.name),acts=activities(sub.name),cp=$('cp').value.trim()||genericCP(),dpl=inferDPL(sub.name),elem=inferElement(sub.name),model=inferModel(sub.name);
  return`<section class="module"><div class="module-title"><h1>MODUL AJAR PEMBELAJARAN MENDALAM — MODUL ${x.no}</h1><p><b>${esc($('mapel').value)}</b> • ${esc($('fasekelas').value)} • ${esc(x.sem)}</p><p><b>${esc(x.chapter.name)}</b> — ${esc(sub.name)}</p></div>
- <h2>A. Identitas Modul</h2><table><tr><td><b>Sekolah/Madrasah</b></td><td>${esc($('sekolah').value||'—')}</td></tr><tr><td><b>Mata Pelajaran</b></td><td>${esc($('mapel').value||'—')}</td></tr><tr><td><b>Tema/Subbab</b></td><td>${esc(sub.name)}</td></tr><tr><td><b>Fase/Kelas</b></td><td>${esc($('fasekelas').value)}</td></tr><tr><td><b>Alokasi Waktu</b></td><td>${parseJP(sub.jp)} JP</td></tr><tr><td><b>Tahun Pelajaran</b></td><td>${esc($('tahun').value)}</td></tr><tr><td><b>Nama Penyusun</b></td><td>${esc($('guru').value||'—')}</td></tr></table>
+ <h2>A. Identitas Modul</h2><table><tr><td><b>Sekolah/Madrasah</b></td><td>${esc($('sekolah').value||'—')}</td></tr><tr><td><b>Mata Pelajaran</b></td><td>${esc($('mapel').value||'—')}</td></tr><tr><td><b>Tema/Subbab</b></td><td>${esc(sub.name)}</td></tr><tr><td><b>Fase/Kelas</b></td><td>${esc($('fasekelas').value)}</td></tr><tr><td><b>Alokasi Waktu</b></td><td>${allocatedJP(x)} JP</td></tr><tr><td><b>Tahun Pelajaran</b></td><td>${esc($('tahun').value)}</td></tr><tr><td><b>Nama Penyusun</b></td><td>${esc($('guru').value||'—')}</td></tr></table>
  <h2>B. Identifikasi Peserta Didik</h2><p><b>Pengetahuan/Kesiapan Awal:</b> Peserta didik memiliki pengalaman awal yang beragam terkait ${esc(sub.name)} dan memerlukan pemetaan melalui pertanyaan diagnostik.</p><p><b>Minat & Latar Belakang:</b> ${esc($('karakter').value)}</p><p><b>Kebutuhan Belajar:</b> Contoh konkret, bimbingan bertahap, latihan kontekstual, umpan balik, dan kesempatan memperbaiki hasil.</p>
  <h2>C. Materi Pelajaran</h2><table><tr><td><b>Jenis Pengetahuan</b></td><td>${esc(prof.jenis)}</td></tr><tr><td><b>Relevansi</b></td><td>${esc(prof.relevansi)}</td></tr><tr><td><b>Tingkat Kesulitan</b></td><td>${esc(prof.sulit)}</td></tr><tr><td><b>Struktur Materi</b></td><td>${esc(prof.struktur)}</td></tr><tr><td><b>Integrasi Nilai & Karakter</b></td><td>${esc(prof.nilai)}</td></tr></table>
  <h2>D. Dimensi Profil Lulusan</h2><p>${dpl.map(x=>`<span class="tag">✓ ${esc(x)}</span>`).join(' ')}</p>
