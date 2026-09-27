@@ -260,7 +260,7 @@ footer{text-align:center;color:#667085;font-size:12px;padding:24px 20px 40px}
 <header class="top">
   <div class="nav"><div class="brand"><div class="logo">M</div><div>ModulKita <span style="opacity:.8">Premium</span></div></div><button class="navbtn" onclick="loadExample()">Muat Contoh VIII</button></div>
   <div class="hero">
-    <div><span class="badge">Generator Buku Perangkat Pembelajaran Mendalam</span><h1>Isi Bab & Subbab.<br>Jadi perangkat 1 tahun.</h1><p>Generator menyusun Analisis CP→TP, ATP, Kalender Pendidikan kerja, Analisis Alokasi Waktu, PROTA, PROSEM, Modul Ajar lengkap, dan LKPD. Jika Madrasah Aliyah dipilih, integrasi Kurikulum Berbasis Cinta (KBC) dan Panca Cinta otomatis tersedia.</p><div class="chips"><span class="chip">CP → TP</span><span class="chip">ATP</span><span class="chip">Kalender</span><span class="chip">PROTA</span><span class="chip">PROSEM</span><span class="chip">Modul Ajar</span><span class="chip">LKPD Menarik</span><span class="chip">SD • MI • SMP/MTs • SMA • MA • SMK</span><span class="chip">Cover Variatif per Guru</span></div></div>
+    <div><span class="badge">Generator Buku Perangkat Pembelajaran Mendalam</span><h1>Isi Bab & Subbab.<br>Jadi perangkat 1 tahun.</h1><p>Generator menyusun Analisis CP→TP, ATP, Kalender Pendidikan kerja, Analisis Alokasi Waktu, PROTA, PROSEM, Modul Ajar lengkap, dan LKPD. Jika Madrasah Aliyah dipilih, integrasi Kurikulum Berbasis Cinta (KBC) dan Panca Cinta otomatis tersedia.</p><div class="chips"><span class="chip">🎨 3 Tema Modul Kekinian</span><span class="chip">CP → TP</span><span class="chip">ATP</span><span class="chip">Kalender</span><span class="chip">PROTA</span><span class="chip">PROSEM</span><span class="chip">Modul Ajar</span><span class="chip">LKPD Menarik</span><span class="chip">SD • MI • SMP/MTs • SMA • MA • SMK</span><span class="chip">Cover Variatif per Guru</span></div></div>
     <div class="hero-card"><b>Urutan buku otomatis:</b><ul><li>Cover, identitas, kata pengantar, daftar isi</li><li>Analisis CP menjadi TP</li><li>ATP Ganjil & Genap</li><li>Kalender Pendidikan kerja & Analisis Alokasi Waktu</li><li>Program Tahunan (PROTA) & Program Semester (PROSEM)</li><li>Modul Ajar Pembelajaran Mendalam per subbab</li><li>Khusus MA: Integrasi KBC & Panca Cinta</li><li>LKPD menarik per subbab + rubrik guru</li><li>Asesmen, remedial/pengayaan, dan refleksi</li></ul></div>
   </div>
 </header>
@@ -317,7 +317,26 @@ footer{text-align:center;color:#667085;font-size:12px;padding:24px 20px 40px}
 <option value="Prakarya Pengolahan">
 <option value="Muatan Lokal">
 <option value="Bahasa Daerah">
-</datalist><div class="mini">Daftar mata pelajaran dan CP otomatis menyesuaikan jenjang/fase. Mode MI memakai struktur khusus Kemenag: Al-Qur’an Hadis, Akidah Akhlak, Fikih, SKI (kelas III–VI), Bahasa Arab, serta mapel umum sesuai kelas.</div></div><div><label>Gaya Cover & Halaman</label><select id="temaVisual"><option value="auto" selected>✨ Otomatis — berbeda tiap guru</option><option value="kawaii">🌈 Kawaii Pastel</option><option value="taman">🌿 Taman Ceria</option><option value="angkasa">🚀 Jelajah Antariksa</option><option value="ceria">🎒 Kelas Pelangi</option><option value="formal">📄 Formal Tanpa Gambar</option></select><div class="mini">Mode otomatis memilih tema dari nama guru, sekolah, dan mapel.</div></div></div>
+</datalist><div class="mini">Daftar mata pelajaran dan CP otomatis menyesuaikan jenjang/fase. Mode MI memakai struktur khusus Kemenag: Al-Qur’an Hadis, Akidah Akhlak, Fikih, SKI (kelas III–VI), Bahasa Arab, serta mapel umum sesuai kelas.</div></div><div><label>Gaya Cover</label><select id="temaVisual"><option value="auto" selected>✨ Otomatis — berbeda tiap guru</option><option value="kawaii">🌈 Kawaii Pastel</option><option value="taman">🌿 Taman Ceria</option><option value="angkasa">🚀 Jelajah Antariksa</option><option value="ceria">🎒 Kelas Pelangi</option><option value="formal">📄 Formal Tanpa Gambar</option></select><div class="mini">Mode otomatis memilih cover dari nama guru, sekolah, dan mapel.</div></div></div>
+<div class="row">
+  <div>
+    <label>Tema Isi Modul</label>
+    <select id="temaModul">
+      <option value="profesional">🧭 Formal Profesional</option>
+      <option value="modern" selected>✨ Colorful Modern</option>
+      <option value="ceria">🌈 Lucu Ceria</option>
+    </select>
+    <div class="mini">Preview & PDF mengikuti tema. Download Word Rapi tetap dibuat lebih formal agar stabil saat diedit.</div>
+  </div>
+  <div>
+    <label>Gaya Sudut & Kartu</label>
+    <select id="kartuModul">
+      <option value="soft" selected>Rounded Soft</option>
+      <option value="compact">Compact</option>
+    </select>
+    <div class="mini">Rounded Soft lebih kekinian; Compact lebih hemat ruang.</div>
+  </div>
+</div>
 <div class="row"><div><label>Tahun Pelajaran</label><input id="tahun" value="2026/2027"></div><div><label>JP per Minggu</label><input id="jpMinggu" type="number" min="1" value="6"><div id="jpDurationHint" class="mini" style="margin-top:4px"></div></div></div>
 <label style="display:flex;align-items:flex-start;gap:8px;font-weight:850;margin-top:8px">
   <input id="autoAllocation" type="checkbox" checked style="width:auto;margin-top:3px">
@@ -1136,7 +1155,402 @@ function downloadWord(){
    <meta name="Generator" content="ModulKita">
    <title>Perangkat Modul Ajar</title>
    ${wordSettings}
-   <style>${css}</style>
+   <style>${css}
+/* =========================================================
+   ModulKita V11.4 — 3 Tema Isi Modul
+   ========================================================= */
+#hasil{
+  --mk-accent:#4f46e5;
+  --mk-accent2:#7c3aed;
+  --mk-soft:#eef2ff;
+  --mk-soft2:#f8fafc;
+  --mk-deep:#1e1b4b;
+  --mk-line:#cbd5e1;
+  --mk-radius:20px;
+}
+#hasil.mk-card-compact{--mk-radius:10px}
+
+/* Struktur umum dokumen, tidak mengubah cover bergambar */
+#hasil[class*="mk-theme-"] .module,
+#hasil[class*="mk-theme-"] .section-page{
+  position:relative;
+  background:#fff;
+}
+#hasil[class*="mk-theme-"] .module-title{
+  break-inside:avoid;
+  page-break-inside:avoid;
+}
+#hasil[class*="mk-theme-"] .doc h2{
+  break-after:avoid;
+  page-break-after:avoid;
+}
+#hasil[class*="mk-theme-"] .doc table{
+  overflow:hidden;
+}
+#hasil[class*="mk-theme-"] .doc th{
+  font-weight:900;
+}
+#hasil[class*="mk-theme-"] .signature{
+  break-inside:avoid;
+  page-break-inside:avoid;
+}
+#hasil[class*="mk-theme-"] .tag{
+  font-weight:900;
+}
+
+/* ---------- 1. FORMAL PROFESIONAL ---------- */
+#hasil.mk-theme-profesional{
+  --mk-accent:#1e3a5f;
+  --mk-accent2:#355d7a;
+  --mk-soft:#edf3f7;
+  --mk-soft2:#f8fafc;
+  --mk-deep:#102a43;
+  --mk-line:#b8c7d4;
+}
+#hasil.mk-theme-profesional .cute-title,
+#hasil.mk-theme-profesional .module-title{
+  min-height:auto!important;
+  text-align:left!important;
+  padding:14px 16px!important;
+  border:1px solid #c8d5df!important;
+  border-left:7px solid var(--mk-accent)!important;
+  border-radius:var(--mk-radius)!important;
+  background:linear-gradient(135deg,#f8fbfd,#eef4f7)!important;
+  box-shadow:0 6px 18px rgba(30,58,95,.07)!important;
+}
+#hasil.mk-theme-profesional .module-title:before{display:none!important}
+#hasil.mk-theme-profesional .module-title h1{
+  color:var(--mk-deep)!important;
+  font-size:19px!important;
+  text-align:left!important;
+  margin:0 0 5px!important;
+}
+#hasil.mk-theme-profesional .module-title p{
+  color:#52677a!important;
+  text-align:left!important;
+  margin:2px 0!important;
+}
+#hasil.mk-theme-profesional .title-kicker{
+  background:#fff!important;
+  color:var(--mk-accent)!important;
+  border:1px solid #c7d6e1!important;
+}
+#hasil.mk-theme-profesional .title-art,
+#hasil.mk-theme-profesional .divider-emoji{display:none!important}
+#hasil.mk-theme-profesional .doc h2{
+  color:var(--mk-deep)!important;
+  border:0!important;
+  border-bottom:2px solid var(--mk-accent)!important;
+  padding:0 0 6px!important;
+  margin-top:21px!important;
+}
+#hasil.mk-theme-profesional .doc h3{
+  color:#294c66!important;
+}
+#hasil.mk-theme-profesional .doc table{
+  border-radius:calc(var(--mk-radius) - 6px);
+  box-shadow:0 3px 12px rgba(30,58,95,.04);
+}
+#hasil.mk-theme-profesional .doc th{
+  color:#fff!important;
+  background:var(--mk-accent)!important;
+}
+#hasil.mk-theme-profesional .doc tr:nth-child(even) td{
+  background:#f8fafc;
+}
+#hasil.mk-theme-profesional .tag{
+  background:#edf3f7!important;
+  color:#244761!important;
+  border:1px solid #c5d4df;
+}
+#hasil.mk-theme-profesional .divider.cute-divider,
+#hasil.mk-theme-profesional .divider{
+  background:linear-gradient(145deg,#eef4f7,#fff)!important;
+  border:1px solid #c8d5df!important;
+  border-radius:var(--mk-radius)!important;
+}
+#hasil.mk-theme-profesional .divider h1{color:var(--mk-deep)!important}
+#hasil.mk-theme-profesional .lkpd-page{
+  border-color:#b9cad7!important;
+  border-radius:var(--mk-radius)!important;
+}
+#hasil.mk-theme-profesional .lkpd-head{
+  background:linear-gradient(135deg,#edf3f7,#fff)!important;
+  border-color:#b9cad7!important;
+}
+#hasil.mk-theme-profesional .lkpd-badge{
+  background:linear-gradient(135deg,#1e3a5f,#527a95)!important;
+}
+#hasil.mk-theme-profesional .lkpd-section-title{color:#1e3a5f!important}
+#hasil.mk-theme-profesional .lkpd-num{
+  background:#edf3f7!important;
+  color:#1e3a5f!important;
+  border-color:#c5d4df!important;
+}
+
+/* ---------- 2. COLORFUL MODERN ---------- */
+#hasil.mk-theme-modern{
+  --mk-accent:#5b4cf0;
+  --mk-accent2:#0ea5e9;
+  --mk-accent3:#f97316;
+  --mk-soft:#f4f1ff;
+  --mk-soft2:#ecfeff;
+  --mk-deep:#23205f;
+  --mk-line:#d9d4ff;
+}
+#hasil.mk-theme-modern .cute-title,
+#hasil.mk-theme-modern .module-title{
+  min-height:112px!important;
+  position:relative!important;
+  overflow:hidden!important;
+  text-align:left!important;
+  padding:20px 118px 18px 21px!important;
+  border:0!important;
+  border-radius:var(--mk-radius)!important;
+  background:
+    radial-gradient(circle at 88% 22%,rgba(255,255,255,.28) 0 42px,transparent 43px),
+    radial-gradient(circle at 79% 88%,rgba(255,255,255,.15) 0 60px,transparent 61px),
+    linear-gradient(135deg,#5b4cf0 0%,#7c3aed 43%,#0ea5e9 100%)!important;
+  box-shadow:0 13px 30px rgba(91,76,240,.18)!important;
+}
+#hasil.mk-theme-modern .module-title:before{display:none!important}
+#hasil.mk-theme-modern .module-title h1{
+  color:#fff!important;
+  font-size:21px!important;
+  text-align:left!important;
+  margin:0 0 6px!important;
+  text-shadow:0 1px 2px rgba(0,0,0,.08);
+}
+#hasil.mk-theme-modern .module-title p{
+  color:rgba(255,255,255,.88)!important;
+  text-align:left!important;
+  margin:2px 0!important;
+}
+#hasil.mk-theme-modern .title-kicker{
+  color:#4338ca!important;
+  background:#fff!important;
+  border:0!important;
+  box-shadow:0 4px 12px rgba(0,0,0,.08);
+}
+#hasil.mk-theme-modern .title-art{
+  background:rgba(255,255,255,.16);
+  border:1px solid rgba(255,255,255,.28);
+  border-radius:24px;
+  padding:8px;
+}
+#hasil.mk-theme-modern .doc h2{
+  display:flex;
+  align-items:center;
+  gap:7px;
+  color:#312e81!important;
+  border:0!important;
+  border-radius:12px;
+  padding:8px 12px!important;
+  background:linear-gradient(90deg,#ede9fe,#ecfeff)!important;
+  box-shadow:inset 4px 0 0 #7c3aed;
+}
+#hasil.mk-theme-modern .doc h3{
+  color:#4f46e5!important;
+  padding-left:10px;
+  border-left:3px solid #38bdf8;
+}
+#hasil.mk-theme-modern .doc table{
+  border-radius:calc(var(--mk-radius) - 6px);
+  box-shadow:0 7px 20px rgba(76,81,191,.08);
+}
+#hasil.mk-theme-modern .doc th{
+  color:#fff!important;
+  background:linear-gradient(90deg,#5b4cf0,#0ea5e9)!important;
+}
+#hasil.mk-theme-modern .doc tr:nth-child(even) td{
+  background:#fbfaff;
+}
+#hasil.mk-theme-modern .tag{
+  background:linear-gradient(90deg,#ede9fe,#e0f2fe)!important;
+  color:#4338ca!important;
+  border:1px solid #d8d4ff;
+}
+#hasil.mk-theme-modern .divider.cute-divider,
+#hasil.mk-theme-modern .divider{
+  background:
+    radial-gradient(circle at 15% 20%,#fde68a 0 35px,transparent 36px),
+    radial-gradient(circle at 86% 80%,#bae6fd 0 48px,transparent 49px),
+    linear-gradient(145deg,#ede9fe,#fff 48%,#ecfeff)!important;
+  border:2px dashed #8b5cf6!important;
+  border-radius:var(--mk-radius)!important;
+}
+#hasil.mk-theme-modern .divider h1{color:#4c1d95!important}
+#hasil.mk-theme-modern .lkpd-page{
+  border-color:#c4b5fd!important;
+  border-radius:var(--mk-radius)!important;
+  box-shadow:0 12px 28px rgba(91,76,240,.08);
+}
+#hasil.mk-theme-modern .lkpd-head{
+  background:linear-gradient(135deg,#fdf2f8,#eef2ff 48%,#ecfeff)!important;
+  border-color:#c4b5fd!important;
+}
+#hasil.mk-theme-modern .lkpd-badge{
+  background:linear-gradient(135deg,#f97316,#ec4899,#7c3aed)!important;
+}
+#hasil.mk-theme-modern .lkpd-section-title{color:#4c1d95!important}
+#hasil.mk-theme-modern .lkpd-num{
+  background:linear-gradient(135deg,#ede9fe,#dbeafe)!important;
+  color:#4f46e5!important;
+}
+
+/* ---------- 3. LUCU CERIA ---------- */
+#hasil.mk-theme-ceria{
+  --mk-accent:#ec4899;
+  --mk-accent2:#8b5cf6;
+  --mk-accent3:#14b8a6;
+  --mk-soft:#fff1f7;
+  --mk-soft2:#f0fdfa;
+  --mk-deep:#6b216f;
+  --mk-line:#f4c4df;
+}
+#hasil.mk-theme-ceria .cute-title,
+#hasil.mk-theme-ceria .module-title{
+  min-height:114px!important;
+  position:relative!important;
+  overflow:hidden!important;
+  text-align:left!important;
+  padding:20px 116px 18px 21px!important;
+  border:2px solid #f9a8d4!important;
+  border-radius:calc(var(--mk-radius) + 4px)!important;
+  background:
+    radial-gradient(circle at 92% 16%,#fef3c7 0 36px,transparent 37px),
+    radial-gradient(circle at 78% 88%,#ccfbf1 0 50px,transparent 51px),
+    linear-gradient(135deg,#fff1f7,#f5f3ff 50%,#ecfeff)!important;
+  box-shadow:0 11px 28px rgba(236,72,153,.12)!important;
+}
+#hasil.mk-theme-ceria .module-title:before{
+  display:block!important;
+  width:8px!important;
+  background:linear-gradient(#ec4899,#8b5cf6,#14b8a6)!important;
+}
+#hasil.mk-theme-ceria .module-title h1{
+  color:#5b2167!important;
+  font-size:20px!important;
+  text-align:left!important;
+  margin:0 0 6px!important;
+}
+#hasil.mk-theme-ceria .module-title p{
+  color:#6b5971!important;
+  text-align:left!important;
+}
+#hasil.mk-theme-ceria .title-kicker{
+  background:#fff!important;
+  color:#be185d!important;
+  border:1px solid #f9a8d4!important;
+}
+#hasil.mk-theme-ceria .title-art{
+  background:rgba(255,255,255,.72);
+  border:2px dashed #f9a8d4;
+  border-radius:28px;
+  padding:7px;
+}
+#hasil.mk-theme-ceria .doc h2{
+  color:#86198f!important;
+  border:0!important;
+  border-radius:999px;
+  padding:8px 13px!important;
+  background:linear-gradient(90deg,#fce7f3,#ede9fe,#ccfbf1)!important;
+  box-shadow:inset 0 0 0 1px rgba(236,72,153,.15);
+}
+#hasil.mk-theme-ceria .doc h3{
+  color:#be185d!important;
+}
+#hasil.mk-theme-ceria .doc table{
+  border-radius:calc(var(--mk-radius) - 4px);
+  box-shadow:0 6px 18px rgba(236,72,153,.07);
+}
+#hasil.mk-theme-ceria .doc th{
+  color:#fff!important;
+  background:linear-gradient(90deg,#ec4899,#8b5cf6)!important;
+}
+#hasil.mk-theme-ceria .doc tr:nth-child(even) td{
+  background:#fff9fc;
+}
+#hasil.mk-theme-ceria .tag{
+  background:#fce7f3!important;
+  color:#9d174d!important;
+  border:1px solid #f9a8d4;
+}
+#hasil.mk-theme-ceria .divider.cute-divider,
+#hasil.mk-theme-ceria .divider{
+  background:
+    radial-gradient(circle at 12% 17%,#fde68a 0 38px,transparent 39px),
+    radial-gradient(circle at 89% 22%,#fbcfe8 0 48px,transparent 49px),
+    radial-gradient(circle at 82% 83%,#99f6e4 0 52px,transparent 53px),
+    linear-gradient(145deg,#fff7ed,#fdf2f8 48%,#f0fdfa)!important;
+  border:2px dashed #f472b6!important;
+  border-radius:calc(var(--mk-radius) + 5px)!important;
+}
+#hasil.mk-theme-ceria .divider h1{color:#86198f!important}
+#hasil.mk-theme-ceria .lkpd-page{
+  border-color:#f9a8d4!important;
+  border-radius:calc(var(--mk-radius) + 5px)!important;
+  box-shadow:0 12px 28px rgba(236,72,153,.09);
+}
+#hasil.mk-theme-ceria .lkpd-head{
+  background:linear-gradient(135deg,#fff1f2,#f5f3ff 48%,#ecfeff)!important;
+  border-color:#f9a8d4!important;
+}
+#hasil.mk-theme-ceria .lkpd-badge{
+  background:linear-gradient(135deg,#fb7185,#ec4899,#8b5cf6)!important;
+}
+#hasil.mk-theme-ceria .lkpd-section-title{color:#9d174d!important}
+#hasil.mk-theme-ceria .lkpd-num{
+  background:linear-gradient(135deg,#fce7f3,#ede9fe)!important;
+  color:#be185d!important;
+  border-color:#f9a8d4!important;
+}
+#hasil.mk-theme-ceria .student-box{
+  border-color:#f4c4df!important;
+  background:#fffafd!important;
+}
+
+/* Compact */
+#hasil.mk-card-compact .module-title{
+  min-height:auto!important;
+  border-radius:10px!important;
+  padding-top:13px!important;
+  padding-bottom:13px!important;
+}
+#hasil.mk-card-compact .title-art{
+  width:64px!important;
+  height:64px!important;
+  top:8px!important;
+}
+#hasil.mk-card-compact .doc h2{
+  border-radius:8px!important;
+  padding-top:6px!important;
+  padding-bottom:6px!important;
+}
+
+/* PDF/Print: pertahankan warna */
+@media print{
+  #hasil.mk-theme-profesional *,
+  #hasil.mk-theme-modern *,
+  #hasil.mk-theme-ceria *{
+    -webkit-print-color-adjust:exact!important;
+    print-color-adjust:exact!important;
+  }
+  #hasil.mk-theme-profesional .module-title,
+  #hasil.mk-theme-modern .module-title,
+  #hasil.mk-theme-ceria .module-title,
+  #hasil.mk-theme-profesional .doc th,
+  #hasil.mk-theme-modern .doc th,
+  #hasil.mk-theme-ceria .doc th,
+  #hasil.mk-theme-profesional .doc h2,
+  #hasil.mk-theme-modern .doc h2,
+  #hasil.mk-theme-ceria .doc h2{
+    -webkit-print-color-adjust:exact!important;
+    print-color-adjust:exact!important;
+  }
+}
+
+</style>
  </head>
  <body>
    <div class="Section1">${clone.innerHTML}</div>
@@ -1442,8 +1856,21 @@ materialProfile=function(sub){
  return p;
 };
 
+
+function moduleThemeValue(){
+ const v=$('temaModul')?.value||'modern';
+ return ['profesional','modern','ceria'].includes(v)?v:'modern';
+}
+function applyModuleTheme(){
+ const root=$('hasil');if(!root)return;
+ root.classList.remove('mk-theme-profesional','mk-theme-modern','mk-theme-ceria','mk-card-soft','mk-card-compact');
+ root.classList.add('mk-theme-'+moduleThemeValue());
+ const card=$('kartuModul')?.value||'soft';
+ root.classList.add(card==='compact'?'mk-card-compact':'mk-card-soft');
+}
 function decorateGeneratedBook(){
  const root=$('hasil');if(root.dataset.generated!=='1')return;
+ applyModuleTheme();
  const theme=mkTheme(),colors=mkColors(theme);
 
  const cover=root.querySelector('.cover');
@@ -1477,6 +1904,13 @@ function decorateGeneratedBook(){
 }
 const mkBaseGenerateBook=generateBook;
 generateBook=function(){mkBaseGenerateBook();decorateGeneratedBook()};
+
+document.addEventListener('change',e=>{
+ if((e.target?.id==='temaModul'||e.target?.id==='kartuModul')&&$('hasil')?.dataset.generated==='1'){
+   applyModuleTheme();
+ }
+});
+
 
 
 
