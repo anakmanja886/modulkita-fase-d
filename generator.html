@@ -218,6 +218,39 @@ footer{text-align:center;color:#667085;font-size:12px;padding:24px 20px 40px}
 .cover-illustrated .school-logo-cover{position:relative;z-index:3}
 @media print{.school-logo-cover{display:block!important;max-width:26mm!important;max-height:26mm!important}}
 
+
+/* V11.1 — COVER BERSIH TOTAL */
+.cover-illustrated .cover-level-badge,
+.cover-illustrated .cover-native-panel,
+.cover-illustrated .cover-level-note,
+.cover-illustrated .cover-info,
+.cover-illustrated .cover-shade,
+.cover-illustrated .school-logo-cover{
+  display:none !important;
+}
+.cover-illustrated{
+  background:#fff !important;
+}
+.cover-illustrated .cover-bg{
+  display:block !important;
+  position:relative !important;
+  inset:auto !important;
+  width:100% !important;
+  height:auto !important;
+  min-height:0 !important;
+  object-fit:contain !important;
+}
+@media print{
+  .cover-illustrated .cover-level-badge,
+  .cover-illustrated .cover-native-panel,
+  .cover-illustrated .cover-level-note,
+  .cover-illustrated .cover-info,
+  .cover-illustrated .cover-shade,
+  .cover-illustrated .school-logo-cover{
+    display:none !important;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -292,7 +325,7 @@ footer{text-align:center;color:#667085;font-size:12px;padding:24px 20px 40px}
 </label>
 
 <div class="group" style="border:2px solid #dbeafe;background:linear-gradient(135deg,#eff6ff,#ffffff)">
-<h3>🖼️ Data Sampul Otomatis</h3>
+<h3>🖼️ Pengaturan Sampul</h3><div class="mini" style="margin-bottom:8px">Untuk tema bergambar, cover dibuat bersih. Identitas lengkap otomatis muncul pada halaman IDENTITAS PERANGKAT sesudah sampul.</div>
 <div class="row">
   <div>
     <label>Semester pada Sampul</label>
@@ -314,7 +347,7 @@ footer{text-align:center;color:#667085;font-size:12px;padding:24px 20px 40px}
   </div>
 </div>
 <div class="notice" style="margin-top:8px">
-  Sampul memakai area identitas kosong yang menutup tulisan bawaan pada poster, lalu sistem mengisi data guru/sekolah satu kali secara bersih. Jenjang berubah otomatis sesuai pilihan.
+  Sampul ilustrasi dibuat bersih tanpa pita jenjang, kotak identitas, logo overlay, atau strip bawah. Data lengkap tetap tercantum pada halaman IDENTITAS PERANGKAT setelah sampul.
 </div>
 </div>
 
@@ -784,7 +817,7 @@ function copyBook(){if($('hasil').dataset.generated!=='1')return alert('Generate
 function downloadWord(){
  if(window.__MK_PLAN==='demo')return alert('Download Word tersedia untuk akun Premium.');
  if($('hasil').dataset.generated!=='1')return alert('Generate perangkat terlebih dahulu.');
- const css=`@page{size:A4;margin:1.7cm}body{font-family:Arial,sans-serif;font-size:10pt;line-height:1.42;color:#111}h1{text-align:center;font-size:16pt}h2{font-size:12pt;margin-top:15pt;border-bottom:1px solid #777;padding-bottom:3pt}h3{font-size:10.5pt}table{border-collapse:collapse;width:100%}td,th{border:1px solid #555;padding:4.5pt;vertical-align:top}th{background:#eee}.cover{text-align:center;padding-top:90pt;page-break-after:always}.cover h1{font-size:26pt}.school-logo-cover{display:block;width:72pt;height:72pt;object-fit:contain;margin:0 auto 12pt}.cover.cover-illustrated{position:relative;padding:0;min-height:720pt;overflow:hidden}.cover-bg{position:absolute;left:0;top:0;width:100%;height:100%;object-fit:cover}.cover-shade{position:absolute;left:0;top:0;width:100%;height:100%}.cover-level-badge{position:absolute;left:23%;right:23%;top:29%;z-index:4;text-align:center;background:#fff;border:1.5pt solid #ec4899;border-radius:18pt;padding:6pt;font-weight:bold}.cover-native-panel{position:absolute;left:12%;right:8%;top:43%;z-index:5;background:#fffdf9;border:0;border-radius:12pt;padding:10pt 12pt}.native-head{display:flex;justify-content:space-between;align-items:center;min-height:24pt;border-bottom:.5pt solid #ddd}.native-title{font-weight:bold;font-size:7.5pt;color:#6d4aa8}.native-logo{width:30pt;height:30pt;object-fit:contain}.cover-native-row{display:grid;grid-template-columns:31% 4% 65%;min-height:20pt;align-items:center;font-size:8.5pt}.cover-native-row .lbl{font-weight:bold}.cover-native-row .colon{text-align:center}.cover-native-row .val{font-weight:bold;border-bottom:1pt dotted #666;padding-bottom:1pt}.cover-native-row .sub{display:block;font-size:6pt;color:#666}.cover-level-note{position:absolute;left:10%;right:10%;bottom:4%;z-index:4;text-align:center;background:#fff;padding:4pt;font-size:8pt}.section-page,.module{page-break-before:always}.divider{page-break-before:always;page-break-after:always;text-align:center;padding-top:170pt}.tag{display:inline-block;border:1px solid #777;padding:2pt 4pt;margin:2pt}.small-note{font-size:8pt;color:#555}.lkpd-page{page-break-before:always}.lkpd-head{border:1px solid #999;padding:10pt}.lkpd-badge{font-weight:bold;font-size:16pt}.student-grid{margin:8pt 0}.student-box{border:1px solid #999;padding:5pt;margin:2pt 0}.lkpd-section-title{font-weight:bold;margin-top:10pt}.lkpd-tip,.lkpd-stimulus,.answer-box{border:1px solid #999;padding:7pt;margin:5pt 0}.lkpd-table{border-collapse:collapse;width:100%}.lkpd-table td,.lkpd-table th{border:1px solid #777;padding:4pt}.lkpd-table th{background:#eee}.lkpd-ill{display:none}`;
+ const css=`@page{size:A4;margin:1.7cm}body{font-family:Arial,sans-serif;font-size:10pt;line-height:1.42;color:#111}h1{text-align:center;font-size:16pt}h2{font-size:12pt;margin-top:15pt;border-bottom:1px solid #777;padding-bottom:3pt}h3{font-size:10.5pt}table{border-collapse:collapse;width:100%}td,th{border:1px solid #555;padding:4.5pt;vertical-align:top}th{background:#eee}.cover{text-align:center;padding-top:90pt;page-break-after:always}.cover h1{font-size:26pt}.school-logo-cover{display:block;width:72pt;height:72pt;object-fit:contain;margin:0 auto 12pt}.cover.cover-illustrated{position:relative;padding:0;page-break-after:always}.cover-bg{display:block;width:100%;height:auto;object-fit:contain}.cover-shade{position:absolute;left:0;top:0;width:100%;height:100%}.cover-level-badge{position:absolute;left:23%;right:23%;top:29%;z-index:4;text-align:center;background:#fff;border:1.5pt solid #ec4899;border-radius:18pt;padding:6pt;font-weight:bold}.cover-native-panel{position:absolute;left:12%;right:8%;top:43%;z-index:5;background:#fffdf9;border:0;border-radius:12pt;padding:10pt 12pt}.native-head{display:flex;justify-content:space-between;align-items:center;min-height:24pt;border-bottom:.5pt solid #ddd}.native-title{font-weight:bold;font-size:7.5pt;color:#6d4aa8}.native-logo{width:30pt;height:30pt;object-fit:contain}.cover-native-row{display:grid;grid-template-columns:31% 4% 65%;min-height:20pt;align-items:center;font-size:8.5pt}.cover-native-row .lbl{font-weight:bold}.cover-native-row .colon{text-align:center}.cover-native-row .val{font-weight:bold;border-bottom:1pt dotted #666;padding-bottom:1pt}.cover-native-row .sub{display:block;font-size:6pt;color:#666}.cover-level-note{position:absolute;left:10%;right:10%;bottom:4%;z-index:4;text-align:center;background:#fff;padding:4pt;font-size:8pt}.section-page,.module{page-break-before:always}.divider{page-break-before:always;page-break-after:always;text-align:center;padding-top:170pt}.tag{display:inline-block;border:1px solid #777;padding:2pt 4pt;margin:2pt}.small-note{font-size:8pt;color:#555}.lkpd-page{page-break-before:always}.lkpd-head{border:1px solid #999;padding:10pt}.lkpd-badge{font-weight:bold;font-size:16pt}.student-grid{margin:8pt 0}.student-box{border:1px solid #999;padding:5pt;margin:2pt 0}.lkpd-section-title{font-weight:bold;margin-top:10pt}.lkpd-tip,.lkpd-stimulus,.answer-box{border:1px solid #999;padding:7pt;margin:5pt 0}.lkpd-table{border-collapse:collapse;width:100%}.lkpd-table td,.lkpd-table th{border:1px solid #777;padding:4pt}.lkpd-table th{background:#eee}.lkpd-ill{display:none}`;
  const doc=`<html><head><meta charset="utf-8"><style>${css}</style></head><body>${$('hasil').innerHTML}</body></html>`;
  const blob=new Blob([doc],{type:'application/msword'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`Perangkat_Modul_Ajar_${($('mapel').value||'Mapel').replace(/\s+/g,'_')}_${$('tahun').value.replace('/','-')}.doc`;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),700);
 }
@@ -1082,7 +1115,7 @@ function decorateGeneratedBook(){
    }else{
      cover.className='cover cover-illustrated';
      cover.setAttribute('style',mkThemeStyle(theme));
-     cover.innerHTML=`<img class="cover-bg" src="${MK_COVER_IMAGES[theme]}" alt="Cover ${mkThemeName(theme)}"><div class="cover-shade"></div>${nativeCoverPanelHTML()}`;
+     cover.innerHTML=`<img class="cover-bg" src="${MK_COVER_IMAGES[theme]}" alt="Cover ${mkThemeName(theme)}">`;
    }
  }
 
