@@ -111,41 +111,21 @@ footer{text-align:center;color:#667085;font-size:12px;padding:24px 20px 40px}
 }
 .cover-native-panel{
   position:absolute;z-index:4;
-  left:13.5%;right:10.5%;top:43.4%;
-  background:rgba(255,255,255,.90);
-  border:2px solid rgba(255,255,255,.92);
-  border-radius:22px;
-  padding:16px 18px 14px;
-  box-shadow:0 8px 20px rgba(15,23,42,.10);
-  backdrop-filter:blur(2px);
+  left:18.5%;right:13.5%;top:45.5%;
+  background:transparent;border:0;border-radius:0;padding:0;
+  box-shadow:none;backdrop-filter:none;
 }
-.cover-native-panel .native-head{
-  display:flex;align-items:center;justify-content:space-between;
-  gap:12px;margin-bottom:8px;
-}
-.cover-native-panel .native-title{
-  font-size:12px;font-weight:950;letter-spacing:.08em;
-  text-transform:uppercase;color:var(--ca,#4338ca);
-}
+.cover-native-panel .native-head{position:relative;min-height:24px;margin:0 0 2px 0}
+.cover-native-panel .native-title{font-size:9px;font-weight:950;letter-spacing:.08em;text-transform:uppercase;color:#6d4aa8;opacity:.78}
 .cover-native-panel .native-logo{
-  width:58px;height:58px;object-fit:contain;
-  background:white;border-radius:12px;padding:5px;box-sizing:border-box;
-  border:1px solid #e2e8f0;
+  position:absolute;right:-4px;top:-8px;width:42px;height:42px;object-fit:contain;
+  background:rgba(255,255,255,.92);border-radius:10px;padding:4px;box-sizing:border-box;border:1px solid #e2e8f0
 }
-.cover-native-row{
-  display:grid;grid-template-columns:34% 4% 62%;
-  align-items:end;min-height:37px;
-  font-size:12px;color:#172033;
-}
+.cover-native-row{display:grid;grid-template-columns:30% 4% 66%;align-items:center;min-height:30px;font-size:11px;color:#172033}
 .cover-native-row .lbl{font-weight:900}
 .cover-native-row .colon{text-align:center;font-weight:900}
-.cover-native-row .val{
-  font-weight:850;border-bottom:2px dotted #64748b;
-  padding:2px 3px 4px;min-height:18px;
-}
-.cover-native-row .sub{
-  display:block;font-size:9px;font-weight:700;color:#64748b;margin-top:2px;
-}
+.cover-native-row .val{font-weight:850;border-bottom:1.5px dotted rgba(71,85,105,.75);padding:0 3px 3px;min-height:15px}
+.cover-native-row .sub{display:inline;font-size:8px;font-weight:700;color:#64748b;margin-left:5px}
 .cover-illustrated .cover-info{display:none!important}
 .cover-level-note{
   position:absolute;z-index:4;left:10%;right:10%;bottom:4.5%;
@@ -153,15 +133,17 @@ footer{text-align:center;color:#667085;font-size:12px;padding:24px 20px 40px}
   background:rgba(255,255,255,.82);border-radius:999px;padding:6px 10px;
 }
 @media(max-width:700px){
-  .cover-level-badge{left:18%;right:18%;font-size:11px;padding:6px 8px}
-  .cover-native-panel{left:9%;right:7%;padding:12px 13px}
-  .cover-native-row{font-size:10.5px;min-height:31px;grid-template-columns:35% 4% 61%}
-  .cover-native-panel .native-logo{width:48px;height:48px}
+  .cover-level-badge{left:20%;right:20%;font-size:10px;padding:5px 7px}
+  .cover-native-panel{left:17%;right:12%;top:45.8%;padding:0}
+  .cover-native-row{font-size:9.5px;min-height:27px;grid-template-columns:31% 4% 65%}
+  .cover-native-panel .native-logo{width:36px;height:36px;right:-2px;top:-6px}
+  .cover-native-panel .native-title{font-size:7.5px}
+  .cover-native-row .sub{font-size:7px}
 }
 @media print{
   .cover-level-badge{box-shadow:none!important}
-  .cover-native-panel{box-shadow:none!important;backdrop-filter:none!important;background:rgba(255,255,255,.94)!important}
-  .cover-level-note{background:rgba(255,255,255,.88)!important}
+  .cover-native-panel{box-shadow:none!important;backdrop-filter:none!important;background:transparent!important}
+  .cover-level-note{background:rgba(255,255,255,.72)!important}
 }
 
 .school-logo-cover{max-width:110px!important;max-height:110px!important}
@@ -264,7 +246,7 @@ footer{text-align:center;color:#667085;font-size:12px;padding:24px 20px 40px}
   </div>
 </div>
 <div class="notice" style="margin-top:8px">
-  Sampul otomatis mengisi langsung bidang identitas pada gambar. Tulisan jenjang juga berubah sendiri: SD/MI, SMP/MTs, SMA, MA, SMK, atau MAK sesuai pilihan.
+  Sampul otomatis mengisi bidang identitas tanpa kotak putih besar, sehingga ilustrasi tetap terlihat. Jenjang berubah otomatis sesuai pilihan.
 </div>
 </div>
 
@@ -734,7 +716,7 @@ function copyBook(){if($('hasil').dataset.generated!=='1')return alert('Generate
 function downloadWord(){
  if(window.__MK_PLAN==='demo')return alert('Download Word tersedia untuk akun Premium.');
  if($('hasil').dataset.generated!=='1')return alert('Generate perangkat terlebih dahulu.');
- const css=`@page{size:A4;margin:1.7cm}body{font-family:Arial,sans-serif;font-size:10pt;line-height:1.42;color:#111}h1{text-align:center;font-size:16pt}h2{font-size:12pt;margin-top:15pt;border-bottom:1px solid #777;padding-bottom:3pt}h3{font-size:10.5pt}table{border-collapse:collapse;width:100%}td,th{border:1px solid #555;padding:4.5pt;vertical-align:top}th{background:#eee}.cover{text-align:center;padding-top:90pt;page-break-after:always}.cover h1{font-size:26pt}.school-logo-cover{display:block;width:72pt;height:72pt;object-fit:contain;margin:0 auto 12pt}.cover.cover-illustrated{position:relative;padding:0;min-height:720pt;overflow:hidden}.cover-bg{position:absolute;left:0;top:0;width:100%;height:100%;object-fit:cover}.cover-shade{position:absolute;left:0;top:0;width:100%;height:100%}.cover-level-badge{position:absolute;left:23%;right:23%;top:29%;z-index:4;text-align:center;background:#fff;border:1.5pt solid #ec4899;border-radius:18pt;padding:6pt;font-weight:bold}.cover-native-panel{position:absolute;left:13%;right:10%;top:43%;z-index:4;background:#fff;border:1pt solid #ddd;border-radius:12pt;padding:10pt}.native-head{display:flex;justify-content:space-between;align-items:center}.native-title{font-weight:bold}.native-logo{width:42pt;height:42pt;object-fit:contain}.cover-native-row{display:grid;grid-template-columns:34% 4% 62%;min-height:24pt;align-items:end}.cover-native-row .lbl{font-weight:bold}.cover-native-row .colon{text-align:center}.cover-native-row .val{font-weight:bold;border-bottom:1pt dotted #666;padding-bottom:2pt}.cover-native-row .sub{display:block;font-size:7.5pt;color:#666}.cover-level-note{position:absolute;left:10%;right:10%;bottom:4%;z-index:4;text-align:center;background:#fff;padding:4pt;font-size:8pt}.section-page,.module{page-break-before:always}.divider{page-break-before:always;page-break-after:always;text-align:center;padding-top:170pt}.tag{display:inline-block;border:1px solid #777;padding:2pt 4pt;margin:2pt}.small-note{font-size:8pt;color:#555}.lkpd-page{page-break-before:always}.lkpd-head{border:1px solid #999;padding:10pt}.lkpd-badge{font-weight:bold;font-size:16pt}.student-grid{margin:8pt 0}.student-box{border:1px solid #999;padding:5pt;margin:2pt 0}.lkpd-section-title{font-weight:bold;margin-top:10pt}.lkpd-tip,.lkpd-stimulus,.answer-box{border:1px solid #999;padding:7pt;margin:5pt 0}.lkpd-table{border-collapse:collapse;width:100%}.lkpd-table td,.lkpd-table th{border:1px solid #777;padding:4pt}.lkpd-table th{background:#eee}.lkpd-ill{display:none}`;
+ const css=`@page{size:A4;margin:1.7cm}body{font-family:Arial,sans-serif;font-size:10pt;line-height:1.42;color:#111}h1{text-align:center;font-size:16pt}h2{font-size:12pt;margin-top:15pt;border-bottom:1px solid #777;padding-bottom:3pt}h3{font-size:10.5pt}table{border-collapse:collapse;width:100%}td,th{border:1px solid #555;padding:4.5pt;vertical-align:top}th{background:#eee}.cover{text-align:center;padding-top:90pt;page-break-after:always}.cover h1{font-size:26pt}.school-logo-cover{display:block;width:72pt;height:72pt;object-fit:contain;margin:0 auto 12pt}.cover.cover-illustrated{position:relative;padding:0;min-height:720pt;overflow:hidden}.cover-bg{position:absolute;left:0;top:0;width:100%;height:100%;object-fit:cover}.cover-shade{position:absolute;left:0;top:0;width:100%;height:100%}.cover-level-badge{position:absolute;left:23%;right:23%;top:29%;z-index:4;text-align:center;background:#fff;border:1.5pt solid #ec4899;border-radius:18pt;padding:6pt;font-weight:bold}.cover-native-panel{position:absolute;left:18%;right:13%;top:45%;z-index:4;background:transparent;border:0;padding:0}.native-head{position:relative;min-height:18pt}.native-title{font-weight:bold;font-size:7pt;color:#666}.native-logo{position:absolute;right:0;top:-4pt;width:30pt;height:30pt;object-fit:contain}.cover-native-row{display:grid;grid-template-columns:30% 4% 66%;min-height:20pt;align-items:center;font-size:8.5pt}.cover-native-row .lbl{font-weight:bold}.cover-native-row .colon{text-align:center}.cover-native-row .val{font-weight:bold;border-bottom:1pt dotted #666;padding-bottom:1pt}.cover-native-row .sub{display:inline;font-size:6pt;color:#666}.cover-level-note{position:absolute;left:10%;right:10%;bottom:4%;z-index:4;text-align:center;background:#fff;padding:4pt;font-size:8pt}.section-page,.module{page-break-before:always}.divider{page-break-before:always;page-break-after:always;text-align:center;padding-top:170pt}.tag{display:inline-block;border:1px solid #777;padding:2pt 4pt;margin:2pt}.small-note{font-size:8pt;color:#555}.lkpd-page{page-break-before:always}.lkpd-head{border:1px solid #999;padding:10pt}.lkpd-badge{font-weight:bold;font-size:16pt}.student-grid{margin:8pt 0}.student-box{border:1px solid #999;padding:5pt;margin:2pt 0}.lkpd-section-title{font-weight:bold;margin-top:10pt}.lkpd-tip,.lkpd-stimulus,.answer-box{border:1px solid #999;padding:7pt;margin:5pt 0}.lkpd-table{border-collapse:collapse;width:100%}.lkpd-table td,.lkpd-table th{border:1px solid #777;padding:4pt}.lkpd-table th{background:#eee}.lkpd-ill{display:none}`;
  const doc=`<html><head><meta charset="utf-8"><style>${css}</style></head><body>${$('hasil').innerHTML}</body></html>`;
  const blob=new Blob([doc],{type:'application/msword'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`Perangkat_Modul_Ajar_${($('mapel').value||'Mapel').replace(/\s+/g,'_')}_${$('tahun').value.replace('/','-')}.doc`;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),700);
 }
@@ -936,12 +918,12 @@ function nativeCoverPanelHTML(){
  const nip=($('nip')?.value||'').trim();
  return `<div class="cover-level-badge">${esc(coverLevelLabel())}</div>
  <div class="cover-native-panel">
-   <div class="native-head"><div class="native-title">Identitas Perangkat ${esc(coverLevelShort())}</div>${logo}</div>
+   <div class="native-head"><div class="native-title">${esc(coverLevelShort())}</div>${logo}</div>
    <div class="cover-native-row"><span class="lbl">Nama Sekolah</span><span class="colon">:</span><span class="val">${esc($('sekolah').value||'—')}</span></div>
    <div class="cover-native-row"><span class="lbl">Mata Pelajaran</span><span class="colon">:</span><span class="val">${esc($('mapel').value||'—')}</span></div>
    <div class="cover-native-row"><span class="lbl">Fase / Kelas</span><span class="colon">:</span><span class="val">${esc($('fasekelas').value||'—')}</span></div>
-   <div class="cover-native-row"><span class="lbl">Tahun Pelajaran</span><span class="colon">:</span><span class="val">${esc($('tahun').value||'—')}<span class="sub">${esc(semesterCoverText())}</span></span></div>
-   <div class="cover-native-row"><span class="lbl">Nama Guru</span><span class="colon">:</span><span class="val">${esc($('guru').value||'—')}${nip?`<span class="sub">NIP/NUPTK: ${esc(nip)}</span>`:''}</span></div>
+   <div class="cover-native-row"><span class="lbl">Tahun Pelajaran</span><span class="colon">:</span><span class="val">${esc($('tahun').value||'—')} <span class="sub">${esc(semesterCoverText())}</span></span></div>
+   <div class="cover-native-row"><span class="lbl">Nama Guru</span><span class="colon">:</span><span class="val">${esc($('guru').value||'—')}${nip?` <span class="sub">• NIP/NUPTK ${esc(nip)}</span>`:''}</span></div>
  </div>
  <div class="cover-level-note">${esc($('jenjang').value||'')} • ${esc($('fasekelas').value||'')} • ${esc(semesterCoverText())}</div>`;
 }
