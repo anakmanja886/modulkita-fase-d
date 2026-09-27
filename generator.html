@@ -260,7 +260,7 @@ footer{text-align:center;color:#667085;font-size:12px;padding:24px 20px 40px}
 <header class="top">
   <div class="nav"><div class="brand"><div class="logo">M</div><div>ModulKita <span style="opacity:.8">Premium</span></div></div><button class="navbtn" onclick="loadExample()">Muat Contoh VIII</button></div>
   <div class="hero">
-    <div><span class="badge">Generator Buku Perangkat Pembelajaran Mendalam</span><h1>Isi Bab & Subbab.<br>Jadi perangkat 1 tahun.</h1><p>Generator menyusun Analisis CP→TP, ATP, Kalender Pendidikan kerja, Analisis Alokasi Waktu, PROTA, PROSEM, Modul Ajar lengkap, dan LKPD. Jika Madrasah Aliyah dipilih, integrasi Kurikulum Berbasis Cinta (KBC) dan Panca Cinta otomatis tersedia.</p><div class="chips"><span class="chip">CP → TP</span><span class="chip">ATP</span><span class="chip">Kalender</span><span class="chip">PROTA</span><span class="chip">PROSEM</span><span class="chip">Modul Ajar</span><span class="chip">LKPD Menarik</span><span class="chip">SD/MI • SMP/MTs • SMA • MA • SMK</span><span class="chip">Cover Variatif per Guru</span></div></div>
+    <div><span class="badge">Generator Buku Perangkat Pembelajaran Mendalam</span><h1>Isi Bab & Subbab.<br>Jadi perangkat 1 tahun.</h1><p>Generator menyusun Analisis CP→TP, ATP, Kalender Pendidikan kerja, Analisis Alokasi Waktu, PROTA, PROSEM, Modul Ajar lengkap, dan LKPD. Jika Madrasah Aliyah dipilih, integrasi Kurikulum Berbasis Cinta (KBC) dan Panca Cinta otomatis tersedia.</p><div class="chips"><span class="chip">CP → TP</span><span class="chip">ATP</span><span class="chip">Kalender</span><span class="chip">PROTA</span><span class="chip">PROSEM</span><span class="chip">Modul Ajar</span><span class="chip">LKPD Menarik</span><span class="chip">SD • MI • SMP/MTs • SMA • MA • SMK</span><span class="chip">Cover Variatif per Guru</span></div></div>
     <div class="hero-card"><b>Urutan buku otomatis:</b><ul><li>Cover, identitas, kata pengantar, daftar isi</li><li>Analisis CP menjadi TP</li><li>ATP Ganjil & Genap</li><li>Kalender Pendidikan kerja & Analisis Alokasi Waktu</li><li>Program Tahunan (PROTA) & Program Semester (PROSEM)</li><li>Modul Ajar Pembelajaran Mendalam per subbab</li><li>Khusus MA: Integrasi KBC & Panca Cinta</li><li>LKPD menarik per subbab + rubrik guru</li><li>Asesmen, remedial/pengayaan, dan refleksi</li></ul></div>
   </div>
 </header>
@@ -273,7 +273,8 @@ footer{text-align:center;color:#667085;font-size:12px;padding:24px 20px 40px}
 <label>Nama Sekolah/Madrasah</label><input id="sekolah" placeholder="Contoh: SMP Negeri 9 Masni">
 <div class="row"><div><label>Nama Guru/Penyusun</label><input id="guru" placeholder="Nama lengkap, gelar"></div><div><label>NIP/NUPTK</label><input id="nip"></div></div>
 <div class="row"><div><label>Jenjang</label><select id="jenjang">
-<option>SD/MI</option>
+<option>SD</option>
+<option>Madrasah Ibtidaiyah (MI)</option>
 <option selected>SMP/MTs</option>
 <option>SMA</option>
 <option>Madrasah Aliyah (MA)</option>
@@ -285,7 +286,7 @@ footer{text-align:center;color:#667085;font-size:12px;padding:24px 20px 40px}
 <option value="Fase D / Kelas IX">Fase D / Kelas IX</option>
 </select><div class="mini">Pilihan fase/kelas otomatis mengikuti jenjang agar tidak tertukar.</div></div></div>
 <div id="sdCurriculumBox" class="notice" style="display:none;background:#f0fdf4;border-color:#86efac;color:#166534;margin-top:10px">
-  <b>🌱 Mode SD/MI — Kurikulum terkini</b>
+  <b id="sdCurriculumTitle">🌱 Mode SD — Kurikulum terkini</b>
   <div id="sdCurriculumStatus" class="mini" style="margin-top:5px;color:#166534"></div>
 </div>
 <div class="row"><div><label>Mata Pelajaran</label><input id="mapel" list="mapelList" placeholder="Pilih atau ketik mata pelajaran"><datalist id="mapelList">
@@ -316,8 +317,8 @@ footer{text-align:center;color:#667085;font-size:12px;padding:24px 20px 40px}
 <option value="Prakarya Pengolahan">
 <option value="Muatan Lokal">
 <option value="Bahasa Daerah">
-</datalist><div class="mini">Daftar mata pelajaran dan CP otomatis menyesuaikan jenjang/fase. Untuk SD, IPAS digunakan sebagai mapel terintegrasi pada Fase B–C; Koding dan Kecerdasan Artifisial tersedia sebagai pilihan pada Fase C.</div></div><div><label>Gaya Cover & Halaman</label><select id="temaVisual"><option value="auto" selected>✨ Otomatis — berbeda tiap guru</option><option value="kawaii">🌈 Kawaii Pastel</option><option value="taman">🌿 Taman Ceria</option><option value="angkasa">🚀 Jelajah Antariksa</option><option value="ceria">🎒 Kelas Pelangi</option><option value="formal">📄 Formal Tanpa Gambar</option></select><div class="mini">Mode otomatis memilih tema dari nama guru, sekolah, dan mapel.</div></div></div>
-<div class="row"><div><label>Tahun Pelajaran</label><input id="tahun" value="2026/2027"></div><div><label>JP per Minggu</label><input id="jpMinggu" type="number" min="1" value="6"></div></div>
+</datalist><div class="mini">Daftar mata pelajaran dan CP otomatis menyesuaikan jenjang/fase. Mode MI memakai struktur khusus Kemenag: Al-Qur’an Hadis, Akidah Akhlak, Fikih, SKI (kelas III–VI), Bahasa Arab, serta mapel umum sesuai kelas.</div></div><div><label>Gaya Cover & Halaman</label><select id="temaVisual"><option value="auto" selected>✨ Otomatis — berbeda tiap guru</option><option value="kawaii">🌈 Kawaii Pastel</option><option value="taman">🌿 Taman Ceria</option><option value="angkasa">🚀 Jelajah Antariksa</option><option value="ceria">🎒 Kelas Pelangi</option><option value="formal">📄 Formal Tanpa Gambar</option></select><div class="mini">Mode otomatis memilih tema dari nama guru, sekolah, dan mapel.</div></div></div>
+<div class="row"><div><label>Tahun Pelajaran</label><input id="tahun" value="2026/2027"></div><div><label>JP per Minggu</label><input id="jpMinggu" type="number" min="1" value="6"><div id="jpDurationHint" class="mini" style="margin-top:4px"></div></div></div>
 <label style="display:flex;align-items:flex-start;gap:8px;font-weight:850;margin-top:8px">
   <input id="autoAllocation" type="checkbox" checked style="width:auto;margin-top:3px">
   <span>Otomatis sesuaikan alokasi materi dengan seluruh JP efektif semester
@@ -356,9 +357,9 @@ footer{text-align:center;color:#667085;font-size:12px;padding:24px 20px 40px}
 </div>
 
 <div class="group" id="kbcGroup" style="display:none;border:2px solid #bbf7d0;background:linear-gradient(135deg,#f0fdf4,#ffffff)">
-<h3>💚 Khusus Madrasah Aliyah — Kurikulum Berbasis Cinta (KBC)</h3>
+<h3 id="kbcTitle">💚 Kurikulum Berbasis Cinta (KBC) — Madrasah</h3>
 <div class="notice" style="background:#ecfdf3;border-color:#86efac;color:#166534">
-<b>Mode MA aktif.</b> Modul ajar akan mengintegrasikan Panca Cinta ke tujuan, materi, pengalaman belajar (awal–memahami–mengaplikasi–merefleksi–penutup), refleksi, dan asesmen. CP resmi tetap ditempel sesuai mata pelajaran/fase.
+<b id="kbcModeLabel">Mode madrasah aktif.</b> Modul ajar akan mengintegrasikan Panca Cinta ke tujuan, materi, pengalaman belajar (awal–memahami–mengaplikasi–merefleksi–penutup), refleksi, dan asesmen. CP resmi tetap disesuaikan dengan mata pelajaran/fase.
 </div>
 <label style="display:flex;align-items:center;gap:8px;font-weight:850">
 <input id="includeKBC" type="checkbox" checked style="width:auto"> Integrasikan Kurikulum Berbasis Cinta (KBC)
@@ -388,7 +389,7 @@ footer{text-align:center;color:#667085;font-size:12px;padding:24px 20px 40px}
 </div>
 <label>Catatan Integrasi KBC <span class="mini">(opsional)</span></label>
 <textarea id="kbcNote" placeholder="Contoh: tekankan empati, kepedulian lingkungan, adab mencari ilmu, cinta tanah air, atau konteks khas madrasah."></textarea>
-<p class="mini">Pilihan ini hanya muncul untuk Madrasah Aliyah/MAK. Jika “Otomatis”, sistem memilih 1–2 topik Panca Cinta yang relevan dengan materi.</p>
+<p class="mini">Panel KBC muncul otomatis untuk MI, MA, dan MAK. Jika “Otomatis”, sistem memilih 1–2 topik Panca Cinta yang relevan dengan materi.</p>
 </div>
 
 <div class="group"><h3>Landasan Pembelajaran</h3>
@@ -519,7 +520,7 @@ function loadData(){
 document.addEventListener('input',e=>{if(e.target.closest('.form-card')){if(e.target.id==='jpMinggu'){renderCalendar('ganjil');renderCalendar('genap');renderSemester('ganjil');renderSemester('genap')}saveData()}});
 document.addEventListener('change',e=>{if(e.target?.id==='autoAllocation'){renderSemester('ganjil');renderSemester('genap');saveData()}});
 
-function subjectKind(){const m=$('mapel').value.toLowerCase();if(m.includes('ilmu pengetahuan alam dan sosial')||m.includes('ipas'))return'ipas';if(m.includes('koding')||m.includes('kecerdasan artifisial'))return'kodingka';if(m.includes('bahasa'))return'bahasa';if(m.includes('matematika'))return'matematika';if(m==='ipa'||m.includes('ilmu pengetahuan alam'))return'ipa';if(m==='ips'||m.includes('ilmu pengetahuan sosial'))return'ips';if(m.includes('pjok')||m.includes('jasmani'))return'pjok';if(m.includes('informatika'))return'informatika';if(m.includes('seni'))return'seni';return'umum'}
+function subjectKind(){const m=$('mapel').value.toLowerCase();if(/qur.?an.*hadis|akidah akhlak|fikih|fiqih|sejarah kebudayaan islam|\bski\b/.test(m))return'agama';if(m.includes('ilmu pengetahuan alam dan sosial')||m.includes('ipas'))return'ipas';if(m.includes('koding')||m.includes('kecerdasan artifisial'))return'kodingka';if(m.includes('bahasa arab'))return'bahasa';if(m.includes('bahasa'))return'bahasa';if(m.includes('matematika'))return'matematika';if(m==='ipa'||m.includes('ilmu pengetahuan alam'))return'ipa';if(m==='ips'||m.includes('ilmu pengetahuan sosial'))return'ips';if(m.includes('pjok')||m.includes('jasmani'))return'pjok';if(m.includes('informatika'))return'informatika';if(m.includes('seni'))return'seni';return'umum'}
 function genericCP(){
  const m=$('mapel').value||'mata pelajaran',k=subjectKind();
  if(k==='bahasa')return`Peserta didik mengembangkan kemampuan menyimak, membaca dan memirsa, berbicara dan mempresentasikan, serta menulis untuk memahami, mengolah, menilai, dan menyampaikan informasi secara kritis, kreatif, dan sesuai konteks pada ${m}.`;
@@ -648,7 +649,7 @@ function prosemSection(sem){
 function moduleHTML(x){
  const sub=x.sub,prof=materialProfile(sub.name),acts=activities(sub.name),cp=$('cp').value.trim()||genericCP(),dpl=inferDPL(sub.name),elem=inferElement(sub.name),model=inferModel(sub.name);
  return`<section class="module"><div class="module-title"><h1>MODUL AJAR PEMBELAJARAN MENDALAM — MODUL ${x.no}</h1><p><b>${esc($('mapel').value)}</b> • ${esc($('fasekelas').value)} • ${esc(x.sem)}</p><p><b>${esc(x.chapter.name)}</b> — ${esc(sub.name)}</p></div>
- <h2>A. Identitas Modul</h2><table><tr><td><b>Sekolah/Madrasah</b></td><td>${esc($('sekolah').value||'—')}</td></tr><tr><td><b>Mata Pelajaran</b></td><td>${esc($('mapel').value||'—')}</td></tr><tr><td><b>Tema/Subbab</b></td><td>${esc(sub.name)}</td></tr><tr><td><b>Fase/Kelas</b></td><td>${esc($('fasekelas').value)}</td></tr><tr><td><b>Alokasi Waktu</b></td><td>${allocatedJP(x)} JP</td></tr><tr><td><b>Tahun Pelajaran</b></td><td>${esc($('tahun').value)}</td></tr><tr><td><b>Nama Penyusun</b></td><td>${esc($('guru').value||'—')}</td></tr></table>
+ <h2>A. Identitas Modul</h2><table><tr><td><b>Sekolah/Madrasah</b></td><td>${esc($('sekolah').value||'—')}</td></tr><tr><td><b>Mata Pelajaran</b></td><td>${esc($('mapel').value||'—')}</td></tr><tr><td><b>Tema/Subbab</b></td><td>${esc(sub.name)}</td></tr><tr><td><b>Fase/Kelas</b></td><td>${esc($('fasekelas').value)}</td></tr><tr><td><b>Alokasi Waktu</b></td><td>${allocatedJP(x)} JP${isMI()?` (${allocatedJP(x)*35} menit; 1 JP = 35 menit)`:''}</td></tr><tr><td><b>Tahun Pelajaran</b></td><td>${esc($('tahun').value)}</td></tr><tr><td><b>Nama Penyusun</b></td><td>${esc($('guru').value||'—')}</td></tr></table>
  <h2>B. Identifikasi Peserta Didik</h2><p><b>Pengetahuan/Kesiapan Awal:</b> Peserta didik memiliki pengalaman awal yang beragam terkait ${esc(sub.name)} dan memerlukan pemetaan melalui pertanyaan diagnostik.</p><p><b>Minat & Latar Belakang:</b> ${esc($('karakter').value)}</p><p><b>Kebutuhan Belajar:</b> Contoh konkret, bimbingan bertahap, latihan kontekstual, umpan balik, dan kesempatan memperbaiki hasil.</p>
  <h2>C. Materi Pelajaran</h2><table><tr><td><b>Jenis Pengetahuan</b></td><td>${esc(prof.jenis)}</td></tr><tr><td><b>Relevansi</b></td><td>${esc(prof.relevansi)}</td></tr><tr><td><b>Tingkat Kesulitan</b></td><td>${esc(prof.sulit)}</td></tr><tr><td><b>Struktur Materi</b></td><td>${esc(prof.struktur)}</td></tr><tr><td><b>Integrasi Nilai & Karakter</b></td><td>${esc(prof.nilai)}</td></tr></table>
  <h2>D. Dimensi Profil Lulusan</h2><p>${dpl.map(x=>`<span class="tag">✓ ${esc(x)}</span>`).join(' ')}</p>
@@ -806,7 +807,7 @@ function generateBook(){
  saveData();const mods=getModules();if(window.__MK_PLAN==='demo'&&mods.length>1)return alert('Mode Demo hanya dapat membuat 1 subbab. Hapus subbab lain atau upgrade ke Premium.');if(!mods.length)return alert('Tambahkan minimal satu subbab.');
  const m=$('mapel').value||'Mata Pelajaran';
  let h=`<section class="cover">${coverLogoHTML()}<div class="kicker">Buku Perangkat Pembelajaran & Modul Ajar Pembelajaran Mendalam</div><h1>${esc(m)}</h1><h2>${esc($('fasekelas').value)} • ${esc($('jenjang').value)}</h2><div class="meta"><b>${esc(semesterCoverText())}</b><br>Tahun Pelajaran <b>${esc($('tahun').value)}</b><br><br>${esc($('sekolah').value||'Nama Sekolah/Madrasah')}<br><br>Disusun oleh<br><b>${esc($('guru').value||'Nama Guru/Penyusun')}</b>${$('nip').value?`<br>NIP/NUPTK: ${esc($('nip').value)}`:''}</div></section>`;
- h+=`<section class="section-page" style="page-break-before:auto"><div class="module-title"><h1>IDENTITAS PERANGKAT</h1></div><table><tr><td><b>Satuan Pendidikan</b></td><td>${esc($('sekolah').value||'—')}</td></tr><tr><td><b>Jenjang</b></td><td>${esc($('jenjang').value||'—')}</td></tr><tr><td><b>Mata Pelajaran</b></td><td>${esc(m)}</td></tr><tr><td><b>Fase/Kelas</b></td><td>${esc($('fasekelas').value)}</td></tr><tr><td><b>Semester</b></td><td>${esc(semesterCoverText())}</td></tr><tr><td><b>Tahun Pelajaran</b></td><td>${esc($('tahun').value)}</td></tr><tr><td><b>Penyusun</b></td><td>${esc($('guru').value||'—')}</td></tr><tr><td><b>NIP/NUPTK</b></td><td>${esc($('nip').value||'—')}</td></tr></table><h2>Kata Pengantar</h2><p>Buku perangkat pembelajaran ini menghimpun Analisis CP menjadi TP, ATP, kalender pendidikan kerja, analisis alokasi waktu, Program Tahunan, Program Semester, dan Modul Ajar Pembelajaran Mendalam. Setiap subbab disusun sebagai satu modul yang dapat diedit dan disesuaikan dengan kondisi satuan pendidikan.</p>${$('catatan').value?`<h2>Catatan Penyusun</h2><p>${esc($('catatan').value)}</p>`:''}<h2>Daftar Isi</h2><ol><li>Analisis CP menjadi TP</li><li>ATP Semester Ganjil</li><li>ATP Semester Genap</li><li>Kalender Pendidikan Kerja & Minggu Efektif</li><li>Analisis Alokasi Waktu</li><li>Program Tahunan (PROTA)</li><li>Program Semester Ganjil (PROSEM)</li><li>Program Semester Genap (PROSEM)</li><li>Modul Ajar Pembelajaran Mendalam per Subbab</li><li>LKPD Menarik per Subbab</li></ol></section>`;
+ h+=`<section class="section-page" style="page-break-before:auto"><div class="module-title"><h1>IDENTITAS PERANGKAT</h1></div><table><tr><td><b>Satuan Pendidikan</b></td><td>${esc($('sekolah').value||'—')}</td></tr><tr><td><b>Jenjang</b></td><td>${esc($('jenjang').value||'—')}</td></tr>${isMI()?`<tr><td><b>Acuan Madrasah</b></td><td>KMA No. 1503 Tahun 2025 • CP PAI & Bahasa Arab: SK Dirjen Pendis No. 9941 Tahun 2025 • 1 JP = 35 menit</td></tr>`:''}<tr><td><b>Mata Pelajaran</b></td><td>${esc(m)}</td></tr><tr><td><b>Fase/Kelas</b></td><td>${esc($('fasekelas').value)}</td></tr><tr><td><b>Semester</b></td><td>${esc(semesterCoverText())}</td></tr><tr><td><b>Tahun Pelajaran</b></td><td>${esc($('tahun').value)}</td></tr><tr><td><b>Penyusun</b></td><td>${esc($('guru').value||'—')}</td></tr><tr><td><b>NIP/NUPTK</b></td><td>${esc($('nip').value||'—')}</td></tr></table><h2>Kata Pengantar</h2><p>Buku perangkat pembelajaran ini menghimpun Analisis CP menjadi TP, ATP, kalender pendidikan kerja, analisis alokasi waktu, Program Tahunan, Program Semester, dan Modul Ajar Pembelajaran Mendalam. Setiap subbab disusun sebagai satu modul yang dapat diedit dan disesuaikan dengan kondisi satuan pendidikan.</p>${$('catatan').value?`<h2>Catatan Penyusun</h2><p>${esc($('catatan').value)}</p>`:''}<h2>Daftar Isi</h2><ol><li>Analisis CP menjadi TP</li><li>ATP Semester Ganjil</li><li>ATP Semester Genap</li><li>Kalender Pendidikan Kerja & Minggu Efektif</li><li>Analisis Alokasi Waktu</li><li>Program Tahunan (PROTA)</li><li>Program Semester Ganjil (PROSEM)</li><li>Program Semester Genap (PROSEM)</li><li>Modul Ajar Pembelajaran Mendalam per Subbab</li><li>LKPD Menarik per Subbab</li></ol></section>`;
  h+=analysisCPTable()+atpSection('ganjil')+atpSection('genap')+calendarSection()+allocationSection()+protaSection()+prosemSection('ganjil')+prosemSection('genap');
  let current='';const includeLKPD=$('includeLKPD').checked,placement=$('lkpdPlacement').value;mods.forEach(x=>{if(x.sem!==current){current=x.sem;h+=`<section class="divider"><div><div class="kicker">Modul Ajar Pembelajaran Mendalam</div><h1>${esc(current)}</h1><p>${esc(m)} • ${esc($('fasekelas').value)}</p></div></section>`}h+=moduleHTML(x);if(includeLKPD&&placement==='setelah')h+=lkpdHTML(x)});
  if(includeLKPD&&placement==='akhir'){h+=`<section class="divider"><div><div class="kicker">Lampiran Peserta Didik</div><h1>Kumpulan LKPD</h1><p>${esc(m)} • ${esc($('fasekelas').value)}</p></div></section>`;mods.forEach(x=>h+=lkpdHTML(x))}
@@ -1337,7 +1338,8 @@ function mkTheme(){
 function mkThemeName(k){return({kawaii:'Kawaii Pastel',taman:'Taman Ceria',angkasa:'Jelajah Antariksa',ceria:'Kelas Pelangi',formal:'Formal'})[k]||'Kawaii Pastel'}
 function coverLevelLabel(){
  const j=$('jenjang')?.value||'SMP/MTs';
- if(j==='SD/MI')return'SIAP DIGUNAKAN UNTUK SD / MI';
+ if(j==='SD')return'SIAP DIGUNAKAN UNTUK SD';
+ if(j==='Madrasah Ibtidaiyah (MI)')return'SIAP DIGUNAKAN UNTUK MADRASAH IBTIDAIYAH';
  if(j==='SMP/MTs')return'SIAP DIGUNAKAN UNTUK SMP / MTs';
  if(j==='SMA')return'SIAP DIGUNAKAN UNTUK SMA';
  if(j==='Madrasah Aliyah (MA)')return'SIAP DIGUNAKAN UNTUK MADRASAH ALIYAH';
@@ -1347,7 +1349,7 @@ function coverLevelLabel(){
 }
 function coverLevelShort(){
  const j=$('jenjang')?.value||'SMP/MTs';
- return j.replace('Madrasah Aliyah (MA)','MA').replace('Madrasah Aliyah Kejuruan (MAK)','MAK');
+ return j.replace('Madrasah Ibtidaiyah (MI)','MI').replace('Madrasah Aliyah (MA)','MA').replace('Madrasah Aliyah Kejuruan (MAK)','MAK');
 }
 function nativeCoverPanelHTML(){
  const logo=MK_SCHOOL_LOGO
@@ -1401,7 +1403,7 @@ function mkCuteSVG(type){
 }
 function syncJenjangFromFase(){
  const f=($('fasekelas')?.value||'').toUpperCase();
- if(/FASE A|FASE B|FASE C|KELAS I\b|KELAS II\b|KELAS III|KELAS IV|KELAS V\b|KELAS VI\b/.test(f))$('jenjang').value='SD/MI';
+ if(/FASE A|FASE B|FASE C|KELAS I\b|KELAS II\b|KELAS III|KELAS IV|KELAS V\b|KELAS VI\b/.test(f)&&!['SD','Madrasah Ibtidaiyah (MI)'].includes($('jenjang').value))$('jenjang').value='SD';
  else if(/FASE D|KELAS VII|KELAS VIII|KELAS IX/.test(f))$('jenjang').value='SMP/MTs';
  else if(/FASE E|FASE F|KELAS X\b|KELAS XI\b|KELAS XII/.test(f)&&!['SMK','Madrasah Aliyah (MA)','Madrasah Aliyah Kejuruan (MAK)','SMA'].includes($('jenjang').value))$('jenjang').value='SMA';
 }
@@ -1411,19 +1413,19 @@ function mkLevel(){return $('jenjang')?.value||'SMP/MTs'}
 const mkBaseTpFor=tpFor, mkBaseSmartTP=smartTP, mkBaseActivities=activities, mkBaseMaterialProfile=materialProfile;
 tpFor=function(sub){
  let t=mkBaseTpFor(sub),j=mkLevel();
- if(j==='SD/MI')return `Dengan contoh konkret, bahasa sederhana, dan bimbingan bertahap, ${t.charAt(0).toLowerCase()+t.slice(1)}`;
+ if(['SD','Madrasah Ibtidaiyah (MI)'].includes(j))return `Dengan contoh konkret, bahasa sederhana, dan bimbingan bertahap, ${t.charAt(0).toLowerCase()+t.slice(1)}`;
  if(['SMA','SMK','Madrasah Aliyah (MA)','Madrasah Aliyah Kejuruan (MAK)'].includes(j))return `${t} Pembelajaran diarahkan pada kemandirian, analisis lebih mendalam, penggunaan bukti/sumber, dan penerapan pada konteks yang lebih kompleks.`;
  return t;
 };
 smartTP=function(sub){
  let a=mkBaseSmartTP(sub),j=mkLevel();
- if(j==='SD/MI')return a.map((x,i)=>i<2?x:`Dengan bantuan contoh/alat visual, ${x.charAt(0).toLowerCase()+x.slice(1)}`);
+ if(['SD','Madrasah Ibtidaiyah (MI)'].includes(j))return a.map((x,i)=>i<2?x:`Dengan bantuan contoh/alat visual, ${x.charAt(0).toLowerCase()+x.slice(1)}`);
  if(['SMA','SMK','Madrasah Aliyah (MA)','Madrasah Aliyah Kejuruan (MAK)'].includes(j))return a.map((x,i)=>i>=2?`${x} dengan alasan, bukti, atau justifikasi yang relevan.`:x);
  return a;
 };
 activities=function(sub){
  const a=mkBaseActivities(sub),j=mkLevel();
- if(j==='SD/MI'){
+ if(['SD','Madrasah Ibtidaiyah (MI)'].includes(j)){
    a.under.unshift('Guru menggunakan benda konkret, gambar, cerita, permainan singkat, atau demonstrasi sederhana sesuai usia.');
    a.apply.push('Peserta didik mengerjakan tugas dalam langkah pendek dengan contoh dan dukungan visual.');
  }
@@ -1435,7 +1437,7 @@ activities=function(sub){
 };
 materialProfile=function(sub){
  const p=mkBaseMaterialProfile(sub),j=mkLevel();
- if(j==='SD/MI'){p.sulit='Disesuaikan usia; konkret, bertahap, singkat, dan banyak contoh visual/praktik.';p.nilai+=' Pembelajaran dibuat ramah anak dan memberi penguatan positif.'}
+ if(['SD','Madrasah Ibtidaiyah (MI)'].includes(j)){p.sulit='Disesuaikan usia; konkret, bertahap, singkat, dan banyak contoh visual/praktik.';p.nilai+=' Pembelajaran dibuat ramah anak dan memberi penguatan positif.'}
  if(['SMA','SMK','Madrasah Aliyah (MA)','Madrasah Aliyah Kejuruan (MAK)'].includes(j)){p.sulit='Menengah–lanjut; menekankan analisis, argumentasi, kemandirian, transfer konsep, dan konteks nyata/kejuruan bila relevan.'}
  return p;
 };
@@ -1484,7 +1486,12 @@ generateBook=function(){mkBaseGenerateBook();decorateGeneratedBook()};
 const SD_CP_SOURCE='Acuan CP umum: Keputusan Kepala BSKAP No. 046/H/KR/2025. Pendidikan Agama dan Budi Pekerti mengikuti pembaruan Keputusan Kepala BKPDM No. 020 Tahun 2026.';
 
 const LEVEL_PHASE_OPTIONS={
- 'SD/MI':[
+ 'SD':[
+   'Fase A / Kelas I','Fase A / Kelas II',
+   'Fase B / Kelas III','Fase B / Kelas IV',
+   'Fase C / Kelas V','Fase C / Kelas VI'
+ ],
+ 'Madrasah Ibtidaiyah (MI)':[
    'Fase A / Kelas I','Fase A / Kelas II',
    'Fase B / Kelas III','Fase B / Kelas IV',
    'Fase C / Kelas V','Fase C / Kelas VI'
@@ -1526,7 +1533,27 @@ const MAPEL_SD_BASE=[
  'Bahasa Inggris','Muatan Lokal','Bahasa Daerah'
 ];
 
-function isSDLevel(){return ($('jenjang')?.value||'')==='SD/MI'}
+const MAPEL_MI_DASAR=[
+ 'Al-Qur’an Hadis','Akidah Akhlak','Fikih','Bahasa Arab',
+ 'Pendidikan Pancasila','Bahasa Indonesia','Matematika',
+ 'Pendidikan Jasmani, Olahraga, dan Kesehatan (PJOK)',
+ 'Seni Rupa','Seni Musik','Seni Tari','Seni Teater',
+ 'Muatan Lokal','Bahasa Daerah'
+];
+const MAPEL_MI_LANJUT=[
+ 'Al-Qur’an Hadis','Akidah Akhlak','Fikih','Sejarah Kebudayaan Islam (SKI)','Bahasa Arab',
+ 'Pendidikan Pancasila','Bahasa Indonesia','Matematika',
+ 'Ilmu Pengetahuan Alam dan Sosial (IPAS)',
+ 'Pendidikan Jasmani, Olahraga, dan Kesehatan (PJOK)',
+ 'Seni Rupa','Seni Musik','Seni Tari','Seni Teater',
+ 'Bahasa Inggris','Muatan Lokal','Bahasa Daerah'
+];
+
+function isMI(){return ($('jenjang')?.value||'')==='Madrasah Ibtidaiyah (MI)'}
+function isSDLevel(){
+ const j=$('jenjang')?.value||'';
+ return j==='SD'||j==='Madrasah Ibtidaiyah (MI)';
+}
 function sdPhase(){
  const f=($('fasekelas')?.value||'').toUpperCase();
  if(f.includes('FASE A'))return'A';
@@ -1558,7 +1585,7 @@ function syncFaseOptions(force=false){
  sel.innerHTML=opts.map(v=>`<option value="${v}">${v}</option>`).join('');
  if(!force&&opts.includes(cur))sel.value=cur;
  else{
-   if(j==='SD/MI')sel.value='Fase A / Kelas I';
+   if(j==='SD'||j==='Madrasah Ibtidaiyah (MI)')sel.value='Fase A / Kelas I';
    else if(j==='SMP/MTs')sel.value='Fase D / Kelas VIII';
    else sel.value=opts[0];
  }
@@ -1568,7 +1595,11 @@ function syncFaseOptions(force=false){
 function refreshMapelList(){
  const dl=$('mapelList');if(!dl)return;
  let opts=[...MAPEL_ALL];
- if(isSDLevel()){
+ if(isMI()){
+   const ph=sdPhase();
+   opts=ph==='A'?[...MAPEL_MI_DASAR]:[...MAPEL_MI_LANJUT];
+   if(ph==='C')opts.splice(15,0,'Koding dan Kecerdasan Artifisial');
+ }else if(($('jenjang')?.value||'')==='SD'){
    opts=[...MAPEL_SD_BASE];
    const ph=sdPhase();
    if(ph==='B'||ph==='C')opts.splice(10,0,'Ilmu Pengetahuan Alam dan Sosial (IPAS)');
@@ -1577,6 +1608,12 @@ function refreshMapelList(){
  dl.innerHTML=opts.map(v=>`<option value="${v}"></option>`).join('');
 }
 function englishStatusSD(){
+ if(isMI()){
+   const ph=sdPhase();
+   return ph==='A'
+     ?'Bahasa Inggris tidak tercantum pada struktur minimum MI kelas I–II.'
+     :'Bahasa Inggris tercantum pada struktur minimum MI kelas III–VI.';
+ }
  const y=($('tahun')?.value||'').trim();
  const start=parseInt((y.match(/\d{4}/)||[])[0]||'0',10);
  if(start>=2027)return'Bahasa Inggris: wajib mulai Tahun Ajaran 2027/2028 sesuai kebijakan nasional.';
@@ -1586,32 +1623,64 @@ function sdMapelWarning(){
  if(!isSDLevel())return'';
  const m=($('mapel')?.value||'').toLowerCase(),ph=sdPhase();
  if((m==='ipa'||m.includes('ilmu pengetahuan alam (ipa)')||m==='ips'||m.includes('ilmu pengetahuan sosial (ips)'))){
-   return'Untuk SD gunakan “Ilmu Pengetahuan Alam dan Sosial (IPAS)” sebagai mapel terintegrasi, bukan IPA/IPS terpisah.';
+   return'Untuk SD/MI gunakan “Ilmu Pengetahuan Alam dan Sosial (IPAS)” pada Fase B–C, bukan IPA/IPS terpisah.';
  }
  if(m.includes('ipas')&&ph==='A'){
-   return'Pada struktur pembelajaran SD saat ini, IPAS sebagai mata pelajaran tersendiri digunakan pada Fase B–C. Untuk Fase A, pilih mapel yang sesuai struktur sekolah.';
+   return'IPAS tidak tercantum sebagai mata pelajaran tersendiri pada struktur minimum kelas I–II.';
  }
  if((m.includes('koding')||m.includes('kecerdasan artifisial'))&&ph!=='C'){
-   return'Koding dan Kecerdasan Artifisial sebagai mata pelajaran pilihan SD ditujukan untuk Fase C (kelas V–VI).';
+   return'Koding dan Kecerdasan Artifisial sebagai mata pelajaran pilihan tersedia pada Fase C (kelas V–VI).';
+ }
+ if(isMI()){
+   if((m.includes('sejarah kebudayaan islam')||m==='ski')&&ph==='A')
+     return'Sejarah Kebudayaan Islam (SKI) mulai tercantum pada struktur minimum MI kelas III–VI.';
+   if(m.includes('pendidikan agama islam dan budi pekerti'))
+     return'Di MI, muatan PAI disajikan sebagai mata pelajaran khas madrasah: Al-Qur’an Hadis, Akidah Akhlak, Fikih, dan mulai kelas III ditambah SKI; Bahasa Arab berdiri sendiri.';
  }
  return'';
 }
-function updateSDCurriculumUI(){
- const box=$('sdCurriculumBox'),st=$('sdCurriculumStatus');
- if(!box||!st)return;
- if(!isSDLevel()){box.style.display='none';return}
- box.style.display='block';
- const ph=sdPhase()||'A';
- const ipas=ph==='A'
-   ?'IPAS belum ditawarkan sebagai mapel tersendiri pada pilihan Fase A.'
-   :'Gunakan IPAS (Ilmu Pengetahuan Alam dan Sosial), bukan IPA dan IPS terpisah.';
- const coding=ph==='C'
-   ?'Koding dan Kecerdasan Artifisial tersedia sebagai mata pelajaran pilihan pada Fase C.'
-   :'Koding dan Kecerdasan Artifisial belum ditawarkan sebagai mapel pilihan pada fase ini.';
- const warn=sdMapelWarning();
- st.innerHTML=`<b>Fase ${ph}</b> • ${ipas}<br>${coding}<br>${englishStatusSD()}${warn?`<br><span style="color:#b45309"><b>Periksa:</b> ${esc(warn)}</span>`:''}`;
+function updateJPHint(){
+ const el=$('jpDurationHint');if(!el)return;
+ if(isMI()){
+   const cls=currentClassNumber();
+   el.innerHTML=`MI: <b>1 JP = 35 menit</b>. JP/minggu pada generator digunakan untuk alokasi intrakurikuler; kokurikuler dihitung terpisah. ${cls===6?'Kelas VI pada struktur KMA memakai asumsi 32 minggu/tahun.':'Kelas I–V memakai asumsi 36 minggu/tahun pada struktur minimum KMA.'}`;
+ }else{
+   el.textContent='';
+ }
 }
+function updateSDCurriculumUI(){
+ const box=$('sdCurriculumBox'),st=$('sdCurriculumStatus'),title=$('sdCurriculumTitle');
+ if(!box||!st)return;
+ if(!isSDLevel()){box.style.display='none';updateJPHint();return}
+ box.style.display='block';
+ const ph=sdPhase()||'A',cls=currentClassNumber();
+ const warn=sdMapelWarning();
 
+ if(isMI()){
+   if(title)title.textContent='🕌 Mode Madrasah Ibtidaiyah (MI) — KMA 1503/2025';
+   const mapelAgama=ph==='A'
+     ?'Mapel khas: Al-Qur’an Hadis, Akidah Akhlak, Fikih, dan Bahasa Arab.'
+     :'Mapel khas: Al-Qur’an Hadis, Akidah Akhlak, Fikih, SKI, dan Bahasa Arab.';
+   const ipas=ph==='A'
+     ?'IPAS belum tercantum sebagai mapel tersendiri pada kelas I–II.'
+     :'IPAS tercantum pada struktur minimum kelas III–VI.';
+   const coding=ph==='C'
+     ?'Koding dan Kecerdasan Artifisial dapat dipilih bila madrasah menyediakan sumber daya.'
+     :'Koding dan Kecerdasan Artifisial belum ditawarkan pada fase ini.';
+   const weeks=cls===6?'Asumsi struktur kelas VI: 32 minggu/tahun.':'Asumsi struktur kelas I–V: 36 minggu/tahun.';
+   st.innerHTML=`<b>Fase ${ph} / Kelas ${cls||'—'}</b> • 1 JP = <b>35 menit</b>.<br>${mapelAgama}<br>${ipas}<br>${englishStatusSD()}<br>${coding}<br>${weeks}<br><b>KBC/Panca Cinta aktif untuk mode MI.</b>${warn?`<br><span style="color:#b45309"><b>Periksa:</b> ${esc(warn)}</span>`:''}`;
+ }else{
+   if(title)title.textContent='🌱 Mode SD — Kurikulum terkini';
+   const ipas=ph==='A'
+     ?'IPAS belum ditawarkan sebagai mapel tersendiri pada pilihan Fase A.'
+     :'Gunakan IPAS (Ilmu Pengetahuan Alam dan Sosial), bukan IPA dan IPS terpisah.';
+   const coding=ph==='C'
+     ?'Koding dan Kecerdasan Artifisial tersedia sebagai mata pelajaran pilihan pada Fase C.'
+     :'Koding dan Kecerdasan Artifisial belum ditawarkan sebagai mapel pilihan pada fase ini.';
+   st.innerHTML=`<b>Fase ${ph}</b> • ${ipas}<br>${coding}<br>${englishStatusSD()}${warn?`<br><span style="color:#b45309"><b>Periksa:</b> ${esc(warn)}</span>`:''}`;
+ }
+ updateJPHint();
+}
 /* Ringkasan operasional CP untuk membantu generator.
    Bukan kutipan verbatim keputusan; guru tetap dapat menyunting. */
 const CP_SD_AUTO={
@@ -1659,6 +1728,59 @@ const CP_SD_AUTO={
  }
 };
 
+
+const MI_CP_SOURCE='Acuan MI: KMA No. 1503 Tahun 2025; CP PAI dan Bahasa Arab: SK Dirjen Pendis No. 9941 Tahun 2025. Teks berikut adalah ringkasan operasional, bukan kutipan verbatim.';
+
+const CP_MI_AUTO={
+ alquran_hadis:{
+  A:`Pada akhir Fase A, murid mengenal dan menulis huruf hijaiyah beserta tanda baca, menerapkan dasar bacaan seperti gunnah serta alif lam qamariyah dan syamsiyah, menghafal serta menjelaskan surah-surah pendek pilihan, dan memahami hadis tentang kebersihan, keutamaan belajar, serta berbakti kepada orang tua. Murid menghubungkan kandungan Al-Qur’an dan Hadis dengan kebiasaan sehari-hari melalui kegiatan mengamati, bertanya, mencoba, merefleksi, dan mengomunikasikan.`,
+  B:`Pada akhir Fase B, murid menerapkan hukum bacaan dasar seperti qalqalah, mad tabi’i, izhar, ikhfa, idgam, dan iqlab; menghafal, menulis, menjelaskan arti serta isi surah pilihan; serta memahami hadis tentang salat berjemaah, persaudaraan, takwa, niat, dan silaturahmi. Murid menggunakan keterampilan proses untuk mengamati, mengolah informasi, merefleksi, dan menyajikan hasil.`,
+  C:`Pada akhir Fase C, murid menerapkan bacaan mim sukun, waqaf-wasal, serta ketentuan ra’ pada praktik membaca Al-Qur’an; menghafal, menulis, memahami dan merefleksikan ayat/surah serta hadis pilihan sesuai tema kehidupan; kemudian menerapkan nilai kandungannya dalam perilaku sehari-hari melalui proses pengamatan, analisis sederhana, refleksi, dan komunikasi.`
+ },
+ akidah_akhlak:{
+  A:`Pada akhir Fase A, murid mengenal dua kalimah syahadat, rukun iman, beberapa sifat Allah dan asmaulhusna; membiasakan kalimah thayyibah, hidup bersih dan sehat, jujur, rendah hati, serta menghindari perilaku tercela; menerapkan adab belajar dan adab keseharian; serta meneladan kisah nabi melalui pengalaman belajar yang konkret dan ramah anak.`,
+  B:`Pada akhir Fase B, murid memperkuat iman kepada Allah, kitab-kitab-Nya, nabi dan rasul; memahami asmaulhusna; membiasakan syukur, pantang menyerah, berani, tolong-menolong dan amanah; menghindari perilaku serakah, kikir dan kufur nikmat; serta menerapkan adab dan keteladanan dalam kehidupan dengan kegiatan refleksi dan tindak lanjut.`,
+  C:`Pada akhir Fase C, murid menerapkan perilaku yang mencerminkan asmaulhusna, memahami hari akhir serta qada dan qadar, membiasakan kalimah thayyibah, menerapkan akhlak terpuji seperti sabar, disiplin, mandiri, pemaaf, tanggung jawab, adil dan bijaksana, menghindari akhlak tercela, serta menerapkan adab bertamu, bertetangga dan menjaga lingkungan.`
+ },
+ fikih:{
+  A:`Pada akhir Fase A, murid mengenal rukun Islam dan syahadat, serta meniru dan mempraktikkan dasar taharah, salat fardu, salat berjemaah, azan, ikamah dan zikir setelah salat dengan bimbingan. Pembelajaran menekankan praktik ibadah, pembiasaan, pengamatan, refleksi sederhana, dan penguatan adab.`,
+  B:`Pada akhir Fase B, murid memahami dan mempraktikkan ketentuan puasa Ramadan, salat Jumat dan beberapa salat sunah, rukhsah salat, khitan, tanda balig serta bersuci dari hadas besar. Murid membandingkan praktik dengan ketentuan syariat melalui pengamatan, tanya jawab, pengumpulan informasi, refleksi dan komunikasi.`,
+  C:`Pada akhir Fase C, murid membedakan zakat fitrah, infak dan sedekah; memahami kurban, tata cara haji dan umrah, ketentuan halal-haram, serta muamalah sederhana seperti jual beli, pinjam-meminjam, menghindari gasab dan memahami barang temuan. Murid menghubungkan ketentuan fikih dengan kehidupan nyata melalui penyelidikan sederhana dan refleksi.`
+ },
+ ski:{
+  B:`Pada akhir Fase B, murid mengenal kehidupan masyarakat Arab sebelum Islam, kehidupan dan kepribadian Rasulullah saw., peristiwa kerasulan, ketabahan Rasulullah dan para sahabat dalam berdakwah, kronologi hijrah serta peristiwa Isra Mikraj. Murid belajar mengambil ibrah melalui pengamatan sumber, pertanyaan, peta konsep, refleksi dan presentasi sederhana.`,
+  C:`Pada akhir Fase C, murid merefleksikan dakwah Rasulullah saw. di Madinah, peristiwa menjelang akhir hayat beliau, keteladanan Khulafaurasyidin, serta peran Wali Sanga dalam perkembangan Islam di Indonesia. Murid menggunakan keterampilan berpikir sejarah, literasi sumber, analisis sederhana, refleksi ibrah, dan komunikasi hasil.`
+ },
+ bahasa_arab:{
+  A:`Pada akhir Fase A, murid mengenali bunyi, kosakata dan ungkapan sederhana tentang perkenalan, keluarga, rumah, madrasah, hobi dan lingkungan dekat; serta melatih menyimak, berbicara, membaca, memirsa, menulis dan mempresentasikan secara sangat sederhana dengan dukungan visual dan kegiatan komunikatif.`,
+  B:`Pada akhir Fase B, murid menggunakan kosakata, sapaan, pertanyaan dan pola kalimat sederhana tentang pelajaran, binatang, kesehatan, olahraga, teman, taman dan konteks keseharian lain; lalu menerapkannya melalui keterampilan menyimak, berbicara, membaca, memirsa, menulis dan mempresentasikan.`,
+  C:`Pada akhir Fase C, murid mengidentifikasi informasi dan bacaan sederhana tentang tubuh, tempat di rumah/madrasah, perpustakaan, kantin, waktu, kegiatan dan liburan; menggunakan komponen bahasa untuk berkomunikasi; serta mengembangkan keterampilan menyimak, berbicara, membaca, memirsa, menulis dan mempresentasikan secara bertahap.`
+ }
+};
+
+function normalizeMIMapelCP(){
+ const m=($('mapel')?.value||'').toLowerCase().trim();
+ if(/qur.?an.*hadis|alquran.*hadis|al-qur/.test(m))return'alquran_hadis';
+ if(m.includes('akidah akhlak')||m.includes('aqidah akhlak'))return'akidah_akhlak';
+ if(m.includes('fikih')||m.includes('fiqih'))return'fikih';
+ if(m.includes('sejarah kebudayaan islam')||m==='ski'||m.includes('(ski)'))return'ski';
+ if(m.includes('bahasa arab'))return'bahasa_arab';
+ return'';
+}
+
+const mkBaseInferElement_MI=inferElement;
+inferElement=function(sub){
+ if(isMI()){
+   const k=normalizeMIMapelCP();
+   if(k==='alquran_hadis')return'Pemahaman Konsep (Tajwid, Al-Qur’an, Hadis) dan Keterampilan Proses';
+   if(k==='akidah_akhlak')return'Pemahaman Konsep (Akidah, Akhlak, Adab, Keteladanan) dan Keterampilan Proses';
+   if(k==='fikih')return'Pemahaman Konsep (Ibadah/Muamalah) dan Keterampilan Proses';
+   if(k==='ski')return'Pemahaman Konsep Sejarah dan Keterampilan Proses Sejarah';
+   if(k==='bahasa_arab')return'Komponen Bahasa dan Keterampilan Bahasa';
+ }
+ return mkBaseInferElement_MI(sub);
+};
+
 function normalizeSDMapelCP(){
  const m=($('mapel')?.value||'').toLowerCase().trim();
  if(m.includes('bahasa indonesia'))return'bahasa_indonesia';
@@ -1674,8 +1796,17 @@ function normalizeSDMapelCP(){
 }
 function sdAutoCPText(){
  if(!isSDLevel())return'';
- const ph=sdPhase(),key=normalizeSDMapelCP();
- if(!ph||!key)return'';
+ const ph=sdPhase();
+ if(!ph)return'';
+ if(isMI()){
+   const mk=normalizeMIMapelCP();
+   if(mk){
+     if(mk==='ski'&&ph==='A')return'';
+     return CP_MI_AUTO[mk]?.[ph]||'';
+   }
+ }
+ const key=normalizeSDMapelCP();
+ if(!key)return'';
  if(key==='ipas'&&ph==='A')return'';
  if(key==='kodingka'&&ph!=='C')return'';
  return CP_SD_AUTO[key]?.[ph]||'';
@@ -1685,17 +1816,32 @@ function sdCPActive(){return isSDLevel()&&!!sdPhase()}
 function setSDDefaults(){
  if(!isSDLevel())return;
  const cls=currentClassNumber();
- const jp=$('jpMinggu');
- if(!jp)return;
- const m=normalizeSDMapelCP();
+ const jp=$('jpMinggu');if(!jp)return;
  let rec=null;
- if(m==='bahasa_indonesia')rec=cls<=2?8:6;
- else if(m==='matematika')rec=5;
- else if(m==='ipas')rec=5;
- else if(m==='pancasila')rec=4;
- else if(m==='pjok'||m==='agama'||m==='seni')rec=3;
- else if(m==='bahasa_inggris'||m==='kodingka')rec=2;
- if(rec&&!jp.dataset.userEdited){jp.value=rec}
+
+ if(isMI()){
+   const m=($('mapel')?.value||'').toLowerCase();
+   if(/qur.?an.*hadis|akidah akhlak|fikih|fiqih|bahasa arab|sejarah kebudayaan islam|\bski\b/.test(m))rec=2;
+   else if(m.includes('pancasila'))rec=4;
+   else if(m.includes('bahasa indonesia'))rec=cls===1?7:cls===2?8:6;
+   else if(m.includes('matematika'))rec=cls===1?4:5;
+   else if(m.includes('ilmu pengetahuan alam dan sosial')||m.includes('ipas'))rec=5;
+   else if(m.includes('pjok')||m.includes('jasmani'))rec=3;
+   else if(m.includes('seni rupa')||m.includes('seni musik')||m.includes('seni tari')||m.includes('seni teater'))rec=3;
+   else if(m.includes('bahasa inggris'))rec=2;
+   else if(m.includes('koding')||m.includes('kecerdasan artifisial'))rec=2;
+   else if(m.includes('muatan lokal')||m.includes('bahasa daerah'))rec=2;
+ }else{
+   const m=normalizeSDMapelCP();
+   if(m==='bahasa_indonesia')rec=cls<=2?8:6;
+   else if(m==='matematika')rec=5;
+   else if(m==='ipas')rec=5;
+   else if(m==='pancasila')rec=4;
+   else if(m==='pjok'||m==='agama'||m==='seni')rec=3;
+   else if(m==='bahasa_inggris'||m==='kodingka')rec=2;
+ }
+ if(rec&&!jp.dataset.userEdited)jp.value=rec;
+ updateJPHint();
 }
 document.addEventListener('input',e=>{
  if(e.target?.id==='jpMinggu')e.target.dataset.userEdited='1';
@@ -1946,12 +2092,12 @@ updateCPAutoUI=function(){
  if(!box||!status)return;
  if(sdCPActive()){
    box.style.display='block';
-   if(title)title.textContent=`📘 CP Otomatis SD/MI — Fase ${sdPhase()}`;
-   const text=sdAutoCPText(),warn=sdMapelWarning();
+   if(title)title.textContent=isMI()?`📘 CP Otomatis MI — Fase ${sdPhase()}`:`📘 CP Otomatis SD — Fase ${sdPhase()}`;
+   const text=sdAutoCPText(),warn=sdMapelWarning(),source=isMI()?MI_CP_SOURCE:SD_CP_SOURCE;
    if(text){
-     status.innerHTML=`✅ Ringkasan operasional CP tersedia untuk <b>${esc($('mapel').value||'mata pelajaran ini')}</b>. ${SD_CP_SOURCE}${warn?`<br><span style="color:#b45309"><b>Periksa:</b> ${esc(warn)}</span>`:''}`;
+     status.innerHTML=`✅ Ringkasan operasional CP tersedia untuk <b>${esc($('mapel').value||'mata pelajaran ini')}</b>. ${source}${warn?`<br><span style="color:#b45309"><b>Periksa:</b> ${esc(warn)}</span>`:''}`;
    }else{
-     status.innerHTML=`⚠️ CP otomatis belum tersedia untuk kombinasi mapel/fase ini. ${warn?esc(warn):'Isi CP secara manual berdasarkan dokumen resmi yang digunakan sekolah.'} ${SD_CP_SOURCE}`;
+     status.innerHTML=`⚠️ CP otomatis belum tersedia untuk kombinasi mapel/fase ini. ${warn?esc(warn):'Isi CP secara manual berdasarkan dokumen resmi yang digunakan satuan pendidikan.'} ${source}`;
    }
    return;
  }
@@ -1986,13 +2132,24 @@ maybeAutoCP=function(){
 };
 
 /* ===== ModulKita V10.2 — Madrasah Aliyah + KBC ===== */
+function madrasahLabel(){
+ const j=$('jenjang')?.value||'';
+ if(j==='Madrasah Ibtidaiyah (MI)')return'Madrasah Ibtidaiyah (MI)';
+ if(j==='Madrasah Aliyah (MA)')return'Madrasah Aliyah (MA)';
+ if(j==='Madrasah Aliyah Kejuruan (MAK)')return'Madrasah Aliyah Kejuruan (MAK)';
+ return j;
+}
 function isMA(){
  const j=$('jenjang')?.value||'';
- return j==='Madrasah Aliyah (MA)'||j==='Madrasah Aliyah Kejuruan (MAK)';
+ return j==='Madrasah Ibtidaiyah (MI)'||j==='Madrasah Aliyah (MA)'||j==='Madrasah Aliyah Kejuruan (MAK)';
 }
 function updateKbcUI(){
- const box=$('kbcGroup');
+ const box=$('kbcGroup'),title=$('kbcTitle'),label=$('kbcModeLabel');
  if(box)box.style.display=isMA()?'block':'none';
+ if(isMA()){
+   if(title)title.textContent=`💚 Kurikulum Berbasis Cinta (KBC) — ${madrasahLabel()}`;
+   if(label)label.textContent=`Mode ${madrasahLabel()} aktif.`;
+ }
 }
 document.addEventListener('change',e=>{
  if(e.target?.id==='jenjang'){updateKbcUI();saveData()}
@@ -2013,7 +2170,7 @@ function inferPancaCinta(sub){
  const mode=$('pancaCintaMode')?.value||'auto';
  if(mode!=='auto')return pancaLabel(mode);
  const x=(sub||'').toLowerCase(),k=subjectKind();
- if(/allah|rasul|ibadah|salat|shalat|wudu|zakat|puasa|qur|hadis|akidah|aqidah|fikih|fiqih|akhlak/.test(x)||k==='agama')
+ if(/allah|rasul|ibadah|salat|shalat|wudu|zakat|puasa|qur|hadis|akidah|aqidah|fikih|fiqih|akhlak|bahasa arab|sejarah kebudayaan islam|\bski\b/.test(x)||k==='agama')
    return 'Cinta Allah Swt. dan Rasul-Nya; Cinta Ilmu';
  if(/lingkungan|alam|ekosistem|air|energi|sampah|iklim|tumbuhan|hewan|bumi/.test(x)||k==='ipa')
    return 'Cinta Ilmu; Cinta Lingkungan';
@@ -2046,7 +2203,7 @@ function kbcMatrixHTML(){
  if(!isMA()||!$('includeKBC')?.checked)return '';
  const mods=getModules();
  return `<section class="section-page">
- <div class="module-title"><h1>MATRIKS INTEGRASI KURIKULUM BERBASIS CINTA (KBC)</h1><p>Madrasah Aliyah • ${esc($('mapel').value)} • ${esc($('fasekelas').value)}</p></div>
+ <div class="module-title"><h1>MATRIKS INTEGRASI KURIKULUM BERBASIS CINTA (KBC)</h1><p>${esc(madrasahLabel())} • ${esc($('mapel').value)} • ${esc($('fasekelas').value)}</p></div>
  <p class="small-note"><i>KBC diintegrasikan ke kurikulum/mata pelajaran yang ada. Fokus Panca Cinta dapat dipilih guru atau ditentukan otomatis sesuai materi.</i></p>
  <table><tr><th>Bab/Subbab</th><th>Topik Panca Cinta</th><th>Materi Integrasi KBC</th><th>Pendekatan/Proses Belajar</th><th>Asesmen Nilai & Proses</th></tr>
  ${mods.map(x=>`<tr><td><b>${esc(x.chapter.name)}</b><br>${esc(x.sub.name)}</td><td>${esc(inferPancaCinta(x.sub.name))}</td><td>${esc(kbcMaterial(x.sub.name))}</td><td>${esc(kbcProcess(x.sub.name))}</td><td>${esc(kbcAssessment(x.sub.name))}</td></tr>`).join('')}
@@ -2153,6 +2310,7 @@ loadSchoolLogo();
 syncFaseOptions(false);
 refreshMapelList();
 updateSDCurriculumUI();
+updateJPHint();
 updateKbcUI();
 updateCPAutoUI();
 if((sdCPActive()||cpPhaseDActive())&&!($('cp').value||'').trim())fillAutoCP(false);
