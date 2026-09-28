@@ -52,6 +52,17 @@ label{display:block;font-size:12.5px;font-weight:850;margin:10px 0 6px}input,sel
 footer{text-align:center;color:#667085;font-size:12px;padding:34px 20px 45px}
 @media(max-width:900px){.hero{grid-template-columns:1fr}.heroCard{display:none}.grid3{grid-template-columns:1fr}.grid4{grid-template-columns:1fr 1fr}.features{min-height:0}.infoBand{grid-template-columns:1fr}}
 @media(max-width:560px){.nav{padding:12px 14px}.brand span{display:none}.hero{padding:46px 18px 55px}.hero h1{font-size:42px}.wrap{padding:28px 14px 55px}.grid4{grid-template-columns:1fr}.sectionTitle h2{font-size:27px}}
+
+.forgotLink{
+  border:0;background:transparent;color:#4f46e5;font-weight:850;cursor:pointer;
+  padding:2px 0;font-size:13px;text-decoration:underline;text-underline-offset:3px
+}
+.forgotLink:hover{color:#3730a3}
+.recoveryBox{
+  background:#eef2ff;border:1px solid #c7d2fe;border-radius:12px;padding:12px 13px;
+  color:#312e81;margin:12px 0
+}
+
 </style>
 </head>
 <body>
@@ -95,6 +106,7 @@ footer{text-align:center;color:#667085;font-size:12px;padding:34px 20px 45px}
     <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px">
       <button class="btn primary" id="openGeneratorBtn" onclick="openGenerator()">Buka Generator</button>
       <button class="btn ghost" onclick="loadPurchases()">Riwayat Pembelian</button>
+      <button class="btn ghost" onclick="location.href='reset-password.html?mode=change'">🔐 Ganti Password</button>
       <button class="btn ghost" id="adminBtn" style="display:none" onclick="location.href='admin.html'">Admin</button>
       <button class="btn danger" onclick="logout()">Keluar</button>
     </div>
@@ -169,8 +181,22 @@ footer{text-align:center;color:#667085;font-size:12px;padding:34px 20px 45px}
     <div id="loginForm">
       <label>Email</label><input id="loginEmail" type="email" autocomplete="email">
       <label>Password</label><input id="loginPassword" type="password" autocomplete="current-password">
-      <button class="btn primary full" style="margin-top:14px" onclick="login()">Masuk</button>
+      <div style="text-align:right;margin-top:7px">
+        <button type="button" class="forgotLink" onclick="showForgotPassword()">Lupa password?</button>
+      </div>
+      <button class="btn primary full" style="margin-top:10px" onclick="login()">Masuk</button>
     </div>
+
+    <div id="forgotForm" style="display:none">
+      <div class="recoveryBox">
+        <b>🔐 Reset Password</b>
+        <p class="muted" style="margin:5px 0 0">Masukkan email akun ModulKita. Link untuk membuat password baru akan dikirim ke email tersebut.</p>
+      </div>
+      <label>Email akun</label><input id="forgotEmail" type="email" autocomplete="email" placeholder="nama@email.com">
+      <button class="btn primary full" style="margin-top:14px" onclick="sendPasswordReset()">Kirim Link Reset</button>
+      <button class="btn ghost full" style="margin-top:8px" onclick="showAuthTab('login')">Kembali ke Masuk</button>
+    </div>
+
     <div id="registerForm" style="display:none">
       <label>Nama Lengkap</label><input id="regName">
       <label>Email</label><input id="regEmail" type="email">
@@ -245,7 +271,47 @@ function setupPublicContact(){
 }
 function openAuth(tab='login'){clearMsg('authMsg');$('authModal').classList.add('show');showAuthTab(tab)}
 function closeAuth(){$('authModal').classList.remove('show')}
-function showAuthTab(tab){$('loginTab').classList.toggle('active',tab==='login');$('registerTab').classList.toggle('active',tab==='register');$('loginForm').style.display=tab==='login'?'block':'none';$('registerForm').style.display=tab==='register'?'block':'none'}
+function showAuthTab(tab){
+ $('loginTab').classList.toggle('active',tab==='login');
+ $('registerTab').classList.toggle('active',tab==='register');
+ $('loginForm').style.display=tab==='login'?'block':'none';
+ $('registerForm').style.display=tab==='register'?'block':'none';
+ const f=$('forgotForm'); if(f)f.style.display='none';
+ clearMsg('authMsg');
+}
+
+
+function showForgotPassword(){
+ $('loginTab').classList.remove('active');
+ $('registerTab').classList.remove('active');
+ $('loginForm').style.display='none';
+ $('registerForm').style.display='none';
+ $('forgotForm').style.display='block';
+ clearMsg('authMsg');
+ const loginEmail=($('loginEmail').value||'').trim();
+ if(loginEmail)$('forgotEmail').value=loginEmail;
+ setTimeout(()=>$('forgotEmail')?.focus(),50);
+}
+
+async function sendPasswordReset(){
+ if(!sb)return msg('authMsg','Layanan akun sedang belum siap. Hubungi admin.','warn');
+ const email=($('forgotEmail').value||'').trim().toLowerCase();
+ if(!email||!email.includes('@'))return msg('authMsg','Masukkan alamat email akun yang benar.');
+ const redirectTo=cfg.passwordResetRedirect || `${location.origin}/reset-password.html`;
+ const btns=document.querySelectorAll('#forgotForm button');
+ btns.forEach(b=>b.disabled=true);
+ msg('authMsg','Mengirim link reset password…','warn');
+ try{
+   const {error}=await sb.auth.resetPasswordForEmail(email,{redirectTo});
+   if(error)throw error;
+   // Pesan dibuat umum agar tidak membocorkan apakah email terdaftar atau tidak.
+   msg('authMsg','Jika email tersebut terdaftar, link reset password sudah dikirim. Silakan cek Inbox dan folder Spam.','ok');
+ }catch(err){
+   msg('authMsg',err?.message||'Gagal mengirim link reset. Coba lagi beberapa saat.');
+ }finally{
+   btns.forEach(b=>b.disabled=false);
+ }
+}
 
 async function register(){
  if(!sb)return msg('authMsg','Layanan akun sedang belum siap. Hubungi admin.','warn');
