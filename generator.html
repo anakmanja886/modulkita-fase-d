@@ -854,7 +854,7 @@ function generateBook(){
 function toggleEdit(){if($('hasil').dataset.generated!=='1')return alert('Generate perangkat terlebih dahulu.');const on=$('hasil').contentEditable==='true';$('hasil').contentEditable=on?'false':'true';alert(on?'Mode edit dimatikan.':'Mode edit aktif. Ketuk isi hasil untuk memperbaiki teks sebelum dicetak.')}
 function copyBook(){if($('hasil').dataset.generated!=='1')return alert('Generate perangkat terlebih dahulu.');navigator.clipboard.writeText($('hasil').innerText).then(()=>alert('Isi perangkat berhasil disalin.'))}
 function downloadWord(){
- if(window.__MK_PLAN==='demo')return alert('Download Word tersedia untuk akun Premium.');
+ if(window.__MK_PLAN!=='premium')return alert('Download Word tersedia khusus akun Premium. Guru Gratis tetap dapat Cetak/PDF.');
  if($('hasil').dataset.generated!=='1')return alert('Generate perangkat terlebih dahulu.');
  const orientation=paperOrientation();
  const isLandscape=orientation==='landscape';
@@ -1677,18 +1677,47 @@ async function initPremiumAccess(){
  if(!session){location.href='index.html';return}
  const {data:p,error}=await mkSupabase.from('modulkita_profiles').select('*').eq('id',session.user.id).single();
  if(error||!p){document.getElementById('gateText').textContent='Profil akun belum siap. Silakan kembali ke beranda.';return}
+
  const premium=p.role==='admin'||(p.is_active&&(p.plan==='lifetime'||(['premium_30','premium_year'].includes(p.plan)&&(!p.access_until||new Date(p.access_until)>new Date()))));
+ const freeTeacher=p.is_active&&p.plan==='free_teacher';
+
  if(!p.is_active&&p.role!=='admin'){
    window.__MK_PLAN='locked';
    document.getElementById('gateText').textContent='Akun ini dinonaktifkan oleh admin. Hubungi admin ModulKita untuk mengaktifkannya kembali.';
    return;
  }
- window.__MK_PLAN=p.role==='admin'?'premium':(premium?'premium':'demo');
- document.getElementById('accountPlan').textContent=p.role==='admin'?'ADMIN':(premium?'PREMIUM':'DEMO');
+
+ window.__MK_PLAN=p.role==='admin'?'premium':(premium?'premium':freeTeacher?'free_teacher':'demo');
  document.getElementById('accountEmail').textContent=p.email||session.user.email||'';
  document.getElementById('accountBar').style.display='block';
- if(!premium&&p.role!=='admin')document.getElementById('demoRibbon').classList.add('show');
+
+ const ribbon=document.getElementById('demoRibbon');
+ if(freeTeacher){
+   const {data:u}=await mkSupabase.rpc('modulkita_free_usage_status');
+   const remain=u?.remaining??0,limit=u?.limit??5;
+   document.getElementById('accountPlan').textContent=`GURU GRATIS • SISA ${remain}/${limit}`;
+   ribbon.innerHTML=`<b>Guru Gratis Terverifikasi:</b> maksimal ${limit} generate buku lengkap per bulan. Sisa bulan ini: <b>${remain}</b>. Cetak/PDF tersedia; Download Word khusus Premium.`;
+   ribbon.classList.add('show');
+ }else if(p.role==='admin'){
+   document.getElementById('accountPlan').textContent='ADMIN';
+ }else if(premium){
+   document.getElementById('accountPlan').textContent='PREMIUM';
+ }else{
+   document.getElementById('accountPlan').textContent='DEMO';
+   ribbon.innerHTML='<b>Mode Demo:</b> maksimal 1 subbab dan download Word/PDF dikunci. Upgrade Premium untuk akses lengkap.';
+   ribbon.classList.add('show');
+ }
+
  document.getElementById('premiumGate').classList.add('hide');
+}
+async function refreshFreeTeacherUsage(){
+ if(window.__MK_PLAN!=='free_teacher'||!mkSupabase)return;
+ const {data:u}=await mkSupabase.rpc('modulkita_free_usage_status');
+ const remain=u?.remaining??0,limit=u?.limit??5;
+ document.getElementById('accountPlan').textContent=`GURU GRATIS • SISA ${remain}/${limit}`;
+ const ribbon=document.getElementById('demoRibbon');
+ ribbon.innerHTML=`<b>Guru Gratis Terverifikasi:</b> maksimal ${limit} generate buku lengkap per bulan. Sisa bulan ini: <b>${remain}</b>. Cetak/PDF tersedia; Download Word khusus Premium.`;
+ ribbon.classList.add('show');
 }
 async function premiumLogout(){if(mkSupabase)await mkSupabase.auth.signOut();location.href='index.html'}
 
@@ -2997,6 +3026,23 @@ generateBook=function(){
 
 const mkBaseLoadExample_KBC=loadExample;
 loadExample=function(){mkBaseLoadExample_KBC();updateKbcUI();updateCPAutoUI();fillAutoCP(true)};
+
+
+const mkBaseGenerateBook_FreeTeacher=generateBook;
+generateBook=async function(){
+ if(window.__MK_PLAN==='free_teacher'){
+   const mods=getModules();
+   if(!mods.length)return alert('Tambahkan minimal satu subbab.');
+   if(!mkSupabase)return alert('Koneksi akun belum siap. Muat ulang halaman.');
+   const {data,error}=await mkSupabase.rpc('modulkita_consume_generation');
+   if(error)return alert(error.message||'Gagal memeriksa kuota Guru Gratis.');
+   if(!data?.allowed)return alert(data?.message||'Kuota Guru Gratis bulan ini sudah habis.');
+   mkBaseGenerateBook_FreeTeacher();
+   await refreshFreeTeacherUsage();
+   return;
+ }
+ mkBaseGenerateBook_FreeTeacher();
+};
 
 loadData();
 loadSchoolLogo();

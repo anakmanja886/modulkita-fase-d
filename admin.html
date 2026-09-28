@@ -11,6 +11,10 @@
 .msg{padding:11px 12px;border-radius:11px;background:#fffaeb;color:#b54708;margin-bottom:14px}.hidden{display:none}.section{margin:24px 0}.sectionHead{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:12px}.sectionHead h2{margin:0}
 .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}.card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:14px;box-shadow:0 10px 30px rgba(16,24,40,.05)}.card h3{margin:0 0 3px;font-size:16px}.muted{color:var(--muted);font-size:12px;line-height:1.5}.kv{display:grid;grid-template-columns:110px 1fr;gap:6px 9px;font-size:12px;margin-top:11px}.kv b{color:#475467}.chip{display:inline-block;padding:5px 8px;border-radius:999px;font-size:10px;font-weight:900;background:#eef2ff;color:#3730a3}.chip.pending{background:#fffaeb;color:#b54708}.chip.approved{background:#ecfdf3;color:#067647}.chip.rejected{background:#fef3f2;color:#b42318}.actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:12px}.empty{background:#fff;border:1px dashed #d0d5dd;border-radius:14px;padding:18px;color:#667085;text-align:center}.count{font-size:12px;color:#667085}
 @media(max-width:720px){.grid{grid-template-columns:1fr}.kv{grid-template-columns:95px 1fr}.topin{align-items:flex-start}.topin>div:last-child{display:flex;gap:5px;flex-wrap:wrap;justify-content:flex-end}}
+
+.inviteMaker{display:grid;grid-template-columns:1.4fr .7fr auto;gap:10px;align-items:end}.inviteMaker label{display:block;font-size:12px;font-weight:850;margin-bottom:5px}.inviteMaker input,.inviteMaker select{width:100%;border:1px solid #d0d5dd;border-radius:9px;padding:9px;font:inherit}.codeBox{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-weight:950;font-size:14px;letter-spacing:.03em;background:#f8fafc;border:1px dashed #cbd5e1;padding:8px 9px;border-radius:9px;word-break:break-all}
+@media(max-width:720px){.inviteMaker{grid-template-columns:1fr}.inviteMaker .btn{width:100%}}
+
 </style></head>
 <body>
 <div class="top"><div class="topin"><div class="brand">Admin ModulKita — Kelola Akun & Premium</div><div><button class="btn g" onclick="location.href='index.html'">Beranda</button> <button class="btn r" onclick="logout()">Keluar</button></div></div></div>
@@ -22,6 +26,15 @@
       <div id="requests" class="grid"></div>
     </div>
     <div class="section">
+      <div class="sectionHead"><div><h2>Kode Guru Gratis</h2><div class="count">Kode dibuat satu kali pakai dan kedaluwarsa otomatis.</div></div><button class="btn refresh" onclick="loadInvites()">↻ Muat Kode</button></div>
+      <div class="inviteMaker card">
+        <div><label>Label / Nama Guru <span class="muted">(opsional)</span></label><input id="inviteLabel" placeholder="Contoh: Guru SMPN 9 Masni"></div>
+        <div><label>Berlaku</label><select id="inviteDays"><option value="3">3 hari</option><option value="7" selected>7 hari</option><option value="14">14 hari</option><option value="30">30 hari</option></select></div>
+        <button class="btn p" onclick="createInvite()">➕ Buat Kode 1x Pakai</button>
+      </div>
+      <div id="invites" class="grid" style="margin-top:12px"></div>
+    </div>
+    <div class="section">
       <div class="sectionHead"><div><h2>Pengguna</h2><div id="userCount" class="count"></div></div></div>
       <div id="users" class="grid"></div>
     </div>
@@ -31,7 +44,7 @@
 <script>
 const cfg=window.MODULKITA_CONFIG||{},$=x=>document.getElementById(x);let sb,user;
 function show(t){$('msg').textContent=t}
-function planLabel(p){return p==='premium_30'?'Premium 30 Hari':p==='premium_year'?'Premium 1 Tahun':p==='lifetime'?'Lifetime':'Demo'}
+function planLabel(p){return p==='free_teacher'?'Guru Gratis':p==='premium_30'?'Premium 30 Hari':p==='premium_year'?'Premium 1 Tahun':p==='lifetime'?'Lifetime':'Demo'}
 async function init(){
  if(!cfg.supabaseUrl||!cfg.supabasePublishableKey)return show('Layanan akun belum siap.');
  sb=window.supabase.createClient(cfg.supabaseUrl,cfg.supabasePublishableKey);
@@ -39,7 +52,7 @@ async function init(){
  const {data:p}=await sb.from('modulkita_profiles').select('role').eq('id',user.id).single();if(!p||p.role!=='admin')return show('Akses ditolak. Akun ini bukan admin.');
  $('adminArea').classList.remove('hidden');show('Akses admin aktif.');loadAll()
 }
-async function loadAll(){await loadRequests();await loadUsers()}
+async function loadAll(){await loadRequests();await loadInvites();await loadUsers()}
 async function loadRequests(){
  const {data,error}=await sb.rpc('modulkita_admin_list_purchase_requests');if(error)return show(error.message);
  $('reqCount').textContent=`${(data||[]).length} permintaan`;
@@ -49,6 +62,45 @@ async function loadRequests(){
    <div class="actions">${x.status==='pending'?`<button class="btn p" onclick="approve(${x.id},'${x.user_id}','${x.package}')">Setujui</button><button class="btn r" onclick="setReq(${x.id},'rejected')">Tolak</button>`:`<button class="btn g" disabled>${x.status==='approved'?'Sudah disetujui':'Sudah ditolak'}</button>`}</div>
  </div>`).join(''):'<div class="empty">Belum ada permintaan pembelian.</div>'
 }
+
+async function loadInvites(){
+ const {data,error}=await sb.rpc('modulkita_admin_list_invites');if(error)return show(error.message);
+ const rows=data||[];
+ $('invites').innerHTML=rows.length?rows.map(x=>{
+   const expired=x.expires_at&&new Date(x.expires_at)<new Date();
+   const used=x.used_count>=x.max_uses;
+   const status=!x.is_active?'NONAKTIF':expired?'KEDALUWARSA':used?'TERPAKAI':'AKTIF';
+   const cls=status==='AKTIF'?'approved':status==='TERPAKAI'?'pending':'rejected';
+   return `<div class="card">
+    <div style="display:flex;justify-content:space-between;gap:8px;align-items:flex-start"><div><h3>${x.label||'Kode Guru Gratis'}</h3><div class="muted">Dibuat ${new Date(x.created_at).toLocaleString('id-ID')}</div></div><span class="chip ${cls}">${status}</span></div>
+    <div class="codeBox" style="margin-top:10px">${x.code}</div>
+    <div class="kv"><b>Penggunaan</b><span>${x.used_count}/${x.max_uses}</span><b>Kedaluwarsa</b><span>${x.expires_at?new Date(x.expires_at).toLocaleString('id-ID'):'-'}</span></div>
+    <div class="actions"><button class="btn g" onclick="copyCode('${x.code}')">Salin Kode</button>${x.is_active&&!expired&&!used?`<button class="btn r" onclick="revokeInvite(${x.id})">Nonaktifkan</button>`:''}</div>
+   </div>`;
+ }).join(''):'<div class="empty">Belum ada kode undangan.</div>';
+}
+async function createInvite(){
+ const label=($('inviteLabel').value||'').trim();
+ const days=Number($('inviteDays').value||7);
+ const {data,error}=await sb.rpc('modulkita_admin_create_invite',{invite_label:label||null,valid_days:days,uses_count:1});
+ if(error)return alert(error.message);
+ const row=(data||[])[0];
+ if(!row)return alert('Kode gagal dibuat.');
+ $('inviteLabel').value='';
+ await loadInvites();
+ try{await navigator.clipboard.writeText(row.code)}catch{}
+ alert(`Kode Guru Gratis dibuat:\n${row.code}\n\nKode otomatis disalin. Berlaku ${days} hari dan hanya 1 kali pakai.`);
+}
+async function revokeInvite(id){
+ if(!confirm('Nonaktifkan kode undangan ini?'))return;
+ const {error}=await sb.rpc('modulkita_admin_revoke_invite',{invite_id:id});
+ if(error)return alert(error.message);
+ loadInvites();
+}
+async function copyCode(code){
+ try{await navigator.clipboard.writeText(code);alert('Kode disalin.')}catch{prompt('Salin kode ini:',code)}
+}
+
 async function loadUsers(){
  const {data,error}=await sb.rpc('modulkita_admin_list_users');if(error)return show(error.message);
  $('userCount').textContent=`${(data||[]).length} pengguna`;
@@ -57,7 +109,8 @@ async function loadUsers(){
    <div class="kv"><b>Paket</b><span>${planLabel(x.plan)}</span><b>Aktif s.d.</b><span>${x.plan==='lifetime'?'Lifetime':x.access_until?new Date(x.access_until).toLocaleDateString('id-ID'):'-'}</span><b>Role</b><span>${x.role}</span></div>
    <div class="actions">${x.role==='admin'
  ? `<button class="btn p" disabled>Admin — Akses Penuh</button>`
- : `<button class="btn g" onclick="setAccess('${x.id}','premium_30',30)">30 Hari</button>
+ : `<button class="btn g" onclick="setAccess('${x.id}','free_teacher',null)">Guru Gratis</button>
+    <button class="btn g" onclick="setAccess('${x.id}','premium_30',30)">30 Hari</button>
     <button class="btn g" onclick="setAccess('${x.id}','premium_year',365)">1 Tahun</button>
     <button class="btn p" onclick="setAccess('${x.id}','lifetime',null)">Lifetime</button>
     <button class="btn w" onclick="setAccess('${x.id}','demo',0)">Cabut Premium</button>

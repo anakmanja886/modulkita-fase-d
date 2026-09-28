@@ -63,6 +63,11 @@ footer{text-align:center;color:#667085;font-size:12px;padding:34px 20px 45px}
   color:#312e81;margin:12px 0
 }
 
+
+.inviteRedeemBox{margin-top:12px;padding:12px;border:1px solid #c7d2fe;background:#eef2ff;border-radius:13px;display:flex;justify-content:space-between;gap:12px;align-items:center}
+.inviteRedeemForm{display:flex;gap:7px;min-width:320px}.inviteRedeemForm input{margin:0;min-width:220px}
+@media(max-width:720px){.inviteRedeemBox{display:block}.inviteRedeemForm{min-width:0;margin-top:9px}.inviteRedeemForm input{min-width:0;flex:1}}
+
 </style>
 </head>
 <body>
@@ -103,6 +108,10 @@ footer{text-align:center;color:#667085;font-size:12px;padding:34px 20px 45px}
       <div><span id="planTag" class="planTag">Demo</span></div>
     </div>
     <div id="accessInfo" class="msg show warn">Memeriksa akses…</div>
+    <div id="inviteRedeemBox" class="inviteRedeemBox">
+      <div><b>🎟️ Punya kode Guru Gratis?</b><div class="muted">Masukkan kode undangan dari admin. Setiap kode hanya dapat digunakan sesuai kuota yang dibuat admin.</div></div>
+      <div class="inviteRedeemForm"><input id="dashInviteCode" placeholder="Contoh: MK-GURU-XXXXXXXXXXXX"><button class="btn ghost" onclick="redeemInviteFromDashboard()">Aktifkan</button></div>
+    </div>
     <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px">
       <button class="btn primary" id="openGeneratorBtn" onclick="openGenerator()">Buka Generator</button>
       <button class="btn ghost" onclick="loadPurchases()">Riwayat Pembelian</button>
@@ -165,7 +174,7 @@ footer{text-align:center;color:#667085;font-size:12px;padding:34px 20px 45px}
   <section style="margin-top:58px">
     <div class="sectionTitle"><h2>Pertanyaan yang sering ditanyakan</h2></div>
     <div class="faq">
-      <details><summary>Apa yang bisa dilakukan pada akun Demo?</summary><p>Demo dapat digunakan untuk mencoba generator dengan maksimal satu subbab. Fitur download Word/PDF tersedia pada akun Premium.</p></details>
+      <details><summary>Apa beda Demo dan Guru Gratis?</summary><p>Demo dapat didaftarkan siapa saja dan dibatasi 1 subbab. Guru Gratis hanya aktif melalui kode undangan admin, mendapat 5 generate buku lengkap per bulan dan dapat Cetak/PDF; Download Word tetap khusus Premium.</p></details>
       <details><summary>Berapa lama Premium aktif?</summary><p>Sesuai paket yang dipilih: 30 hari, 1 tahun, atau Lifetime. Masa aktif terlihat setelah Anda login.</p></details>
       <details><summary>Bagaimana aktivasi setelah membayar?</summary><p>Kirim konfirmasi pembayaran dari halaman pembelian. Setelah diverifikasi admin, akun akan diaktifkan sesuai paket yang dibeli.</p></details>
       <details><summary>Apakah hasil langsung siap digunakan?</summary><p>Hasil generator adalah draf perangkat yang harus ditinjau guru. Sesuaikan dengan kondisi siswa, kebijakan sekolah, dan dokumen kurikulum resmi yang berlaku.</p></details>
@@ -201,6 +210,9 @@ footer{text-align:center;color:#667085;font-size:12px;padding:34px 20px 45px}
       <label>Nama Lengkap</label><input id="regName">
       <label>Email</label><input id="regEmail" type="email">
       <label>Password</label><input id="regPassword" type="password" minlength="6">
+      <label>Kode Undangan Guru Gratis <span class="muted">(opsional)</span></label>
+      <input id="regInviteCode" placeholder="MK-GURU-XXXXXXXXXXXX" autocomplete="off">
+      <div class="muted" style="margin-top:5px">Tanpa kode, akun tetap dapat mendaftar sebagai Demo. Paket Guru Gratis hanya aktif dengan kode undangan resmi dari admin.</div>
       <button class="btn primary full" style="margin-top:14px" onclick="register()">Daftar Akun</button>
       <p class="muted">Gunakan email aktif dan simpan password Anda dengan baik.</p>
     </div>
@@ -254,13 +266,17 @@ function packageLabel(id){
 }
 function renderPricing(){
  const box=$('pricing');box.innerHTML='';
- const cards=[{id:'demo',name:'Demo Gratis',price:'Rp0',features:['Mencoba generator','Maksimal 1 subbab','Tanpa download Word/PDF','Cocok untuk mencoba']},...(cfg.packages||[])];
+ const cards=[
+   {id:'demo',name:'Demo Publik',price:'Rp0',tag:'Coba dulu',features:['Bisa daftar tanpa kode','Mencoba generator','Maksimal 1 subbab','Tanpa download Word/PDF']},
+   {id:'free_teacher',name:'Guru Gratis Terverifikasi',price:'Rp0',tag:'Khusus Undangan',features:['Wajib kode undangan admin','Maksimal 5 generate per bulan','Buku lengkap per generate','Cetak/PDF tersedia','Download Word tetap Premium']},
+   ...(cfg.packages||[])
+ ];
  cards.forEach(p=>{
    const d=document.createElement('div');
-   const isDemo=p.id==='demo',featured=p.id==='premium_year';
+   const isDemo=p.id==='demo',isFree=p.id==='free_teacher',featured=p.id==='premium_year';
    d.className='card priceCard'+(featured?' featured':'');
-   d.innerHTML=`${featured?'<span class="best">1 TAHUN</span>':''}<div class="planTag">${isDemo?'Coba dulu':'Premium'}</div><h3 style="font-size:22px;margin-top:16px">${p.name}</h3><div class="price">${p.price||'-'}</div><ul class="features">${(p.features||['Generator perangkat lengkap','Bab & subbab tanpa batas','Kalender, PROTA, PROSEM','Modul Ajar + LKPD','Download Word/PDF']).map(x=>`<li>${x}</li>`).join('')}</ul><button class="btn ${isDemo?'secondary':'primary'} full">${isDemo?'Daftar Gratis':'Pilih Paket'}</button>`;
-   d.querySelector('button').onclick=()=>isDemo?openAuth('register'):startBuy(p.id);
+   d.innerHTML=`${featured?'<span class="best">1 TAHUN</span>':''}<div class="planTag">${p.tag||(isDemo?'Coba dulu':isFree?'Khusus Undangan':'Premium')}</div><h3 style="font-size:22px;margin-top:16px">${p.name}</h3><div class="price">${p.price||'-'}</div><ul class="features">${(p.features||['Generator perangkat lengkap','Bab & subbab tanpa batas','Kalender, PROTA, PROSEM','Modul Ajar + LKPD','Download Word/PDF']).map(x=>`<li>${x}</li>`).join('')}</ul><button class="btn ${(isDemo||isFree)?'secondary':'primary'} full">${isDemo?'Daftar Demo':isFree?'Gunakan Kode Undangan':'Pilih Paket'}</button>`;
+   d.querySelector('button').onclick=()=>isDemo?openAuth('register'):isFree?openInviteRegistration():startBuy(p.id);
    box.appendChild(d)
  })
 }
@@ -269,6 +285,46 @@ function setupPublicContact(){
  const wa=cfg.adminWhatsApp.replace(/\D/g,'').replace(/^0/,'62');
  $('publicWa').href=`https://wa.me/${wa}?text=${encodeURIComponent('Halo Admin ModulKita, saya ingin bertanya tentang akses Premium.')}`;
 }
+
+function openInviteRegistration(){
+ openAuth('register');
+ setTimeout(()=>{const el=$('regInviteCode');if(el)el.focus()},80);
+}
+async function redeemInviteCode(code,{silent=false}={}){
+ if(!sb)return {ok:false,message:'Layanan akun belum siap.'};
+ const clean=String(code||'').trim().toUpperCase();
+ if(!clean)return {ok:false,message:'Masukkan kode undangan.'};
+ const {data,error}=await sb.rpc('modulkita_redeem_invite',{invite_code:clean});
+ if(error)return {ok:false,message:error.message||'Kode gagal diproses.'};
+ const result=data||{};
+ if(result.ok){
+   localStorage.removeItem('mk_pending_invite');
+   if(!silent)alert(result.message||'Kode Guru Gratis berhasil diaktifkan.');
+ }
+ return result;
+}
+async function redeemInviteFromDashboard(){
+ if(!currentUser)return openAuth('login');
+ const code=($('dashInviteCode').value||'').trim();
+ if(!code)return alert('Masukkan kode undangan.');
+ const r=await redeemInviteCode(code);
+ if(!r.ok)return alert(r.message||'Kode tidak valid.');
+ $('dashInviteCode').value='';
+ await refreshSession();
+}
+async function redeemPendingInvite(){
+ const code=localStorage.getItem('mk_pending_invite');
+ if(!code||!currentUser)return null;
+ const r=await redeemInviteCode(code,{silent:true});
+ if(r?.ok){
+   sessionStorage.setItem('mk_invite_message',r.message||'Akun Guru Gratis aktif.');
+ }else if(r?.message){
+   sessionStorage.setItem('mk_invite_message',r.message);
+ }
+ localStorage.removeItem('mk_pending_invite');
+ return r;
+}
+
 function openAuth(tab='login'){clearMsg('authMsg');$('authModal').classList.add('show');showAuthTab(tab)}
 function closeAuth(){$('authModal').classList.remove('show')}
 function showAuthTab(tab){
@@ -316,14 +372,19 @@ async function sendPasswordReset(){
 async function register(){
  if(!sb)return msg('authMsg','Layanan akun sedang belum siap. Hubungi admin.','warn');
  const full_name=$('regName').value.trim(),email=$('regEmail').value.trim(),password=$('regPassword').value;
+ const invite=($('regInviteCode')?.value||'').trim().toUpperCase();
  if(!full_name||!email||password.length<6)return msg('authMsg','Lengkapi nama, email, dan password minimal 6 karakter.');
+ if(invite)localStorage.setItem('mk_pending_invite',invite);
  const {data,error}=await sb.auth.signUp({email,password,options:{data:{full_name}}});
  if(error)return msg('authMsg',error.message);
  if(data.session){
-   msg('authMsg','Akun berhasil dibuat. Anda sudah masuk.','ok');
+   currentUser=data.session.user;
+   let inviteResult=null;
+   if(invite)inviteResult=await redeemInviteCode(invite,{silent:true});
+   msg('authMsg',inviteResult?.ok?'Akun berhasil dibuat dan Guru Gratis sudah aktif.':'Akun berhasil dibuat. Anda sudah masuk.','ok');
    setTimeout(async()=>{closeAuth();await refreshSession()},700)
  }else{
-   msg('authMsg','Akun berhasil dibuat. Silakan masuk menggunakan email dan password Anda.','ok')
+   msg('authMsg',invite?'Akun berhasil dibuat. Setelah login, kode undangan akan diproses otomatis.':'Akun berhasil dibuat. Silakan masuk menggunakan email dan password Anda.','ok')
  }
 }
 async function login(){
@@ -340,23 +401,45 @@ async function refreshSession(){
  const {data:{session}}=await sb.auth.getSession();
  currentUser=session?.user||null;
  if(!currentUser){$('dashboard').classList.remove('show');$('accountBtn').textContent='Masuk / Daftar';$('accountBtn').onclick=()=>openAuth();return}
+
+ await redeemPendingInvite();
+
  $('accountBtn').textContent='Akun Saya';$('accountBtn').onclick=()=>document.getElementById('dashboard').scrollIntoView({behavior:'smooth'});
  const {data,error}=await sb.from('modulkita_profiles').select('*').eq('id',currentUser.id).single();
  if(error){console.error(error);return}
- currentProfile=data;$('dashboard').classList.add('show');$('dashName').textContent=data.full_name||'Guru';$('dashEmail').textContent=data.email||currentUser.email;$('planTag').textContent=data.role==='admin'?'ADMIN':(data.plan||'demo').replaceAll('_',' ').toUpperCase();
+ currentProfile=data;
+ $('dashboard').classList.add('show');
+ $('dashName').textContent=data.full_name||'Guru';
+ $('dashEmail').textContent=data.email||currentUser.email;
+ const planText=data.role==='admin'?'ADMIN':data.plan==='free_teacher'?'GURU GRATIS':(data.plan||'demo').replaceAll('_',' ').toUpperCase();
+ $('planTag').textContent=planText;
+
  const premium=data.role==='admin'||(data.is_active&&(data.plan==='lifetime'||['premium_30','premium_year'].includes(data.plan)&&(!data.access_until||new Date(data.access_until)>new Date())));
+ const freeTeacher=data.is_active&&data.plan==='free_teacher';
  if(data.role==='admin')$('adminBtn').style.display='inline-block';
+
  if(!data.is_active&&data.role!=='admin'){
    msg('accessInfo','Akun ini dinonaktifkan oleh admin. Hubungi admin ModulKita jika Anda memerlukan akses kembali.','bad');
    $('openGeneratorBtn').disabled=true;
    $('openGeneratorBtn').style.opacity='.55';
- }else if(data.role==='admin'){
-   msg('accessInfo','Akses Admin penuh aktif. Admin tidak perlu membeli paket Premium.','ok');
- }else if(premium){
-   msg('accessInfo',data.plan==='lifetime'?'Akses Premium Lifetime aktif.':`Akses Premium aktif sampai ${new Date(data.access_until).toLocaleDateString('id-ID')}.`,'ok')
  }else{
-   msg('accessInfo','Akun Demo aktif. Anda dapat mencoba 1 subbab. Pilih Premium untuk fitur lengkap.','warn')
+   $('openGeneratorBtn').disabled=false;
+   $('openGeneratorBtn').style.opacity='1';
+   if(data.role==='admin'){
+     msg('accessInfo','Akses Admin penuh aktif. Admin tidak perlu membeli paket Premium.','ok');
+   }else if(premium){
+     msg('accessInfo',data.plan==='lifetime'?'Akses Premium Lifetime aktif.':`Akses Premium aktif sampai ${new Date(data.access_until).toLocaleDateString('id-ID')}.`,'ok');
+   }else if(freeTeacher){
+     const {data:u}=await sb.rpc('modulkita_free_usage_status');
+     const remain=u?.remaining??0,limit=u?.limit??5;
+     msg('accessInfo',`Guru Gratis Terverifikasi aktif. Sisa kuota generate bulan ini: ${remain}/${limit}. Cetak/PDF tersedia; Download Word khusus Premium.`,'ok');
+   }else{
+     msg('accessInfo','Akun Demo aktif. Anda dapat mencoba 1 subbab. Guru Gratis hanya dapat diaktifkan dengan kode undangan admin.','warn');
+   }
  }
+
+ const inviteMessage=sessionStorage.getItem('mk_invite_message');
+ if(inviteMessage){sessionStorage.removeItem('mk_invite_message');setTimeout(()=>alert(inviteMessage),200)}
 }
 function openGenerator(){if(!currentUser)return openAuth();if(currentProfile&&!currentProfile.is_active&&currentProfile.role!=='admin')return alert('Akun ini sedang dinonaktifkan. Hubungi admin ModulKita.');location.href='generator.html'}
 
