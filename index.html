@@ -411,14 +411,15 @@ async function refreshSession(){
  $('dashboard').classList.add('show');
  $('dashName').textContent=data.full_name||'Guru';
  $('dashEmail').textContent=data.email||currentUser.email;
- const planText=data.role==='admin'?'ADMIN':data.plan==='free_teacher'?'GURU GRATIS':(data.plan||'demo').replaceAll('_',' ').toUpperCase();
+ const planText=data.role==='admin'?'ADMIN PEMILIK':data.role==='staff'?'ADMIN STAFF':data.plan==='free_teacher'?'GURU GRATIS':(data.plan||'demo').replaceAll('_',' ').toUpperCase();
  $('planTag').textContent=planText;
 
- const premium=data.role==='admin'||(data.is_active&&(data.plan==='lifetime'||['premium_30','premium_year'].includes(data.plan)&&(!data.access_until||new Date(data.access_until)>new Date())));
+ const isAdminRole=['admin','staff'].includes(data.role);
+ const premium=isAdminRole||(data.is_active&&(data.plan==='lifetime'||['premium_30','premium_year'].includes(data.plan)&&(!data.access_until||new Date(data.access_until)>new Date())));
  const freeTeacher=data.is_active&&data.plan==='free_teacher';
- if(data.role==='admin')$('adminBtn').style.display='inline-block';
+ if(isAdminRole){$('adminBtn').style.display='inline-block';$('adminBtn').textContent=data.role==='admin'?'Admin Pemilik':'Admin Staff';}
 
- if(!data.is_active&&data.role!=='admin'){
+ if(!data.is_active&&!isAdminRole){
    msg('accessInfo','Akun ini dinonaktifkan oleh admin. Hubungi admin ModulKita jika Anda memerlukan akses kembali.','bad');
    $('openGeneratorBtn').disabled=true;
    $('openGeneratorBtn').style.opacity='.55';
@@ -426,7 +427,9 @@ async function refreshSession(){
    $('openGeneratorBtn').disabled=false;
    $('openGeneratorBtn').style.opacity='1';
    if(data.role==='admin'){
-     msg('accessInfo','Akses Admin penuh aktif. Admin tidak perlu membeli paket Premium.','ok');
+     msg('accessInfo','Akses Admin Pemilik aktif. Anda dapat mengelola pengguna, pembayaran, kode gratis, serta Tim Admin.','ok');
+   }else if(data.role==='staff'){
+     msg('accessInfo','Akses Admin Staff aktif. Anda dapat membantu mengelola penjualan, menyetujui pembayaran, dan mengatur akses pengguna. Akses ini dapat dicabut oleh Admin Pemilik.','ok');
    }else if(premium){
      msg('accessInfo',data.plan==='lifetime'?'Akses Premium Lifetime aktif.':`Akses Premium aktif sampai ${new Date(data.access_until).toLocaleDateString('id-ID')}.`,'ok');
    }else if(freeTeacher){

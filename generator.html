@@ -1936,16 +1936,17 @@ async function initPremiumAccess(){
  const {data:p,error}=await mkSupabase.from('modulkita_profiles').select('*').eq('id',session.user.id).single();
  if(error||!p){document.getElementById('gateText').textContent='Profil akun belum siap. Silakan kembali ke beranda.';return}
 
- const premium=p.role==='admin'||(p.is_active&&(p.plan==='lifetime'||(['premium_30','premium_year'].includes(p.plan)&&(!p.access_until||new Date(p.access_until)>new Date()))));
+ const isAdminRole=['admin','staff'].includes(p.role);
+ const premium=isAdminRole||(p.is_active&&(p.plan==='lifetime'||(['premium_30','premium_year'].includes(p.plan)&&(!p.access_until||new Date(p.access_until)>new Date()))));
  const freeTeacher=p.is_active&&p.plan==='free_teacher';
 
- if(!p.is_active&&p.role!=='admin'){
+ if(!p.is_active&&!isAdminRole){
    window.__MK_PLAN='locked';
    document.getElementById('gateText').textContent='Akun ini dinonaktifkan oleh admin. Hubungi admin ModulKita untuk mengaktifkannya kembali.';
    return;
  }
 
- window.__MK_PLAN=p.role==='admin'?'premium':(premium?'premium':freeTeacher?'free_teacher':'demo');
+ window.__MK_PLAN=isAdminRole?'premium':(premium?'premium':freeTeacher?'free_teacher':'demo');
  document.getElementById('accountEmail').textContent=p.email||session.user.email||'';
  document.getElementById('accountBar').style.display='block';
 
@@ -1957,7 +1958,9 @@ async function initPremiumAccess(){
    ribbon.innerHTML=`<b>Guru Gratis Terverifikasi:</b> maksimal ${limit} generate buku lengkap per bulan. Sisa bulan ini: <b>${remain}</b>. Cetak/PDF tersedia; Download Word khusus Premium.`;
    ribbon.classList.add('show');
  }else if(p.role==='admin'){
-   document.getElementById('accountPlan').textContent='ADMIN';
+   document.getElementById('accountPlan').textContent='ADMIN PEMILIK';
+ }else if(p.role==='staff'){
+   document.getElementById('accountPlan').textContent='ADMIN STAFF';
  }else if(premium){
    document.getElementById('accountPlan').textContent='PREMIUM';
  }else{

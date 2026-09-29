@@ -15,6 +15,11 @@
 .inviteMaker{display:grid;grid-template-columns:1.4fr .7fr auto;gap:10px;align-items:end}.inviteMaker label{display:block;font-size:12px;font-weight:850;margin-bottom:5px}.inviteMaker input,.inviteMaker select{width:100%;border:1px solid #d0d5dd;border-radius:9px;padding:9px;font:inherit}.codeBox{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-weight:950;font-size:14px;letter-spacing:.03em;background:#f8fafc;border:1px dashed #cbd5e1;padding:8px 9px;border-radius:9px;word-break:break-all}
 @media(max-width:720px){.inviteMaker{grid-template-columns:1fr}.inviteMaker .btn{width:100%}}
 
+
+.staffNote{font-size:12px;color:#475467;margin-top:6px}
+.staffBadge{background:#ecfdf3!important;color:#067647!important;border-color:#abefc6!important}
+.ownerBadge{background:#eef2ff!important;color:#3730a3!important;border-color:#c7d2fe!important}
+
 </style></head>
 <body>
 <div class="top"><div class="topin"><div class="brand">Admin ModulKita — Kelola Akun & Premium</div><div><button class="btn g" onclick="location.href='index.html'">Beranda</button> <button class="btn r" onclick="logout()">Keluar</button></div></div></div>
@@ -34,6 +39,18 @@
       </div>
       <div id="invites" class="grid" style="margin-top:12px"></div>
     </div>
+    <div class="section hidden" id="teamAdminSection">
+      <div class="sectionHead">
+        <div>
+          <h2>Tim Admin</h2>
+          <div class="count">Hanya Admin Pemilik yang dapat mengangkat atau mencabut Admin Staff.</div>
+        </div>
+      </div>
+      <div class="card">
+        <p style="margin:0"><b>Admin Staff</b> dapat membantu menyetujui pembayaran, mengatur paket pengguna, membuat kode Guru Gratis, dan melihat pengguna. Admin Staff <b>tidak dapat</b> mengangkat admin baru atau mencabut akses Admin Pemilik.</p>
+      </div>
+    </div>
+
     <div class="section">
       <div class="sectionHead"><div><h2>Pengguna</h2><div id="userCount" class="count"></div></div></div>
       <div id="users" class="grid"></div>
@@ -49,8 +66,17 @@ async function init(){
  if(!cfg.supabaseUrl||!cfg.supabasePublishableKey)return show('Layanan akun belum siap.');
  sb=window.supabase.createClient(cfg.supabaseUrl,cfg.supabasePublishableKey);
  const {data:{session}}=await sb.auth.getSession();if(!session)return location.href='index.html';user=session.user;
- const {data:p}=await sb.from('modulkita_profiles').select('role').eq('id',user.id).single();if(!p||p.role!=='admin')return show('Akses ditolak. Akun ini bukan admin.');
- $('adminArea').classList.remove('hidden');show('Akses admin aktif.');loadAll()
+ const {data:p}=await sb.from('modulkita_profiles').select('role,is_active').eq('id',user.id).single();
+ if(!p||!['admin','staff'].includes(p.role)||p.is_active===false)return show('Akses ditolak. Akun ini bukan Admin aktif.');
+ currentAdminRole=p.role;
+ $('adminArea').classList.remove('hidden');
+ if(currentAdminRole==='admin'){
+   $('teamAdminSection').classList.remove('hidden');
+   show('Akses Admin Pemilik aktif.');
+ }else{
+   show('Akses Admin Staff aktif. Anda dapat membantu penjualan dan persetujuan akun.');
+ }
+ loadAll()
 }
 async function loadAll(){await loadRequests();await loadInvites();await loadUsers()}
 async function loadRequests(){
@@ -104,21 +130,47 @@ async function copyCode(code){
 async function loadUsers(){
  const {data,error}=await sb.rpc('modulkita_admin_list_users');if(error)return show(error.message);
  $('userCount').textContent=`${(data||[]).length} pengguna`;
- $('users').innerHTML=(data||[]).length?(data||[]).map(x=>`<div class="card">
-   <div style="display:flex;justify-content:space-between;gap:8px"><div><h3>${x.full_name||'Tanpa nama'}</h3><div class="muted">${x.email||'-'}</div></div><span class="chip ${!x.is_active&&x.role!=='admin'?'rejected':''}">${x.role==='admin'?'ADMIN':(!x.is_active?'NONAKTIF':planLabel(x.plan))}</span></div>
-   <div class="kv"><b>Paket</b><span>${planLabel(x.plan)}</span><b>Aktif s.d.</b><span>${x.plan==='lifetime'?'Lifetime':x.access_until?new Date(x.access_until).toLocaleDateString('id-ID'):'-'}</span><b>Role</b><span>${x.role}</span></div>
-   <div class="actions">${x.role==='admin'
- ? `<button class="btn p" disabled>Admin — Akses Penuh</button>`
- : `<button class="btn g" onclick="setAccess('${x.id}','free_teacher',null)">Guru Gratis</button>
-    <button class="btn g" onclick="setAccess('${x.id}','premium_30',30)">30 Hari</button>
-    <button class="btn g" onclick="setAccess('${x.id}','premium_year',365)">1 Tahun</button>
-    <button class="btn p" onclick="setAccess('${x.id}','lifetime',null)">Lifetime</button>
-    <button class="btn w" onclick="setAccess('${x.id}','demo',0)">Cabut Premium</button>
-    ${x.is_active
-      ? `<button class="btn r" onclick="suspendUser('${x.id}','${(x.email||'').replace(/'/g,"&#39;")}')">Nonaktifkan Akun</button>`
-      : `<button class="btn g" onclick="setAccess('${x.id}','demo',0)">Aktifkan Kembali</button>`}`
-}</div>
- </div>`).join(''):'<div class="empty">Belum ada pengguna.</div>'
+ $('users').innerHTML=(data||[]).length?(data||[]).map(x=>{
+   const isOwner=x.role==='admin',isStaff=x.role==='staff';
+   const badge=isOwner?'ADMIN PEMILIK':isStaff?'ADMIN STAFF':(!x.is_active?'NONAKTIF':planLabel(x.plan));
+   const badgeCls=isOwner?'ownerBadge':isStaff?'staffBadge':(!x.is_active?'rejected':'');
+   let actions='';
+   if(isOwner){
+     actions='<button class="btn p" disabled>Admin Pemilik — Akses Utama</button>';
+   }else if(isStaff){
+     actions=currentAdminRole==='admin'
+       ? `<button class="btn r" onclick="setStaffRole('${x.id}',false,'${(x.email||'').replace(/'/g,"&#39;")}')">Cabut Admin Staff</button>`
+       : '<button class="btn g" disabled>Admin Staff</button>';
+   }else{
+     actions=`<button class="btn g" onclick="setAccess('${x.id}','free_teacher',null)">Guru Gratis</button>
+      <button class="btn g" onclick="setAccess('${x.id}','premium_30',30)">30 Hari</button>
+      <button class="btn g" onclick="setAccess('${x.id}','premium_year',365)">1 Tahun</button>
+      <button class="btn p" onclick="setAccess('${x.id}','lifetime',null)">Lifetime</button>
+      <button class="btn w" onclick="setAccess('${x.id}','demo',0)">Cabut Premium</button>
+      ${currentAdminRole==='admin'?`<button class="btn p" onclick="setStaffRole('${x.id}',true,'${(x.email||'').replace(/'/g,"&#39;")}')">Jadikan Admin Staff</button>`:''}
+      ${x.is_active
+        ? `<button class="btn r" onclick="suspendUser('${x.id}','${(x.email||'').replace(/'/g,"&#39;")}')">Nonaktifkan Akun</button>`
+        : `<button class="btn g" onclick="setAccess('${x.id}','demo',0)">Aktifkan Kembali</button>`}`;
+   }
+   return `<div class="card">
+    <div style="display:flex;justify-content:space-between;gap:8px"><div><h3>${x.full_name||'Tanpa nama'}</h3><div class="muted">${x.email||'-'}</div></div><span class="chip ${badgeCls}">${badge}</span></div>
+    <div class="kv"><b>Paket</b><span>${planLabel(x.plan)}</span><b>Aktif s.d.</b><span>${x.plan==='lifetime'?'Lifetime':x.access_until?new Date(x.access_until).toLocaleDateString('id-ID'):'-'}</span><b>Role</b><span>${x.role}</span></div>
+    ${isStaff?'<div class="staffNote">Admin Staff dapat membantu menyetujui pembelian dan mengatur akses pengguna, tetapi tidak dapat mengangkat Admin Staff lain.</div>':''}
+    <div class="actions">${actions}</div>
+   </div>`;
+ }).join(''):'<div class="empty">Belum ada pengguna.</div>'
+}
+
+async function setStaffRole(uid,makeStaff,email){
+ if(currentAdminRole!=='admin')return alert('Hanya Admin Pemilik yang dapat mengubah Tim Admin.');
+ const text=makeStaff
+   ? `Jadikan ${email||'akun ini'} sebagai Admin Staff?`
+   : `Cabut akses Admin Staff dari ${email||'akun ini'}?`;
+ if(!confirm(text))return;
+ const {error}=await sb.rpc('modulkita_owner_set_staff',{target_user:uid,make_staff:makeStaff});
+ if(error)return alert(error.message);
+ alert(makeStaff?'Admin Staff berhasil diaktifkan.':'Akses Admin Staff berhasil dicabut.');
+ loadAll();
 }
 async function setAccess(uid,plan,days){
  if(!confirm(`Ubah akses pengguna menjadi ${planLabel(plan)}?`))return;
