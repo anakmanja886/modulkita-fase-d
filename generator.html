@@ -265,7 +265,7 @@ footer{text-align:center;color:#667085;font-size:12px;padding:24px 20px 40px}
   </div>
 </header>
 <main class="wrap"><div class="layout">
-<section class="card form-card"><div id="demoRibbon" class="demoRibbon"><b>Mode Demo:</b> maksimal 1 subbab dan download Word/PDF dikunci. Upgrade Premium untuk akses lengkap.</div>
+<section class="card form-card"><div id="demoRibbon" class="demoRibbon"><b>Mode Demo:</b> maksimal 1 subbab dan download Word/PDF dikunci. Gunakan kode Guru Gratis atau upgrade Premium untuk akses lebih lengkap.</div>
 <div class="section-title"><h2>⚙️ Data Perangkat</h2><span class="mini">Tersimpan di browser</span></div>
 <div class="notice"><b>Catatan:</b> kalender yang dibuat adalah <b>kalender kerja/minggu efektif</b> berdasarkan data yang guru isi. Tanggal libur/agenda resmi tetap mengikuti kalender pendidikan pemerintah daerah/satuan pendidikan.</div>
 
@@ -476,11 +476,12 @@ footer{text-align:center;color:#667085;font-size:12px;padding:24px 20px 40px}
   </select>
 </div>
 <button class="btn secondary" onclick="premiumPrint()">🖨️ Cetak / PDF Bersih</button>
+<button class="btn secondary" id="pdfDownloadBtn" onclick="downloadPDFRapi()">⬇️ Download PDF Rapi</button>
 <button class="btn secondary" onclick="downloadWord()">📝 Download Word Rapi</button>
 <button class="btn ghost" onclick="toggleEdit()">✏️ Edit Hasil</button>
 <button class="btn ghost" onclick="copyBook()">📋 Salin</button>
 <div id="orientationStatus" style="width:100%;font-size:10.5px;color:#4f46e5;font-weight:800;margin-top:2px">📄 Output: A4 Portrait</div>
-<div style="width:100%;font-size:10.5px;color:#667085;margin-top:2px">Agar URL, tanggal, dan nomor halaman dari Chrome tidak ikut tercetak: pada dialog cetak buka <b>More settings / Setelan lainnya</b> lalu matikan <b>Headers and footers / Header dan footer</b>.</div>
+<div style="width:100%;font-size:10.5px;color:#667085;margin-top:2px"><b>Download PDF Rapi</b> membuat file PDF langsung tanpa URL/tanggal browser. Tombol <b>Cetak / PDF Bersih</b> tetap tersedia jika ingin memakai dialog cetak Chrome.</div>
 </div>
 <div id="hasil" class="doc"><div class="empty"><div><div class="icon">📚</div><b>Perangkat belum dibuat</b><p>Isi identitas, kalender, Bab dan Subbab, lalu tekan <b>Generate Perangkat Lengkap</b>.</p></div></div></div>
 </section>
@@ -1631,6 +1632,47 @@ function downloadWord(){
   letter-spacing:.01em;
 }
 
+
+/* V11.9 — PDF Rapi langsung download */
+#mkPdfStage{
+  position:fixed;
+  left:-20000px;
+  top:0;
+  background:#fff;
+  z-index:-9999;
+  overflow:visible;
+}
+#mkPdfStage #hasil{
+  max-width:none!important;
+  margin:0!important;
+  padding:0!important;
+  background:#fff!important;
+}
+#mkPdfStage #hasil .cover,
+#mkPdfStage #hasil .section-page,
+#mkPdfStage #hasil .module,
+#mkPdfStage #hasil .divider,
+#mkPdfStage #hasil .lkpd-page{
+  box-sizing:border-box!important;
+}
+#mkPdfStage #hasil table{
+  break-inside:auto;
+  page-break-inside:auto;
+}
+#mkPdfStage #hasil tr,
+#mkPdfStage #hasil .signature,
+#mkPdfStage #hasil .module-title,
+#mkPdfStage #hasil .lkpd-section,
+#mkPdfStage #hasil h2,
+#mkPdfStage #hasil h3{
+  break-inside:avoid;
+  page-break-inside:avoid;
+}
+.pdfBusy{
+  opacity:.65!important;
+  pointer-events:none!important;
+}
+
 </style>
  </head>
  <body>
@@ -1734,8 +1776,125 @@ function updateOrientationLabel(){
  }
 }
 
+
+let mkPdfLibraryPromise=null;
+function ensurePdfLibrary(){
+ if(window.html2pdf)return Promise.resolve();
+ if(mkPdfLibraryPromise)return mkPdfLibraryPromise;
+ mkPdfLibraryPromise=new Promise((resolve,reject)=>{
+   const s=document.createElement('script');
+   s.src='https://cdn.jsdelivr.net/npm/html2pdf.js@0.10.1/dist/html2pdf.bundle.min.js';
+   s.async=true;
+   s.onload=()=>window.html2pdf?resolve():reject(new Error('Library PDF gagal dimuat.'));
+   s.onerror=()=>reject(new Error('Library PDF gagal dimuat. Periksa koneksi internet.'));
+   document.head.appendChild(s);
+ });
+ return mkPdfLibraryPromise;
+}
+
+function pdfSafeName(v){
+ return String(v||'')
+   .replace(/[\\/:*?"<>|]+/g,'')
+   .replace(/\s+/g,'_')
+   .replace(/_+/g,'_')
+   .slice(0,70);
+}
+
+async function downloadPDFRapi(){
+ if(window.__MK_PLAN==='demo'||window.__MK_PLAN==='locked'){
+   return alert('Download PDF tersedia untuk Guru Gratis Terverifikasi dan akun Premium.');
+ }
+ if($('hasil').dataset.generated!=='1'){
+   return alert('Generate perangkat terlebih dahulu.');
+ }
+
+ const btn=$('pdfDownloadBtn');
+ const oldBtn=btn?btn.textContent:'';
+ if(btn){btn.classList.add('pdfBusy');btn.textContent='⏳ Menyiapkan PDF…';}
+
+ let stage=null,original=null,oldId=null;
+ try{
+   await ensurePdfLibrary();
+
+   original=$('hasil');
+   const clone=original.cloneNode(true);
+   clone.removeAttribute('contenteditable');
+   clone.querySelectorAll('[contenteditable]').forEach(el=>el.removeAttribute('contenteditable'));
+
+   // CSS tema aplikasi banyak memakai selector #hasil.
+   // Agar hasil PDF identik dengan preview, id asli dipindahkan sementara ke clone.
+   oldId=original.id;
+   original.id='hasilLive';
+   clone.id='hasil';
+
+   const orientation=paperOrientation();
+   const isLandscape=orientation==='landscape';
+
+   // Lebar kerja mengikuti area isi A4 setelah margin.
+   clone.style.width=isLandscape?'273mm':'190mm';
+   clone.style.maxWidth='none';
+   clone.style.background='#fff';
+
+   stage=document.createElement('div');
+   stage.id='mkPdfStage';
+   stage.appendChild(clone);
+   document.body.appendChild(stage);
+
+   // Tunggu gambar/font/layout selesai.
+   const imgs=[...clone.querySelectorAll('img')];
+   await Promise.all(imgs.map(img=>img.complete?Promise.resolve():new Promise(res=>{
+     img.addEventListener('load',res,{once:true});
+     img.addEventListener('error',res,{once:true});
+     setTimeout(res,2500);
+   })));
+   if(document.fonts?.ready){try{await document.fonts.ready}catch{}}
+   await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));
+
+   const safeMapel=pdfSafeName($('mapel').value||'Mapel');
+   const safeYear=pdfSafeName($('tahun').value||'Tahun');
+   const filename=`Perangkat_Modul_Ajar_${safeMapel}_${safeYear}_${isLandscape?'Landscape':'Portrait'}.pdf`;
+
+   const opt={
+     margin:isLandscape?[7,7,7,7]:[8,8,8,8],
+     filename,
+     image:{type:'jpeg',quality:0.97},
+     html2canvas:{
+       scale:1.55,
+       useCORS:true,
+       allowTaint:true,
+       backgroundColor:'#ffffff',
+       logging:false,
+       scrollX:0,
+       scrollY:0,
+       windowWidth:isLandscape?1280:900
+     },
+     jsPDF:{
+       unit:'mm',
+       format:'a4',
+       orientation:isLandscape?'landscape':'portrait',
+       compress:true,
+       hotfixes:['px_scaling']
+     },
+     pagebreak:{
+       mode:['css','legacy'],
+       before:['.section-page','.module','.divider','.lkpd-page'],
+       avoid:['tr','.signature','.module-title','.lkpd-section','h2','h3']
+     }
+   };
+
+   await window.html2pdf().set(opt).from(clone).save();
+ }catch(err){
+   console.error(err);
+   alert((err&&err.message)||'PDF gagal dibuat. Coba lagi atau gunakan tombol Cetak / PDF Bersih.');
+ }finally{
+   if(stage)stage.remove();
+   if(original&&oldId)original.id=oldId;
+   if(btn){btn.classList.remove('pdfBusy');btn.textContent=oldBtn||'⬇️ Download PDF Rapi';}
+ }
+}
+
 function premiumPrint(){
- if(window.__MK_PLAN==='demo')return alert('Cetak/PDF tersedia untuk akun Premium.');
+ if(window.__MK_PLAN==='demo'||window.__MK_PLAN==='locked')return alert('Cetak/PDF tersedia untuk Guru Gratis Terverifikasi dan akun Premium.');
 
  const orientation=paperOrientation();
  const oldTitle=document.title;
