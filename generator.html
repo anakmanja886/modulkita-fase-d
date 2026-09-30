@@ -501,7 +501,7 @@ footer{text-align:center;color:#667085;font-size:12px;padding:24px 20px 40px}
 <button class="btn ghost" onclick="toggleEdit()">✏️ Edit Hasil</button>
 <button class="btn ghost" onclick="copyBook()">📋 Salin</button>
 <div id="orientationStatus" style="width:100%;font-size:10.5px;color:#4f46e5;font-weight:800;margin-top:2px">📄 Output: A4 Portrait</div>
-<div style="width:100%;font-size:10.5px;color:#667085;margin-top:2px"><b>Download PDF Rapi</b> membuat file PDF langsung tanpa URL/tanggal browser dan sekarang dirender langsung dari preview agar tidak kosong. Tombol <b>Cetak / PDF Bersih</b> tetap tersedia jika ingin memakai dialog cetak Chrome.</div>
+<div style="width:100%;font-size:10.5px;color:#667085;margin-top:2px"><b>Download PDF Rapi</b> membuat file PDF langsung tanpa URL/tanggal browser dan sekarang dirender per bagian agar buku puluhan/ratusan halaman tidak menjadi kosong. Tombol <b>Cetak / PDF Bersih</b> tetap tersedia jika ingin memakai dialog cetak Chrome.</div>
 </div>
 <div id="hasil" class="doc"><div class="empty"><div><div class="icon">📚</div><b>Perangkat belum dibuat</b><p>Isi identitas, kalender, Bab, Subbab dan Materi, lalu tekan <b>Generate Perangkat Lengkap</b>.</p></div></div></div>
 </section>
@@ -2009,10 +2009,60 @@ function pdfSafeName(v){
    .slice(0,70);
 }
 
+
+function mkLoadScriptOnce(id,src,testFn){
+ return new Promise((resolve,reject)=>{
+   if(testFn())return resolve();
+   const old=document.getElementById(id);
+   if(old){
+     old.addEventListener('load',()=>testFn()?resolve():reject(new Error('Library gagal dimuat.')),{once:true});
+     old.addEventListener('error',()=>reject(new Error('Library gagal dimuat.')),{once:true});
+     return;
+   }
+   const s=document.createElement('script');
+   s.id=id;s.src=src;s.async=true;
+   s.onload=()=>testFn()?resolve():reject(new Error('Library gagal dimuat.'));
+   s.onerror=()=>reject(new Error('Library gagal dimuat. Periksa koneksi internet.'));
+   document.head.appendChild(s);
+ });
+}
+
+async function ensureChunkPdfLibraries(){
+ await mkLoadScriptOnce(
+   'mk-html2canvas-lib',
+   'https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js',
+   ()=>typeof window.html2canvas==='function'
+ );
+ await mkLoadScriptOnce(
+   'mk-jspdf-lib',
+   'https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js',
+   ()=>!!(window.jspdf&&window.jspdf.jsPDF)
+ );
+}
+
+function mkCanvasHasContent(canvas){
+ try{
+   const test=document.createElement('canvas');
+   test.width=64;test.height=64;
+   const ctx=test.getContext('2d',{willReadFrequently:true});
+   ctx.fillStyle='#fff';ctx.fillRect(0,0,64,64);
+   ctx.drawImage(canvas,0,0,64,64);
+   const d=ctx.getImageData(0,0,64,64).data;
+   let dark=0;
+   for(let i=0;i<d.length;i+=4){
+     if(d[i+3]>0&&(d[i]<248||d[i+1]<248||d[i+2]<248))dark++;
+   }
+   return dark>2;
+ }catch{
+   return true;
+ }
+}
+
 async function downloadPDFRapi(){
  if(window.__MK_PLAN==='demo'||window.__MK_PLAN==='locked'){
    return alert('Download PDF tersedia untuk Guru Gratis Terverifikasi dan akun Premium.');
  }
+
  const hasil=$('hasil');
  if(!hasil||hasil.dataset.generated!=='1'){
    return alert('Generate perangkat terlebih dahulu.');
@@ -2020,20 +2070,35 @@ async function downloadPDFRapi(){
 
  const btn=$('pdfDownloadBtn');
  const oldBtn=btn?btn.textContent:'';
- if(btn){btn.classList.add('pdfBusy');btn.textContent='⏳ Menyiapkan PDF…';}
+ if(btn){
+   btn.classList.add('pdfBusy');
+   btn.textContent='⏳ Menyiapkan PDF…';
+ }
 
  const oldStyle=hasil.getAttribute('style');
  const oldEditable=hasil.getAttribute('contenteditable');
- const oldScrollX=window.scrollX,oldScrollY=window.scrollY;
+ const oldX=window.scrollX,oldY=window.scrollY;
 
  try{
-   await ensurePdfLibrary();
+   await ensureChunkPdfLibraries();
 
    const orientation=paperOrientation();
    const isLandscape=orientation==='landscape';
+   const {jsPDF}=window.jspdf;
 
-   // Render dari elemen preview yang benar-benar ada di layar.
-   // Ini menghindari PDF putih/blank yang terjadi saat clone ditempatkan jauh di luar layar.
+   const pdf=new jsPDF({
+     orientation:isLandscape?'landscape':'portrait',
+     unit:'mm',
+     format:'a4',
+     compress:true
+   });
+
+   const pageW=pdf.internal.pageSize.getWidth();
+   const pageH=pdf.internal.pageSize.getHeight();
+   const margin=isLandscape?7:8;
+   const contentW=pageW-(margin*2);
+   const contentH=pageH-(margin*2);
+
    hasil.classList.add('mk-pdf-export');
    hasil.removeAttribute('contenteditable');
    hasil.querySelectorAll('[contenteditable]').forEach(el=>{
@@ -2046,81 +2111,108 @@ async function downloadPDFRapi(){
    hasil.style.margin='0 auto';
    hasil.style.background='#fff';
 
-   // Pastikan gambar dan font selesai dimuat sebelum dirender.
    const imgs=[...hasil.querySelectorAll('img')];
    await Promise.all(imgs.map(img=>img.complete?Promise.resolve():new Promise(res=>{
      const done=()=>res();
      img.addEventListener('load',done,{once:true});
      img.addEventListener('error',done,{once:true});
-     setTimeout(done,3000);
+     setTimeout(done,3500);
    })));
    if(document.fonts?.ready){try{await document.fonts.ready}catch{}}
    await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));
 
-   // Scroll ke hasil agar engine canvas tidak memotong elemen panjang di beberapa browser Android/desktop.
-   hasil.scrollIntoView({block:'start'});
-   await new Promise(r=>setTimeout(r,120));
+   // Render PER BAGIAN, bukan seluruh buku sekaligus.
+   // Ini penting untuk buku 100+ halaman karena browser punya batas tinggi canvas.
+   const parts=[...hasil.children].filter(el=>{
+     const rect=el.getBoundingClientRect();
+     return rect.width>20 && rect.height>20;
+   });
+
+   if(!parts.length)throw new Error('Isi modul belum ditemukan.');
+
+   let pageStarted=false;
+   let pagesMade=0;
+
+   for(let i=0;i<parts.length;i++){
+     const part=parts[i];
+
+     if(btn)btn.textContent=`⏳ PDF ${i+1}/${parts.length}`;
+
+     part.scrollIntoView({block:'start'});
+     await new Promise(r=>setTimeout(r,35));
+
+     const canvas=await window.html2canvas(part,{
+       scale:1.18,
+       useCORS:true,
+       allowTaint:true,
+       backgroundColor:'#ffffff',
+       logging:false,
+       imageTimeout:5000,
+       windowWidth:Math.max(document.documentElement.clientWidth,isLandscape?1280:900)
+     });
+
+     if(!canvas||canvas.width<50||canvas.height<50)continue;
+     if(!mkCanvasHasContent(canvas))continue;
+
+     // Tinggi potongan canvas yang pas satu halaman PDF.
+     const pageSlicePx=Math.max(
+       1,
+       Math.floor(canvas.width*(contentH/contentW))
+     );
+
+     for(let y=0;y<canvas.height;y+=pageSlicePx){
+       const sliceH=Math.min(pageSlicePx,canvas.height-y);
+
+       const slice=document.createElement('canvas');
+       slice.width=canvas.width;
+       slice.height=sliceH;
+
+       const sctx=slice.getContext('2d');
+       sctx.fillStyle='#fff';
+       sctx.fillRect(0,0,slice.width,slice.height);
+       sctx.drawImage(
+         canvas,
+         0,y,canvas.width,sliceH,
+         0,0,canvas.width,sliceH
+       );
+
+       if(pageStarted)pdf.addPage();
+       pageStarted=true;
+       pagesMade++;
+
+       const imgData=slice.toDataURL('image/jpeg',0.90);
+       const drawH=sliceH*(contentW/canvas.width);
+
+       pdf.addImage(
+         imgData,
+         'JPEG',
+         margin,
+         margin,
+         contentW,
+         Math.min(drawH,contentH),
+         undefined,
+         'FAST'
+       );
+
+       // Beri kesempatan browser melepaskan memori pada dokumen panjang.
+       slice.width=1;slice.height=1;
+       await new Promise(r=>setTimeout(r,0));
+     }
+
+     canvas.width=1;canvas.height=1;
+     await new Promise(r=>setTimeout(r,0));
+   }
+
+   if(!pagesMade){
+     throw new Error('PDF gagal dirender. Tidak ada halaman yang berhasil dibuat.');
+   }
 
    const safeMapel=pdfSafeName($('mapel').value||'Mapel');
    const safeYear=pdfSafeName($('tahun').value||'Tahun');
    const filename=`Perangkat_Modul_Ajar_${safeMapel}_${safeYear}_${isLandscape?'Landscape':'Portrait'}.pdf`;
 
-   const opt={
-     margin:isLandscape?[7,7,7,7]:[8,8,8,8],
-     filename,
-     image:{type:'jpeg',quality:0.96},
-     html2canvas:{
-       scale:1.35,
-       useCORS:true,
-       allowTaint:true,
-       backgroundColor:'#ffffff',
-       logging:false,
-       scrollX:0,
-       scrollY:-window.scrollY,
-       windowWidth:Math.max(document.documentElement.clientWidth,isLandscape?1280:900),
-       removeContainer:true
-     },
-     jsPDF:{
-       unit:'mm',
-       format:'a4',
-       orientation:isLandscape?'landscape':'portrait',
-       compress:true,
-       hotfixes:['px_scaling']
-     },
-     pagebreak:{
-       mode:['css','legacy'],
-       before:['.section-page','.module','.divider','.lkpd-page'],
-       avoid:['tr','.signature','.module-title','.lkpd-section','h2','h3']
-     }
-   };
-
-   const worker=window.html2pdf().set(opt).from(hasil);
-
-   // Buat canvas dulu dan cek sederhana agar file putih tidak langsung tersimpan.
-   await worker.toCanvas();
-   const canvas=await worker.get('canvas');
-   if(!canvas||canvas.width<100||canvas.height<100){
-     throw new Error('Hasil PDF tidak berhasil dirender. Silakan coba lagi.');
-   }
-
-   // Sampling beberapa titik untuk mendeteksi canvas yang hampir seluruhnya putih.
-   const ctx=canvas.getContext('2d',{willReadFrequently:true});
-   let nonWhite=0,samples=0;
-   const cols=12,rows=18;
-   for(let yy=1;yy<=rows;yy++){
-     for(let xx=1;xx<=cols;xx++){
-       const x=Math.min(canvas.width-1,Math.floor(canvas.width*xx/(cols+1)));
-       const y=Math.min(canvas.height-1,Math.floor(canvas.height*yy/(rows+1)));
-       const d=ctx.getImageData(x,y,1,1).data;
-       samples++;
-       if(d[3]>0 && (d[0]<245||d[1]<245||d[2]<245))nonWhite++;
-     }
-   }
-   if(nonWhite===0){
-     throw new Error('PDF terdeteksi kosong. Gunakan tombol Cetak / PDF Bersih atau coba ulang setelah halaman selesai dimuat.');
-   }
-
-   await worker.toPdf().save();
+   if(btn)btn.textContent=`💾 Menyimpan ${pagesMade} halaman…`;
+   pdf.save(filename);
 
  }catch(err){
    console.error('PDF export error:',err);
@@ -2141,8 +2233,11 @@ async function downloadPDFRapi(){
      delete el.dataset.mkOldEditable;
    });
 
-   window.scrollTo(oldScrollX,oldScrollY);
-   if(btn){btn.classList.remove('pdfBusy');btn.textContent=oldBtn||'⬇️ Download PDF Rapi';}
+   window.scrollTo(oldX,oldY);
+   if(btn){
+     btn.classList.remove('pdfBusy');
+     btn.textContent=oldBtn||'⬇️ Download PDF Rapi';
+   }
  }
 }
 
