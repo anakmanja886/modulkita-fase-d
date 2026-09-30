@@ -460,10 +460,22 @@ footer{text-align:center;color:#667085;font-size:12px;padding:24px 20px 40px}
 
 
 <div class="group"><h3>LKPD Peserta Didik</h3>
-<label style="display:flex;align-items:center;gap:8px;font-weight:850"><input id="includeLKPD" type="checkbox" checked style="width:auto"> Sertakan LKPD untuk setiap unit modul</label>
+<label style="display:flex;align-items:center;gap:8px;font-weight:850"><input id="includeLKPD" type="checkbox" checked style="width:auto" onchange="saveData();updateLKPDModeInfo()"> Aktifkan LKPD dalam buku</label>
 <div class="row">
+  <div>
+    <label>Mode LKPD</label>
+    <select id="lkpdMode" onchange="updateLKPDModeInfo();renderSemester('ganjil');renderSemester('genap');saveData()">
+      <option value="all" selected>✅ Semua Unit Modul</option>
+      <option value="selected">☑️ Pilih per Materi</option>
+      <option value="none">🚫 Tanpa LKPD</option>
+    </select>
+    <div id="lkpdModeInfo" class="mini" style="margin-top:5px"></div>
+  </div>
   <div><label>Gaya LKPD</label><select id="lkpdStyle"><option value="menarik" selected>Lucu & Bergambar</option><option value="formal">Formal & Rapi</option><option value="hemat">Hemat Tinta</option></select></div>
+</div>
+<div class="row">
   <div><label>Penempatan</label><select id="lkpdPlacement"><option value="setelah" selected>Setelah Setiap Modul</option><option value="akhir">Kumpulan di Akhir Buku</option></select></div>
+  <div></div>
 </div>
 <div class="row">
   <div>
@@ -477,7 +489,7 @@ footer{text-align:center;color:#667085;font-size:12px;padding:24px 20px 40px}
   </div>
 </div>
 <label style="display:flex;align-items:center;gap:8px;font-weight:850"><input id="lkpdIllustration" type="checkbox" checked style="width:auto"> Gunakan ilustrasi lucu pada LKPD</label>
-<p class="mini">LKPD dibuat otomatis sesuai tingkat modul yang dipilih (Bab/Subbab/Materi): tujuan, petunjuk, stimulus, kegiatan, ruang jawaban, refleksi, dan rubrik guru. Untuk Bahasa Inggris, seluruh LKPD dapat dibuat dalam English.</p>
+<p class="mini">LKPD dapat dibuat untuk semua unit, dipilih hanya pada materi tertentu, atau dimatikan seluruhnya. Pada mode Per Materi, centang LKPD hanya pada materi yang memang membutuhkan lembar kerja.</p>
 </div>
 
 <div class="group"><h3>Generate Buku Utuh</h3>
@@ -513,7 +525,7 @@ footer{text-align:center;color:#667085;font-size:12px;padding:24px 20px 40px}
 <script>
 const $=id=>document.getElementById(id);
 const esc=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
-const baseIds=['sekolah','guru','nip','jenjang','mapel','fasekelas','temaVisual','tahun','jpMinggu','semesterCover','kepsek','nipKepsek','tempat','cp','karakter','lingkungan','digital','catatan','lkpdStyle','lkpdPlacement','lkpdLanguage','moduleLevel','pancaCintaMode','kbcApproach','kbcNote'];
+const baseIds=['sekolah','guru','nip','jenjang','mapel','fasekelas','temaVisual','tahun','jpMinggu','semesterCover','kepsek','nipKepsek','tempat','cp','karakter','lingkungan','digital','catatan','lkpdStyle','lkpdPlacement','lkpdLanguage','lkpdMode','moduleLevel','pancaCintaMode','kbcApproach','kbcNote'];
 let state={ganjil:[],genap:[]};
 let calendar={
  ganjil:[['Juli',0,''],['Agustus',0,''],['September',0,''],['Oktober',0,''],['November',0,''],['Desember',0,'']],
@@ -522,7 +534,7 @@ let calendar={
 function uid(){return Math.random().toString(36).slice(2,9)}
 function newChapter(name=''){return{id:uid(),name,subs:[]}}
 function newSub(name='',jp='6'){return{id:uid(),name,jp,materials:[]}}
-function newMaterial(name='',jp='2'){return{id:uid(),name,jp}}
+function newMaterial(name='',jp='2'){return{id:uid(),name,jp,lkpd:true}}
 function parseJP(v){const m=String(v||'').match(/\d+(?:[.,]\d+)?/);return m?Number(m[0].replace(',','.')):0}
 function moduleLevel(){return $('moduleLevel')?.value||'subbab'}
 function moduleLevelLabel(){
@@ -538,6 +550,39 @@ function updateModuleLevelInfo(){
    ?'📙 <b>Per Materi:</b> setiap materi di dalam subbab menjadi satu modul ajar tersendiri.'
    :'📗 <b>Per Subbab:</b> setiap subbab menjadi satu modul ajar; materi tetap menjadi rincian isi.';
 }
+function lkpdMode(){
+ return $('lkpdMode')?.value||'all';
+}
+function updateLKPDModeInfo(){
+ const el=$('lkpdModeInfo');if(!el)return;
+ const mode=lkpdMode();
+ if(mode==='selected'){
+   el.innerHTML=moduleLevel()==='materi'
+     ?'☑️ <b>Pilih per Materi:</b> gunakan centang LKPD di samping masing-masing materi. Materi yang tidak dicentang tetap dibuatkan modul tanpa LKPD.'
+     :'ℹ️ Mode <b>Pilih per Materi</b> bekerja saat Tingkat Pembuatan Modul = <b>Per Materi</b>. Untuk Per Bab/Subbab, LKPD tetap mengikuti setiap unit modul.';
+ }else if(mode==='none'){
+   el.innerHTML='🚫 <b>Tanpa LKPD:</b> modul ajar tetap dibuat lengkap, tetapi halaman LKPD tidak ditambahkan.';
+ }else{
+   el.innerHTML='✅ <b>Semua Unit:</b> setiap modul yang dibuat akan mendapat LKPD otomatis.';
+ }
+}
+function materialLKPDEnabled(material){
+ if(!material)return true;
+ return material.lkpd!==false;
+}
+function shouldIncludeLKPD(x){
+ if(!$('includeLKPD')?.checked)return false;
+ const mode=lkpdMode();
+ if(mode==='none')return false;
+ if(mode==='selected' && x?.unitLevel==='materi'){
+   return materialLKPDEnabled(x.material);
+ }
+ return true;
+}
+function selectedLKPDCount(mods){
+ return (mods||[]).filter(shouldIncludeLKPD).length;
+}
+
 function normalizeHierarchy(){
  ['ganjil','genap'].forEach(sem=>{
    if(!Array.isArray(state[sem]))state[sem]=[];
@@ -551,6 +596,7 @@ function normalizeHierarchy(){
        s.materials.forEach(m=>{
          if(!m.id)m.id=uid();
          if(m.jp==null)m.jp='2';
+         if(m.lkpd==null)m.lkpd=true;
        });
      });
    });
@@ -618,15 +664,19 @@ function renderSemester(sem){
          <button class="iconbtn red" onclick="removeSub('${sem}','${c.id}','${s.id}')">✕</button>
        </div>
        <div class="materiallist" id="materials-${s.id}">
-         <div class="mini"><b>Materi</b> — digunakan jika memilih mode <b>Per Materi</b>. Isi JP sebagai bobot alokasi materi.</div>
+         <div class="mini"><b>Materi</b> — digunakan jika memilih mode <b>Per Materi</b>. Isi JP sebagai bobot alokasi materi.</div><div class="lkpd-selected-note">Jika Mode LKPD = <b>Pilih per Materi</b>, centang <b>LKPD</b> hanya pada materi yang memerlukan lembar kerja.</div>
        </div>`;
      sl.appendChild(card);
 
      const ml=card.querySelector(`#materials-${s.id}`);
      (s.materials||[]).forEach((m,mi)=>{
        const r=document.createElement('div');r.className='materialrow';
+       const lkpdSelectActive=moduleLevel()==='materi'&&lkpdMode()==='selected';
        r.innerHTML=`<input value="${esc(m.name)}" oninput="updateMaterial('${sem}','${c.id}','${s.id}','${m.id}','name',this.value)" placeholder="Materi ${mi+1}">
          <input value="${esc(m.jp)}" oninput="updateMaterial('${sem}','${c.id}','${s.id}','${m.id}','jp',this.value);renderSemester('${sem}')" placeholder="2 JP">
+         <label class="material-lkpd-toggle ${lkpdSelectActive?'':'disabled'}" title="${lkpdSelectActive?'Tentukan apakah materi ini memakai LKPD':'Aktif jika Mode LKPD = Pilih per Materi dan modul = Per Materi'}">
+           <input type="checkbox" ${materialLKPDEnabled(m)?'checked':''} ${lkpdSelectActive?'':'disabled'} onchange="updateMaterial('${sem}','${c.id}','${s.id}','${m.id}','lkpd',this.checked);saveData()"> LKPD
+         </label>
          <button class="iconbtn red" onclick="removeMaterial('${sem}','${c.id}','${s.id}','${m.id}')">✕</button>`;
        ml.appendChild(r);
      });
@@ -639,7 +689,7 @@ function renderSemester(sem){
    a.innerHTML=`<button class="btn ghost" onclick="addSub('${sem}','${c.id}')">+ Tambah Subbab</button>`;
    sl.appendChild(a);
  });
- updateModuleLevelInfo();
+ updateModuleLevelInfo();updateLKPDModeInfo();
 }
 function renderCalendar(sem){
  const id=sem==='ganjil'?'calGanjil':'calGenap',box=$(id);
@@ -664,12 +714,12 @@ function loadData(){
  try{const d=JSON.parse(localStorage.getItem('modulkitaBookV61')||localStorage.getItem('modulkitaBookV5')||localStorage.getItem('modulkitaBookV4')||'{}');baseIds.forEach(id=>{if(d[id]!=null)$(id).value=d[id]});if(d.includeLKPD!=null)$('includeLKPD').checked=d.includeLKPD;if(d.lkpdIllustration!=null)$('lkpdIllustration').checked=d.lkpdIllustration;if(d.includeKBC!=null)$('includeKBC').checked=d.includeKBC;if(d.autoAllocation!=null)$('autoAllocation').checked=d.autoAllocation;if(d.state)state=d.state;if(d.calendar)calendar=d.calendar}catch(e){}
  normalizeHierarchy();
  if(!state.ganjil.length)addChapter('ganjil','Bab 1');if(!state.genap.length)addChapter('genap','Bab 1');
- renderSemester('ganjil');renderSemester('genap');renderCalendar('ganjil');renderCalendar('genap');updateModuleLevelInfo();
+ renderSemester('ganjil');renderSemester('genap');renderCalendar('ganjil');renderCalendar('genap');updateModuleLevelInfo();updateLKPDModeInfo();
 }
 document.addEventListener('input',e=>{if(e.target.closest('.form-card')){if(e.target.id==='jpMinggu'){renderCalendar('ganjil');renderCalendar('genap');renderSemester('ganjil');renderSemester('genap')}saveData()}});
 document.addEventListener('change',e=>{
  if(e.target?.id==='autoAllocation'||e.target?.id==='moduleLevel'){
-   renderSemester('ganjil');renderSemester('genap');updateModuleLevelInfo();saveData();
+   renderSemester('ganjil');renderSemester('genap');updateModuleLevelInfo();updateLKPDModeInfo();saveData();
  }
 });
 
@@ -1008,10 +1058,10 @@ function generateBook(){
  saveData();const mods=getModules();if(window.__MK_PLAN==='demo'&&mods.length>1)return alert(`Mode Demo hanya dapat membuat 1 unit modul. Saat ini mode Anda: Per ${moduleLevelLabel()}. Kurangi unit lain atau upgrade akses.`);if(!mods.length)return alert(moduleLevel()==='materi'?'Tambahkan minimal satu Materi pada Subbab.':'Tambahkan minimal satu '+moduleLevelLabel()+'.');
  const m=$('mapel').value||'Mata Pelajaran';
  let h=`<section class="cover">${coverLogoHTML()}<div class="kicker">Buku Perangkat Pembelajaran & Modul Ajar Pembelajaran Mendalam</div><h1>${esc(m)}</h1><h2>${esc($('fasekelas').value)} • ${esc($('jenjang').value)}</h2><div class="meta"><b>${esc(semesterCoverText())}</b><br>Tahun Pelajaran <b>${esc($('tahun').value)}</b><br><br>${esc($('sekolah').value||'Nama Sekolah/Madrasah')}<br><br>Disusun oleh<br><b>${esc($('guru').value||'Nama Guru/Penyusun')}</b>${$('nip').value?`<br>NIP/NUPTK: ${esc($('nip').value)}`:''}</div></section>`;
- h+=`<section class="section-page" style="page-break-before:auto"><div class="module-title"><h1>IDENTITAS PERANGKAT</h1></div><table><tr><td><b>Satuan Pendidikan</b></td><td>${esc($('sekolah').value||'—')}</td></tr><tr><td><b>Jenjang</b></td><td>${esc($('jenjang').value||'—')}</td></tr>${isMI()?`<tr><td><b>Acuan Madrasah</b></td><td>KMA No. 1503 Tahun 2025 • CP PAI & Bahasa Arab: SK Dirjen Pendis No. 9941 Tahun 2025 • 1 JP = 35 menit</td></tr>`:''}<tr><td><b>Mata Pelajaran</b></td><td>${esc(m)}</td></tr><tr><td><b>Fase/Kelas</b></td><td>${esc($('fasekelas').value)}</td></tr><tr><td><b>Semester</b></td><td>${esc(semesterCoverText())}</td></tr><tr><td><b>Tahun Pelajaran</b></td><td>${esc($('tahun').value)}</td></tr><tr><td><b>Penyusun</b></td><td>${esc($('guru').value||'—')}</td></tr><tr><td><b>NIP/NUPTK</b></td><td>${esc($('nip').value||'—')}</td></tr></table><h2>Kata Pengantar</h2><p>Buku perangkat pembelajaran ini menghimpun Analisis CP menjadi TP, ATP, kalender pendidikan kerja, analisis alokasi waktu, Program Tahunan, Program Semester, dan Modul Ajar Pembelajaran Mendalam. Modul ajar dapat disusun per Bab, per Subbab, atau per Materi sesuai pilihan guru, dan seluruh hasil tetap dapat diedit serta disesuaikan dengan kondisi satuan pendidikan.</p>${$('catatan').value?`<h2>Catatan Penyusun</h2><p>${esc($('catatan').value)}</p>`:''}<h2>Daftar Isi</h2><ol><li>Analisis CP menjadi TP</li><li>ATP Semester Ganjil</li><li>ATP Semester Genap</li><li>Kalender Pendidikan Kerja & Minggu Efektif</li><li>Analisis Alokasi Waktu</li><li>Program Tahunan (PROTA)</li><li>Program Semester Ganjil (PROSEM)</li><li>Program Semester Genap (PROSEM)</li><li>Modul Ajar Pembelajaran Mendalam per ${esc(moduleLevelLabel())}</li><li>LKPD Menarik per ${esc(moduleLevelLabel())}</li></ol></section>`;
+ h+=`<section class="section-page" style="page-break-before:auto"><div class="module-title"><h1>IDENTITAS PERANGKAT</h1></div><table><tr><td><b>Satuan Pendidikan</b></td><td>${esc($('sekolah').value||'—')}</td></tr><tr><td><b>Jenjang</b></td><td>${esc($('jenjang').value||'—')}</td></tr>${isMI()?`<tr><td><b>Acuan Madrasah</b></td><td>KMA No. 1503 Tahun 2025 • CP PAI & Bahasa Arab: SK Dirjen Pendis No. 9941 Tahun 2025 • 1 JP = 35 menit</td></tr>`:''}<tr><td><b>Mata Pelajaran</b></td><td>${esc(m)}</td></tr><tr><td><b>Fase/Kelas</b></td><td>${esc($('fasekelas').value)}</td></tr><tr><td><b>Semester</b></td><td>${esc(semesterCoverText())}</td></tr><tr><td><b>Tahun Pelajaran</b></td><td>${esc($('tahun').value)}</td></tr><tr><td><b>Penyusun</b></td><td>${esc($('guru').value||'—')}</td></tr><tr><td><b>NIP/NUPTK</b></td><td>${esc($('nip').value||'—')}</td></tr></table><h2>Kata Pengantar</h2><p>Buku perangkat pembelajaran ini menghimpun Analisis CP menjadi TP, ATP, kalender pendidikan kerja, analisis alokasi waktu, Program Tahunan, Program Semester, dan Modul Ajar Pembelajaran Mendalam. Modul ajar dapat disusun per Bab, per Subbab, atau per Materi sesuai pilihan guru, dan seluruh hasil tetap dapat diedit serta disesuaikan dengan kondisi satuan pendidikan.</p>${$('catatan').value?`<h2>Catatan Penyusun</h2><p>${esc($('catatan').value)}</p>`:''}<h2>Daftar Isi</h2><ol><li>Analisis CP menjadi TP</li><li>ATP Semester Ganjil</li><li>ATP Semester Genap</li><li>Kalender Pendidikan Kerja & Minggu Efektif</li><li>Analisis Alokasi Waktu</li><li>Program Tahunan (PROTA)</li><li>Program Semester Ganjil (PROSEM)</li><li>Program Semester Genap (PROSEM)</li><li>Modul Ajar Pembelajaran Mendalam per ${esc(moduleLevelLabel())}</li><li>LKPD Peserta Didik (sesuai pilihan guru)</li></ol></section>`;
  h+=analysisCPTable()+atpSection('ganjil')+atpSection('genap')+calendarSection()+allocationSection()+protaSection()+prosemSection('ganjil')+prosemSection('genap');
- let current='';const includeLKPD=$('includeLKPD').checked,placement=$('lkpdPlacement').value;mods.forEach(x=>{if(x.sem!==current){current=x.sem;h+=`<section class="divider"><div><div class="kicker">Modul Ajar Pembelajaran Mendalam • Per ${esc(moduleLevelLabel())}</div><h1>${esc(current)}</h1><p>${esc(m)} • ${esc($('fasekelas').value)}</p></div></section>`}h+=moduleHTML(x);if(includeLKPD&&placement==='setelah')h+=lkpdHTML(x)});
- if(includeLKPD&&placement==='akhir'){h+=`<section class="divider"><div><div class="kicker">Lampiran Peserta Didik</div><h1>Kumpulan LKPD</h1><p>${esc(m)} • ${esc($('fasekelas').value)}</p></div></section>`;mods.forEach(x=>h+=lkpdHTML(x))}
+ let current='';const placement=$('lkpdPlacement').value;const lkpdMods=mods.filter(shouldIncludeLKPD);mods.forEach(x=>{if(x.sem!==current){current=x.sem;h+=`<section class="divider"><div><div class="kicker">Modul Ajar Pembelajaran Mendalam • Per ${esc(moduleLevelLabel())}</div><h1>${esc(current)}</h1><p>${esc(m)} • ${esc($('fasekelas').value)}</p></div></section>`}h+=moduleHTML(x);if(shouldIncludeLKPD(x)&&placement==='setelah')h+=lkpdHTML(x)});
+ if(lkpdMods.length&&placement==='akhir'){h+=`<section class="divider"><div><div class="kicker">Lampiran Peserta Didik</div><h1>Kumpulan LKPD</h1><p>${esc(m)} • ${esc($('fasekelas').value)} • ${lkpdMods.length} LKPD</p></div></section>`;lkpdMods.forEach(x=>h+=lkpdHTML(x))}
  $('hasil').innerHTML=h;$('hasil').dataset.generated='1';$('hasil').contentEditable='false';window.scrollTo({top:$('hasil').getBoundingClientRect().top+window.scrollY-10,behavior:'smooth'});
 }
 function toggleEdit(){if($('hasil').dataset.generated!=='1')return alert('Generate perangkat terlebih dahulu.');const on=$('hasil').contentEditable==='true';$('hasil').contentEditable=on?'false':'true';alert(on?'Mode edit dimatikan.':'Mode edit aktif. Ketuk isi hasil untuk memperbaiki teks sebelum dicetak.')}
@@ -1877,6 +1927,51 @@ function downloadWord(){
 @media(max-width:700px){
   .materiallist{margin-left:6px}
   .materialrow{grid-template-columns:1fr 76px 38px}
+}
+
+
+/* V12.2 — LKPD pilihan per materi */
+.materialrow{
+  grid-template-columns:minmax(0,1fr) 82px 78px 38px!important;
+}
+.material-lkpd-toggle{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:4px;
+  min-height:38px;
+  border:1px solid #d0d5dd;
+  border-radius:9px;
+  background:#f8fafc;
+  font-size:10.5px;
+  font-weight:850;
+  color:#475467;
+  padding:4px 6px;
+}
+.material-lkpd-toggle input{
+  width:auto!important;
+  margin:0;
+}
+.material-lkpd-toggle.disabled{
+  opacity:.42;
+}
+.lkpd-selected-note{
+  margin-top:6px;
+  border:1px dashed #c7d2fe;
+  background:#f8faff;
+  color:#4338ca;
+  border-radius:10px;
+  padding:7px 9px;
+  font-size:10.5px;
+}
+@media(max-width:700px){
+  .materialrow{
+    grid-template-columns:minmax(0,1fr) 70px 70px 36px!important;
+  }
+  .material-lkpd-toggle{
+    font-size:9.5px;
+    padding:3px;
+  }
 }
 
 </style>
