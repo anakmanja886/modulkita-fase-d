@@ -501,7 +501,7 @@ footer{text-align:center;color:#667085;font-size:12px;padding:24px 20px 40px}
 <button class="btn ghost" onclick="toggleEdit()">✏️ Edit Hasil</button>
 <button class="btn ghost" onclick="copyBook()">📋 Salin</button>
 <div id="orientationStatus" style="width:100%;font-size:10.5px;color:#4f46e5;font-weight:800;margin-top:2px">📄 Output: A4 Portrait</div>
-<div style="width:100%;font-size:10.5px;color:#667085;margin-top:2px"><b>Download PDF Rapi</b> membuat file PDF langsung tanpa URL/tanggal browser. Tombol <b>Cetak / PDF Bersih</b> tetap tersedia jika ingin memakai dialog cetak Chrome.</div>
+<div style="width:100%;font-size:10.5px;color:#667085;margin-top:2px"><b>Download PDF Rapi</b> membuat file PDF langsung tanpa URL/tanggal browser dan sekarang dirender langsung dari preview agar tidak kosong. Tombol <b>Cetak / PDF Bersih</b> tetap tersedia jika ingin memakai dialog cetak Chrome.</div>
 </div>
 <div id="hasil" class="doc"><div class="empty"><div><div class="icon">📚</div><b>Perangkat belum dibuat</b><p>Isi identitas, kalender, Bab, Subbab dan Materi, lalu tekan <b>Generate Perangkat Lengkap</b>.</p></div></div></div>
 </section>
@@ -1795,38 +1795,28 @@ function downloadWord(){
 }
 
 
-/* V11.9 — PDF Rapi langsung download */
-#mkPdfStage{
-  position:fixed;
-  left:-20000px;
-  top:0;
-  background:#fff;
-  z-index:-9999;
-  overflow:visible;
-}
-#mkPdfStage #hasil{
-  max-width:none!important;
-  margin:0!important;
-  padding:0!important;
+/* V12.2 — PDF Rapi: render langsung dari preview yang terlihat */
+#hasil.mk-pdf-export{
   background:#fff!important;
-}
-#mkPdfStage #hasil .cover,
-#mkPdfStage #hasil .section-page,
-#mkPdfStage #hasil .module,
-#mkPdfStage #hasil .divider,
-#mkPdfStage #hasil .lkpd-page{
   box-sizing:border-box!important;
 }
-#mkPdfStage #hasil table{
+#hasil.mk-pdf-export .cover,
+#hasil.mk-pdf-export .section-page,
+#hasil.mk-pdf-export .module,
+#hasil.mk-pdf-export .divider,
+#hasil.mk-pdf-export .lkpd-page{
+  box-sizing:border-box!important;
+}
+#hasil.mk-pdf-export table{
   break-inside:auto;
   page-break-inside:auto;
 }
-#mkPdfStage #hasil tr,
-#mkPdfStage #hasil .signature,
-#mkPdfStage #hasil .module-title,
-#mkPdfStage #hasil .lkpd-section,
-#mkPdfStage #hasil h2,
-#mkPdfStage #hasil h3{
+#hasil.mk-pdf-export tr,
+#hasil.mk-pdf-export .signature,
+#hasil.mk-pdf-export .module-title,
+#hasil.mk-pdf-export .lkpd-section,
+#hasil.mk-pdf-export h2,
+#hasil.mk-pdf-export h3{
   break-inside:avoid;
   page-break-inside:avoid;
 }
@@ -2023,7 +2013,8 @@ async function downloadPDFRapi(){
  if(window.__MK_PLAN==='demo'||window.__MK_PLAN==='locked'){
    return alert('Download PDF tersedia untuk Guru Gratis Terverifikasi dan akun Premium.');
  }
- if($('hasil').dataset.generated!=='1'){
+ const hasil=$('hasil');
+ if(!hasil||hasil.dataset.generated!=='1'){
    return alert('Generate perangkat terlebih dahulu.');
  }
 
@@ -2031,43 +2022,44 @@ async function downloadPDFRapi(){
  const oldBtn=btn?btn.textContent:'';
  if(btn){btn.classList.add('pdfBusy');btn.textContent='⏳ Menyiapkan PDF…';}
 
- let stage=null,original=null,oldId=null;
+ const oldStyle=hasil.getAttribute('style');
+ const oldEditable=hasil.getAttribute('contenteditable');
+ const oldScrollX=window.scrollX,oldScrollY=window.scrollY;
+
  try{
    await ensurePdfLibrary();
-
-   original=$('hasil');
-   const clone=original.cloneNode(true);
-   clone.removeAttribute('contenteditable');
-   clone.querySelectorAll('[contenteditable]').forEach(el=>el.removeAttribute('contenteditable'));
-
-   // CSS tema aplikasi banyak memakai selector #hasil.
-   // Agar hasil PDF identik dengan preview, id asli dipindahkan sementara ke clone.
-   oldId=original.id;
-   original.id='hasilLive';
-   clone.id='hasil';
 
    const orientation=paperOrientation();
    const isLandscape=orientation==='landscape';
 
-   // Lebar kerja mengikuti area isi A4 setelah margin.
-   clone.style.width=isLandscape?'273mm':'190mm';
-   clone.style.maxWidth='none';
-   clone.style.background='#fff';
+   // Render dari elemen preview yang benar-benar ada di layar.
+   // Ini menghindari PDF putih/blank yang terjadi saat clone ditempatkan jauh di luar layar.
+   hasil.classList.add('mk-pdf-export');
+   hasil.removeAttribute('contenteditable');
+   hasil.querySelectorAll('[contenteditable]').forEach(el=>{
+     el.dataset.mkOldEditable=el.getAttribute('contenteditable')||'';
+     el.removeAttribute('contenteditable');
+   });
 
-   stage=document.createElement('div');
-   stage.id='mkPdfStage';
-   stage.appendChild(clone);
-   document.body.appendChild(stage);
+   hasil.style.width=isLandscape?'273mm':'190mm';
+   hasil.style.maxWidth='none';
+   hasil.style.margin='0 auto';
+   hasil.style.background='#fff';
 
-   // Tunggu gambar/font/layout selesai.
-   const imgs=[...clone.querySelectorAll('img')];
+   // Pastikan gambar dan font selesai dimuat sebelum dirender.
+   const imgs=[...hasil.querySelectorAll('img')];
    await Promise.all(imgs.map(img=>img.complete?Promise.resolve():new Promise(res=>{
-     img.addEventListener('load',res,{once:true});
-     img.addEventListener('error',res,{once:true});
-     setTimeout(res,2500);
+     const done=()=>res();
+     img.addEventListener('load',done,{once:true});
+     img.addEventListener('error',done,{once:true});
+     setTimeout(done,3000);
    })));
    if(document.fonts?.ready){try{await document.fonts.ready}catch{}}
    await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)));
+
+   // Scroll ke hasil agar engine canvas tidak memotong elemen panjang di beberapa browser Android/desktop.
+   hasil.scrollIntoView({block:'start'});
+   await new Promise(r=>setTimeout(r,120));
 
    const safeMapel=pdfSafeName($('mapel').value||'Mapel');
    const safeYear=pdfSafeName($('tahun').value||'Tahun');
@@ -2076,16 +2068,17 @@ async function downloadPDFRapi(){
    const opt={
      margin:isLandscape?[7,7,7,7]:[8,8,8,8],
      filename,
-     image:{type:'jpeg',quality:0.97},
+     image:{type:'jpeg',quality:0.96},
      html2canvas:{
-       scale:1.55,
+       scale:1.35,
        useCORS:true,
        allowTaint:true,
        backgroundColor:'#ffffff',
        logging:false,
        scrollX:0,
-       scrollY:0,
-       windowWidth:isLandscape?1280:900
+       scrollY:-window.scrollY,
+       windowWidth:Math.max(document.documentElement.clientWidth,isLandscape?1280:900),
+       removeContainer:true
      },
      jsPDF:{
        unit:'mm',
@@ -2101,13 +2094,54 @@ async function downloadPDFRapi(){
      }
    };
 
-   await window.html2pdf().set(opt).from(clone).save();
+   const worker=window.html2pdf().set(opt).from(hasil);
+
+   // Buat canvas dulu dan cek sederhana agar file putih tidak langsung tersimpan.
+   await worker.toCanvas();
+   const canvas=await worker.get('canvas');
+   if(!canvas||canvas.width<100||canvas.height<100){
+     throw new Error('Hasil PDF tidak berhasil dirender. Silakan coba lagi.');
+   }
+
+   // Sampling beberapa titik untuk mendeteksi canvas yang hampir seluruhnya putih.
+   const ctx=canvas.getContext('2d',{willReadFrequently:true});
+   let nonWhite=0,samples=0;
+   const cols=12,rows=18;
+   for(let yy=1;yy<=rows;yy++){
+     for(let xx=1;xx<=cols;xx++){
+       const x=Math.min(canvas.width-1,Math.floor(canvas.width*xx/(cols+1)));
+       const y=Math.min(canvas.height-1,Math.floor(canvas.height*yy/(rows+1)));
+       const d=ctx.getImageData(x,y,1,1).data;
+       samples++;
+       if(d[3]>0 && (d[0]<245||d[1]<245||d[2]<245))nonWhite++;
+     }
+   }
+   if(nonWhite===0){
+     throw new Error('PDF terdeteksi kosong. Gunakan tombol Cetak / PDF Bersih atau coba ulang setelah halaman selesai dimuat.');
+   }
+
+   await worker.toPdf().save();
+
  }catch(err){
-   console.error(err);
+   console.error('PDF export error:',err);
    alert((err&&err.message)||'PDF gagal dibuat. Coba lagi atau gunakan tombol Cetak / PDF Bersih.');
  }finally{
-   if(stage)stage.remove();
-   if(original&&oldId)original.id=oldId;
+   hasil.classList.remove('mk-pdf-export');
+
+   if(oldStyle===null)hasil.removeAttribute('style');
+   else hasil.setAttribute('style',oldStyle);
+
+   if(oldEditable===null)hasil.removeAttribute('contenteditable');
+   else hasil.setAttribute('contenteditable',oldEditable);
+
+   hasil.querySelectorAll('[data-mk-old-editable]').forEach(el=>{
+     const v=el.dataset.mkOldEditable;
+     if(v)el.setAttribute('contenteditable',v);
+     else el.removeAttribute('contenteditable');
+     delete el.dataset.mkOldEditable;
+   });
+
+   window.scrollTo(oldScrollX,oldScrollY);
    if(btn){btn.classList.remove('pdfBusy');btn.textContent=oldBtn||'⬇️ Download PDF Rapi';}
  }
 }
