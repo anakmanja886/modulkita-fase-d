@@ -492,9 +492,34 @@ footer{text-align:center;color:#667085;font-size:12px;padding:24px 20px 40px}
 <p class="mini">LKPD dapat dibuat untuk semua unit, dipilih hanya pada materi tertentu, atau dimatikan seluruhnya. Pada mode Per Materi, centang LKPD hanya pada materi yang memang membutuhkan lembar kerja.</p>
 </div>
 
+<div class="group"><h3>Data Tersimpan</h3>
+<p class="mini">Draft tetap tersimpan otomatis di perangkat. Gunakan bagian ini untuk menyimpan beberapa perangkat ke akun, lalu pilih kembali, perbarui, atau hapus kapan saja.</p>
+<div class="saved-data-panel">
+  <div class="row">
+    <div>
+      <label>Nama Data / Perangkat</label>
+      <input id="savedBookName" placeholder="Contoh: Bahasa Indonesia Kelas IX 2026/2027">
+    </div>
+    <div>
+      <label>Pilih Data Tersimpan</label>
+      <select id="savedBookSelect" onchange="onSavedBookSelect()">
+        <option value="">— Belum memilih data —</option>
+      </select>
+    </div>
+  </div>
+  <div class="actions saved-actions">
+    <button class="btn primary" type="button" onclick="saveBookCloud()">💾 Simpan Baru</button>
+    <button class="btn secondary" type="button" onclick="updateSelectedBook()">🔄 Perbarui Pilihan</button>
+    <button class="btn ghost" type="button" onclick="openSelectedBook()">📂 Buka Data</button>
+    <button class="btn danger" type="button" onclick="deleteSelectedBook()">🗑️ Hapus</button>
+  </div>
+  <div id="savedBookStatus" class="saved-book-status">Daftar data akan muncul setelah akun tersambung.</div>
+</div>
+</div>
+
 <div class="group"><h3>Generate Buku Utuh</h3>
 <label>Catatan Penyusun <span class="mini">(opsional)</span></label><textarea id="catatan" placeholder="Konteks lokal, kebijakan sekolah, atau catatan lain."></textarea>
-<div class="actions"><button class="btn primary" onclick="generateBook()">✨ Generate Perangkat Lengkap</button><button class="btn ghost" onclick="saveData()">💾 Simpan Data</button><button class="btn danger" onclick="resetAll()">Reset</button></div>
+<div class="actions"><button class="btn primary" onclick="generateBook()">✨ Generate Perangkat Lengkap</button><button class="btn danger" onclick="resetAll()">Reset Form</button></div>
 </div>
 </section>
 
@@ -708,20 +733,254 @@ function resetCalendar(sem){
  renderCalendar(sem);saveData();
 }
 
-function formData(){const d={};baseIds.forEach(id=>d[id]=$(id).value);d.includeLKPD=$('includeLKPD').checked;d.lkpdIllustration=$('lkpdIllustration').checked;d.includeKBC=$('includeKBC').checked;d.autoAllocation=$('autoAllocation').checked;d.state=state;d.calendar=calendar;return d}
-function saveData(){localStorage.setItem('modulkitaBookV61',JSON.stringify(formData()))}
-function loadData(){
- try{const d=JSON.parse(localStorage.getItem('modulkitaBookV61')||localStorage.getItem('modulkitaBookV5')||localStorage.getItem('modulkitaBookV4')||'{}');baseIds.forEach(id=>{if(d[id]!=null)$(id).value=d[id]});if(d.includeLKPD!=null)$('includeLKPD').checked=d.includeLKPD;if(d.lkpdIllustration!=null)$('lkpdIllustration').checked=d.lkpdIllustration;if(d.includeKBC!=null)$('includeKBC').checked=d.includeKBC;if(d.autoAllocation!=null)$('autoAllocation').checked=d.autoAllocation;if(d.state)state=d.state;if(d.calendar)calendar=d.calendar}catch(e){}
- normalizeHierarchy();
- if(!state.ganjil.length)addChapter('ganjil','Bab 1');if(!state.genap.length)addChapter('genap','Bab 1');
- renderSemester('ganjil');renderSemester('genap');renderCalendar('ganjil');renderCalendar('genap');updateModuleLevelInfo();updateLKPDModeInfo();
+function formData(){
+ const d={};
+ baseIds.forEach(id=>d[id]=$(id).value);
+ d.includeLKPD=$('includeLKPD').checked;
+ d.lkpdIllustration=$('lkpdIllustration').checked;
+ d.includeKBC=$('includeKBC').checked;
+ d.autoAllocation=$('autoAllocation').checked;
+ d.state=state;
+ d.calendar=calendar;
+ return d
 }
-document.addEventListener('input',e=>{if(e.target.closest('.form-card')){if(e.target.id==='jpMinggu'){renderCalendar('ganjil');renderCalendar('genap');renderSemester('ganjil');renderSemester('genap')}saveData()}});
+function saveData(){
+ // Draft otomatis lokal: mencegah kehilangan isian saat halaman tertutup/refreshed.
+ localStorage.setItem('modulkitaBookV61',JSON.stringify(formData()))
+}
+function freshCalendar(){
+ return {
+  ganjil:[['Juli',0,''],['Agustus',0,''],['September',0,''],['Oktober',0,''],['November',0,''],['Desember',0,'']],
+  genap:[['Januari',0,''],['Februari',0,''],['Maret',0,''],['April',0,''],['Mei',0,''],['Juni',0,'']]
+ };
+}
+function cloneData(v){
+ try{return structuredClone(v)}catch{return JSON.parse(JSON.stringify(v))}
+}
+function applyBookData(d,{saveDraft=true}={}){
+ d=d||{};
+ baseIds.forEach(id=>{if(d[id]!=null&&$(id))$(id).value=d[id]});
+ if(d.includeLKPD!=null)$('includeLKPD').checked=d.includeLKPD;
+ if(d.lkpdIllustration!=null)$('lkpdIllustration').checked=d.lkpdIllustration;
+ if(d.includeKBC!=null)$('includeKBC').checked=d.includeKBC;
+ if(d.autoAllocation!=null)$('autoAllocation').checked=d.autoAllocation;
+
+ state=d.state?cloneData(d.state):{ganjil:[],genap:[]};
+ calendar=d.calendar?cloneData(d.calendar):freshCalendar();
+
+ normalizeHierarchy();
+ if(!state.ganjil.length)state.ganjil.push(newChapter('Bab 1'));
+ if(!state.genap.length)state.genap.push(newChapter('Bab 1'));
+
+ renderSemester('ganjil');
+ renderSemester('genap');
+ renderCalendar('ganjil');
+ renderCalendar('genap');
+ updateModuleLevelInfo();
+ updateLKPDModeInfo();
+
+ // Sinkronkan UI lain yang bergantung pada jenjang/mapel/fase.
+ try{syncFaseOptions(false)}catch{}
+ try{refreshMapelList()}catch{}
+ try{updateSDCurriculumUI()}catch{}
+ try{updateJPHint()}catch{}
+ try{updateKbcUI()}catch{}
+ try{updateCPAutoUI()}catch{}
+
+ if(saveDraft)saveData();
+
+ const hasil=$('hasil');
+ if(hasil){
+   hasil.dataset.generated='0';
+   hasil.innerHTML='<div class="empty"><div><div class="icon">📚</div><b>Data sudah dimuat</b><p>Periksa kembali isian lalu tekan <b>Generate Perangkat Lengkap</b>.</p></div></div>';
+ }
+}
+function loadData(){
+ try{
+   const d=JSON.parse(
+     localStorage.getItem('modulkitaBookV61')||
+     localStorage.getItem('modulkitaBookV5')||
+     localStorage.getItem('modulkitaBookV4')||
+     '{}'
+   );
+   applyBookData(d,{saveDraft:false});
+ }catch(e){
+   applyBookData({}, {saveDraft:false});
+ }
+}
+document.addEventListener('input',e=>{if(e.target.closest('.form-card')){
+ if(e.target.id==='jpMinggu'){renderCalendar('ganjil');renderCalendar('genap');renderSemester('ganjil');renderSemester('genap')}
+ if(['mapel','fasekelas','tahun'].includes(e.target.id)&&!$('savedBookSelect')?.value){
+   const current=($('savedBookName')?.value||'').trim();
+   if(!current||current===defaultSavedBookName())$('savedBookName').value=defaultSavedBookName();
+ }
+ saveData()
+}});
 document.addEventListener('change',e=>{
  if(e.target?.id==='autoAllocation'||e.target?.id==='moduleLevel'){
    renderSemester('ganjil');renderSemester('genap');updateModuleLevelInfo();updateLKPDModeInfo();saveData();
  }
 });
+
+
+let mkSavedBooks=[];
+function savedBookMsg(text,type=''){
+ const el=$('savedBookStatus');if(!el)return;
+ el.textContent=text;
+ el.className='saved-book-status'+(type?' '+type:'');
+}
+function defaultSavedBookName(){
+ const mapel=($('mapel')?.value||'Perangkat').trim();
+ const fase=($('fasekelas')?.value||'').trim();
+ const tahun=($('tahun')?.value||'').trim();
+ return [mapel,fase,tahun].filter(Boolean).join(' — ').slice(0,120);
+}
+function selectedSavedBook(){
+ const id=$('savedBookSelect')?.value;
+ return mkSavedBooks.find(x=>x.id===id)||null;
+}
+function onSavedBookSelect(){
+ const row=selectedSavedBook();
+ if(!row)return;
+ $('savedBookName').value=row.title||'';
+ const dt=row.updated_at?new Date(row.updated_at).toLocaleString('id-ID'):'';
+ savedBookMsg(`Dipilih: ${row.title}${dt?' • terakhir diperbarui '+dt:''}`,'');
+}
+async function loadSavedBooks(preselectId=''){
+ if(!mkSupabase){savedBookMsg('Menunggu koneksi akun…','warn');return}
+ savedBookMsg('Memuat daftar data tersimpan…','warn');
+ const {data,error}=await mkSupabase
+   .from('modulkita_saved_books')
+   .select('id,title,created_at,updated_at')
+   .order('updated_at',{ascending:false});
+ if(error){
+   console.error(error);
+   savedBookMsg('Daftar data belum dapat dimuat. Coba muat ulang halaman.','bad');
+   return;
+ }
+ mkSavedBooks=data||[];
+ const sel=$('savedBookSelect');
+ if(!sel)return;
+ sel.innerHTML='<option value="">— Pilih data tersimpan —</option>'+
+   mkSavedBooks.map(x=>{
+     const d=x.updated_at?new Date(x.updated_at).toLocaleDateString('id-ID'):'';
+     return `<option value="${esc(x.id)}">${esc(x.title)}${d?' • '+esc(d):''}</option>`;
+   }).join('');
+ if(preselectId&&mkSavedBooks.some(x=>x.id===preselectId)){
+   sel.value=preselectId;
+   onSavedBookSelect();
+ }else{
+   savedBookMsg(mkSavedBooks.length
+     ?`${mkSavedBooks.length} data tersimpan di akun. Pilih salah satu untuk dibuka, diperbarui, atau dihapus.`
+     :'Belum ada data tersimpan. Isi nama lalu tekan “Simpan Baru”.',
+     mkSavedBooks.length?'ok':'');
+ }
+}
+async function currentSessionUser(){
+ if(!mkSupabase)return null;
+ const {data:{session}}=await mkSupabase.auth.getSession();
+ return session?.user||null;
+}
+async function saveBookCloud(){
+ if(!mkSupabase)return savedBookMsg('Koneksi akun belum siap. Muat ulang halaman.','bad');
+ const user=await currentSessionUser();
+ if(!user)return savedBookMsg('Sesi login berakhir. Silakan login kembali.','bad');
+
+ let title=($('savedBookName').value||'').trim();
+ if(!title){
+   title=defaultSavedBookName();
+   $('savedBookName').value=title;
+ }
+ if(!title)return savedBookMsg('Isi nama data terlebih dahulu.','bad');
+
+ const payload=cloneData(formData());
+ savedBookMsg('Menyimpan data ke akun…','warn');
+
+ const {data,error}=await mkSupabase
+   .from('modulkita_saved_books')
+   .insert({user_id:user.id,title:title.slice(0,120),data:payload})
+   .select('id,title,created_at,updated_at')
+   .single();
+
+ if(error){
+   console.error(error);
+   return savedBookMsg(error.message||'Data gagal disimpan.','bad');
+ }
+ saveData();
+ await loadSavedBooks(data.id);
+ savedBookMsg(`Berhasil disimpan: ${data.title}`,'ok');
+}
+async function updateSelectedBook(){
+ if(!mkSupabase)return savedBookMsg('Koneksi akun belum siap.','bad');
+ const row=selectedSavedBook();
+ if(!row)return savedBookMsg('Pilih data yang ingin diperbarui.','bad');
+
+ const title=(($('savedBookName').value||row.title||'').trim()).slice(0,120);
+ if(!title)return savedBookMsg('Nama data tidak boleh kosong.','bad');
+
+ if(!confirm(`Perbarui data "${row.title}" dengan isian yang sekarang?`))return;
+
+ savedBookMsg('Memperbarui data…','warn');
+ const {error}=await mkSupabase
+   .from('modulkita_saved_books')
+   .update({title,data:cloneData(formData()),updated_at:new Date().toISOString()})
+   .eq('id',row.id);
+
+ if(error){
+   console.error(error);
+   return savedBookMsg(error.message||'Data gagal diperbarui.','bad');
+ }
+ saveData();
+ await loadSavedBooks(row.id);
+ savedBookMsg(`Data berhasil diperbarui: ${title}`,'ok');
+}
+async function openSelectedBook(){
+ if(!mkSupabase)return savedBookMsg('Koneksi akun belum siap.','bad');
+ const row=selectedSavedBook();
+ if(!row)return savedBookMsg('Pilih data yang ingin dibuka.','bad');
+
+ if(!confirm(`Buka "${row.title}"? Isian form yang sekarang akan diganti.`))return;
+
+ savedBookMsg('Membuka data tersimpan…','warn');
+ const {data,error}=await mkSupabase
+   .from('modulkita_saved_books')
+   .select('id,title,data,updated_at')
+   .eq('id',row.id)
+   .single();
+
+ if(error||!data){
+   console.error(error);
+   return savedBookMsg(error?.message||'Data tidak dapat dibuka.','bad');
+ }
+
+ applyBookData(data.data||{});
+ $('savedBookName').value=data.title||'';
+ $('savedBookSelect').value=data.id;
+ savedBookMsg(`Data dibuka: ${data.title}. Silakan Generate kembali untuk melihat hasil.`,'ok');
+ window.scrollTo({top:0,behavior:'smooth'});
+}
+async function deleteSelectedBook(){
+ if(!mkSupabase)return savedBookMsg('Koneksi akun belum siap.','bad');
+ const row=selectedSavedBook();
+ if(!row)return savedBookMsg('Pilih data yang ingin dihapus.','bad');
+
+ if(!confirm(`Hapus permanen data "${row.title}" dari akun?`))return;
+
+ savedBookMsg('Menghapus data…','warn');
+ const {error}=await mkSupabase
+   .from('modulkita_saved_books')
+   .delete()
+   .eq('id',row.id);
+
+ if(error){
+   console.error(error);
+   return savedBookMsg(error.message||'Data gagal dihapus.','bad');
+ }
+
+ $('savedBookName').value='';
+ await loadSavedBooks();
+ savedBookMsg(`Data "${row.title}" sudah dihapus dari akun.`,'ok');
+}
 
 function subjectKind(){const m=$('mapel').value.toLowerCase();if(/qur.?an.*hadis|akidah akhlak|fikih|fiqih|sejarah kebudayaan islam|\bski\b/.test(m))return'agama';if(m.includes('ilmu pengetahuan alam dan sosial')||m.includes('ipas'))return'ipas';if(m.includes('koding')||m.includes('kecerdasan artifisial'))return'kodingka';if(m.includes('bahasa arab'))return'bahasa';if(m.includes('bahasa'))return'bahasa';if(m.includes('matematika'))return'matematika';if(m==='ipa'||m.includes('ilmu pengetahuan alam'))return'ipa';if(m==='ips'||m.includes('ilmu pengetahuan sosial'))return'ips';if(m.includes('pjok')||m.includes('jasmani'))return'pjok';if(m.includes('informatika'))return'informatika';if(m.includes('seni'))return'seni';return'umum'}
 function genericCP(){
@@ -1974,6 +2233,33 @@ function downloadWord(){
   }
 }
 
+
+/* V12.3 — Data tersimpan */
+.saved-data-panel{
+  border:1px solid #c7d2fe;
+  background:linear-gradient(135deg,#f8faff,#ffffff);
+  border-radius:14px;
+  padding:12px;
+}
+.saved-actions{margin-top:10px}
+.saved-book-status{
+  margin-top:9px;
+  padding:8px 10px;
+  border-radius:10px;
+  background:#f8fafc;
+  border:1px solid #e4e7ec;
+  color:#475467;
+  font-size:11px;
+  line-height:1.45;
+}
+.saved-book-status.ok{background:#ecfdf3;border-color:#abefc6;color:#067647}
+.saved-book-status.warn{background:#fffaeb;border-color:#fedf89;color:#b54708}
+.saved-book-status.bad{background:#fef3f2;border-color:#fecdca;color:#b42318}
+#savedBookSelect option{font-size:14px}
+@media(max-width:700px){
+  .saved-actions .btn{flex:1 1 46%}
+}
+
 </style>
  </head>
  <body>
@@ -2055,6 +2341,8 @@ async function initPremiumAccess(){
  }
 
  document.getElementById('premiumGate').classList.add('hide');
+ await loadSavedBooks();
+ if(!$('savedBookName').value)$('savedBookName').value=defaultSavedBookName();
 }
 async function refreshFreeTeacherUsage(){
  if(window.__MK_PLAN!=='free_teacher'||!mkSupabase)return;
