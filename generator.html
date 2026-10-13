@@ -1006,6 +1006,134 @@ function inferCross(){const k=subjectKind();if(k==='bahasa')return'Informatika, 
 function inferPartners(){return'Guru mata pelajaran, teman sebaya, orang tua/wali, pustakawan, atau mitra sekolah yang relevan dengan tujuan pembelajaran.'}
 function materialProfile(sub){return{jenis:`Pengetahuan deklaratif dan prosedural yang berkaitan dengan ${sub}.`,relevansi:`Relevan karena membantu peserta didik menghubungkan ${sub} dengan situasi nyata, literasi, pemecahan masalah, atau komunikasi dalam kehidupan sehari-hari.`,sulit:'Sedang; guru menyesuaikan kompleksitas dengan kesiapan peserta didik.',struktur:`Pengenalan konsep → analisis contoh → latihan/penerapan → produk/unjuk kerja → refleksi dan perbaikan.`,nilai:'Ketelitian, tanggung jawab, kejujuran, kreativitas, kemandirian, komunikasi, dan penghargaan terhadap umpan balik.'}}
 function activities(sub){const k=subjectKind();if(k==='bahasa')return{under:[`Peserta didik membaca, menyimak, atau memirsa contoh yang berkaitan dengan ${sub}.`,`Peserta didik menandai informasi, ciri, struktur, unsur, atau bahasa penting melalui LKPD.`],apply:[`Peserta didik mengerjakan latihan atau menghasilkan teks/produk sederhana yang menerapkan ${sub}.`,`Peserta didik berdiskusi atau bekerja mandiri dan mendapatkan umpan balik selama proses.`],reflect:[`Peserta didik membandingkan hasil dengan kriteria keberhasilan dan memperbaiki bagian yang belum tepat.`,`Peserta didik menuliskan satu pemahaman baru, satu kesulitan, dan satu rencana perbaikan.`]};return{under:[`Peserta didik mengamati contoh, data, demonstrasi, atau masalah yang berkaitan dengan ${sub}.`,`Guru memandu peserta didik menemukan konsep/pola penting.`],apply:[`Peserta didik menerapkan ${sub} pada latihan, eksperimen, studi kasus, proyek, atau pemecahan masalah.`,`Guru memberi umpan balik dan bantuan bertahap sesuai kebutuhan.`],reflect:[`Peserta didik memeriksa kembali strategi dan hasil kerja berdasarkan kriteria keberhasilan.`,`Peserta didik merefleksikan pemahaman, kesulitan, dan tindak lanjut.`]}}
+function learningSyntax(sub){
+ const model=inferModel(sub);
+ const topic=String(sub||'materi pembelajaran');
+
+ if(model.includes('Project-Based Learning')){
+   return[
+    {
+      syntax:'1. Menentukan pertanyaan mendasar',
+      phase:'Memahami',
+      principle:'Berkesadaran & Bermakna',
+      activity:`Guru menghadirkan situasi nyata yang berkaitan dengan ${topic}. Peserta didik mengamati, mengajukan pertanyaan, menghubungkan pengetahuan awal, dan merumuskan hal penting yang perlu dipelajari.`
+    },
+    {
+      syntax:'2. Mendesain perencanaan proyek/produk',
+      phase:'Memahami → Mengaplikasi',
+      principle:'Berkesadaran & Bermakna',
+      activity:`Peserta didik bersama guru menentukan tujuan, langkah kerja, sumber belajar, bentuk produk, kriteria keberhasilan, dan pembagian tugas yang relevan dengan ${topic}.`
+    },
+    {
+      syntax:'3. Menyusun jadwal dan pembagian peran',
+      phase:'Mengaplikasi',
+      principle:'Berkesadaran',
+      activity:`Peserta didik menyusun urutan kegiatan, waktu pelaksanaan, serta peran masing-masing secara realistis. Guru memastikan setiap peserta didik memahami tanggung jawabnya.`
+    },
+    {
+      syntax:'4. Memonitor proses dan kemajuan',
+      phase:'Mengaplikasi',
+      principle:'Bermakna & Menggembirakan',
+      activity:`Peserta didik mengerjakan proyek/produk terkait ${topic}, berdiskusi, mencoba strategi, menggunakan sumber yang relevan, dan memperbaiki hasil berdasarkan umpan balik guru maupun teman sebaya.`
+    },
+    {
+      syntax:'5. Menguji dan mempresentasikan hasil',
+      phase:'Mengaplikasi',
+      principle:'Bermakna & Menggembirakan',
+      activity:`Peserta didik menampilkan atau mempresentasikan hasil kerja. Guru dan teman sebaya memberikan tanggapan berdasarkan kriteria keberhasilan yang telah disepakati.`
+    },
+    {
+      syntax:'6. Mengevaluasi pengalaman',
+      phase:'Merefleksi',
+      principle:'Berkesadaran & Bermakna',
+      activity:`Peserta didik merefleksikan apa yang dipahami, strategi yang berhasil, kesulitan yang dialami, serta rencana perbaikan. Guru menegaskan kembali konsep penting ${topic}.`
+    }
+   ];
+ }
+
+ if(model.includes('Problem-Based Learning')){
+   return[
+    {
+      syntax:'1. Orientasi peserta didik pada masalah',
+      phase:'Memahami',
+      principle:'Berkesadaran & Bermakna',
+      activity:`Guru menyajikan masalah kontekstual yang berkaitan dengan ${topic}. Peserta didik mengamati fakta, mengidentifikasi hal yang diketahui dan belum diketahui, serta memahami tujuan pemecahan masalah.`
+    },
+    {
+      syntax:'2. Mengorganisasi peserta didik untuk belajar',
+      phase:'Memahami',
+      principle:'Berkesadaran',
+      activity:`Peserta didik menentukan pertanyaan belajar, membagi tugas, memilih sumber informasi, serta menyepakati cara kerja individu atau kelompok.`
+    },
+    {
+      syntax:'3. Membimbing penyelidikan',
+      phase:'Mengaplikasi',
+      principle:'Bermakna',
+      activity:`Peserta didik mencari, membaca, mengolah, dan membandingkan informasi yang relevan dengan ${topic}. Guru memberikan pertanyaan penuntun dan bantuan bertahap sesuai kebutuhan.`
+    },
+    {
+      syntax:'4. Mengembangkan dan menyajikan hasil',
+      phase:'Mengaplikasi',
+      principle:'Bermakna & Menggembirakan',
+      activity:`Peserta didik menyusun solusi, jawaban, teks, produk, atau bentuk karya lain, kemudian mempresentasikannya. Teman sebaya memberikan tanggapan secara santun dan berbasis kriteria.`
+    },
+    {
+      syntax:'5. Menganalisis dan mengevaluasi proses pemecahan masalah',
+      phase:'Merefleksi',
+      principle:'Berkesadaran & Bermakna',
+      activity:`Peserta didik menilai ketepatan proses dan hasil, memperbaiki bagian yang belum sesuai, lalu menuliskan pemahaman baru, kesulitan, serta tindak lanjut pembelajaran.`
+    }
+   ];
+ }
+
+ // Discovery Learning sebagai pilihan default.
+ return[
+  {
+    syntax:'1. Stimulation (Pemberian rangsangan)',
+    phase:'Memahami',
+    principle:'Berkesadaran & Menggembirakan',
+    activity:`Guru memberikan pemantik berupa gambar, teks, video, demonstrasi, data, atau pertanyaan yang berkaitan dengan ${topic}. Peserta didik mengamati dan mengungkapkan pengetahuan awalnya.`
+  },
+  {
+    syntax:'2. Problem Statement (Identifikasi/rumusan masalah)',
+    phase:'Memahami',
+    principle:'Berkesadaran & Bermakna',
+    activity:`Peserta didik mengidentifikasi informasi penting, merumuskan pertanyaan, dugaan, atau fokus belajar tentang ${topic}. Guru membantu mengarahkan pertanyaan agar sesuai tujuan pembelajaran.`
+  },
+  {
+    syntax:'3. Data Collection (Pengumpulan data)',
+    phase:'Memahami → Mengaplikasi',
+    principle:'Bermakna',
+    activity:`Peserta didik membaca, menyimak, mengamati, berdiskusi, mencoba, atau mencari sumber untuk memperoleh informasi yang diperlukan.`
+  },
+  {
+    syntax:'4. Data Processing (Pengolahan data)',
+    phase:'Mengaplikasi',
+    principle:'Bermakna & Menggembirakan',
+    activity:`Peserta didik mengelompokkan, membandingkan, menganalisis, mengolah, atau menerapkan informasi yang ditemukan pada tugas yang berkaitan dengan ${topic}.`
+  },
+  {
+    syntax:'5. Verification (Pembuktian)',
+    phase:'Mengaplikasi',
+    principle:'Berkesadaran & Bermakna',
+    activity:`Peserta didik memeriksa hasil dengan contoh, sumber, aturan, atau kriteria keberhasilan. Guru memberikan umpan balik agar peserta didik dapat memperbaiki kesalahan atau kekurangan.`
+  },
+  {
+    syntax:'6. Generalization (Menarik simpulan)',
+    phase:'Merefleksi',
+    principle:'Berkesadaran & Bermakna',
+    activity:`Peserta didik menyimpulkan konsep atau prinsip penting tentang ${topic}, mengomunikasikan hasil belajar, serta menuliskan refleksi dan rencana perbaikan.`
+  }
+ ];
+}
+function syntaxTable(sub){
+ const rows=learningSyntax(sub);
+ return `<table class="syntax-table">
+   <tr><th style="width:20%">Sintaks</th><th style="width:14%">Pengalaman Belajar</th><th style="width:19%">Prinsip Pembelajaran Mendalam</th><th>Kegiatan Inti Guru & Peserta Didik</th></tr>
+   ${rows.map(r=>`<tr><td><b>${esc(r.syntax)}</b></td><td>${esc(r.phase)}</td><td>${esc(r.principle)}</td><td>${esc(r.activity)}</td></tr>`).join('')}
+ </table>`;
+}
+
 function list(a){return'<ol>'+a.map(x=>`<li>${esc(x)}</li>`).join('')+'</ol>'}
 
 function modulePathText(x){
@@ -1154,7 +1282,7 @@ function distribute(sem){
 function protaSection(){
  const rows=[...distribute('ganjil'),...distribute('genap')];return`<section class="section-page"><div class="module-title"><h1>PROGRAM TAHUNAN (PROTA)</h1><p>${esc($('mapel').value)} • ${esc($('fasekelas').value)} • ${esc($('tahun').value)}</p></div><table><tr><th>Semester</th><th>Bulan</th><th>Materi Pokok/Bab</th><th>Submateri</th><th>Alokasi Waktu</th><th>Keterangan</th></tr>${rows.map(x=>`<tr><td>${esc(x.sem)}</td><td>${esc(x.months)}</td><td>${esc(x.chapter.name)}</td><td>${esc(x.unitLevel==='materi'?(x.parentSub?.name+' → '+x.sub.name):x.unitLevel==='bab'?moduleParentText(x):x.sub.name)}</td><td>${x.allocJP} JP</td><td>Penguasaan konsep, latihan/penerapan, asesmen, dan tindak lanjut.</td></tr>`).join('')}</table>${signatureHTML()}</section>`}
 function prosemSection(sem){
- const title=sem==='ganjil'?'GANJIL':'GENAP',rows=distribute(sem);return`<section class="section-page"><div class="module-title"><h1>PROGRAM SEMESTER (PROSEM) — ${title}</h1><p>${esc($('mapel').value)} • ${esc($('fasekelas').value)}</p></div><table><tr><th>Minggu Ke-</th><th>Bulan</th><th>Materi Pokok</th><th>Submateri</th><th>Alokasi</th><th>Keterangan</th></tr>${rows.map(x=>`<tr><td>${x.start===x.end?x.start:`${x.start}–${x.end}`}</td><td>${esc(x.months)}</td><td>${esc(x.chapter.name)}</td><td>${esc(x.unitLevel==='materi'?(x.parentSub?.name+' → '+x.sub.name):x.unitLevel==='bab'?moduleParentText(x):x.sub.name)}</td><td>${x.allocJP} JP</td><td>Memahami → Mengaplikasi → Merefleksi; asesmen formatif dan tindak lanjut.</td></tr>`).join('')}</table>${signatureHTML()}</section>`}
+ const title=sem==='ganjil'?'GANJIL':'GENAP',rows=distribute(sem);return`<section class="section-page"><div class="module-title"><h1>PROGRAM SEMESTER (PROSEM) — ${title}</h1><p>${esc($('mapel').value)} • ${esc($('fasekelas').value)}</p></div><table><tr><th>Minggu Ke-</th><th>Bulan</th><th>Materi Pokok</th><th>Submateri</th><th>Alokasi</th><th>Keterangan</th></tr>${rows.map(x=>`<tr><td>${x.start===x.end?x.start:`${x.start}–${x.end}`}</td><td>${esc(x.months)}</td><td>${esc(x.chapter.name)}</td><td>${esc(x.unitLevel==='materi'?(x.parentSub?.name+' → '+x.sub.name):x.unitLevel==='bab'?moduleParentText(x):x.sub.name)}</td><td>${x.allocJP} JP</td><td>Sintaks praktik pedagogis terintegrasi dengan Memahami → Mengaplikasi → Merefleksi, asesmen formatif, dan tindak lanjut.</td></tr>`).join('')}</table>${signatureHTML()}</section>`}
 
 function moduleHTML(x){
  const sub=x.sub,prof=materialProfile(sub.name),acts=activities(sub.name),cp=$('cp').value.trim()||genericCP(),dpl=inferDPL(sub.name),elem=inferElement(sub.name),model=inferModel(sub.name);
@@ -1164,7 +1292,24 @@ function moduleHTML(x){
  <h2>C. Materi Pelajaran</h2><table><tr><td><b>Jenis Pengetahuan</b></td><td>${esc(prof.jenis)}</td></tr><tr><td><b>Relevansi</b></td><td>${esc(prof.relevansi)}</td></tr><tr><td><b>Tingkat Kesulitan</b></td><td>${esc(prof.sulit)}</td></tr><tr><td><b>Struktur Materi</b></td><td>${esc(prof.struktur)}</td></tr><tr><td><b>Integrasi Nilai & Karakter</b></td><td>${esc(prof.nilai)}</td></tr></table>
  <h2>D. Dimensi Profil Lulusan</h2><p>${dpl.map(x=>`<span class="tag">✓ ${esc(x)}</span>`).join(' ')}</p>
  <h2>E. Desain Pembelajaran</h2><table><tr><td><b>Capaian Pembelajaran</b></td><td>${esc(cp)}</td></tr><tr><td><b>Elemen/Domain</b></td><td>${esc(elem)}</td></tr><tr><td><b>Lintas Disiplin Ilmu</b></td><td>${esc(inferCross())}</td></tr><tr><td><b>Tujuan Pembelajaran</b></td><td>${esc(tpFor(sub.name))}</td></tr><tr><td><b>Topik Pembelajaran</b></td><td>${esc(sub.name)}</td></tr><tr><td><b>Praktik Pedagogis</b></td><td>${esc(model)}</td></tr><tr><td><b>Kemitraan Pembelajaran</b></td><td>${esc(inferPartners())}</td></tr><tr><td><b>Lingkungan Pembelajaran</b></td><td>${esc($('lingkungan').value)}</td></tr><tr><td><b>Pemanfaatan Digital</b></td><td>${esc($('digital').value)}</td></tr></table>
- <h2>F. Pengalaman Belajar</h2><h3>AWAL — Berkesadaran, Bermakna, Menggembirakan</h3>${list([`Guru membuka pembelajaran, mengecek kehadiran dan kesiapan belajar, serta membangun suasana nyaman dan inklusif.`,`Guru mengaitkan ${sub.name} dengan pengalaman nyata atau pembelajaran sebelumnya.`,`Guru memberikan pemantik berupa gambar, teks, video, demonstrasi, masalah, atau pertanyaan kontekstual.`,`Guru menyampaikan tujuan pembelajaran dan kriteria keberhasilan.`])}<h3>INTI — Memahami</h3>${list(acts.under)}<h3>INTI — Mengaplikasi</h3>${list(acts.apply)}<h3>INTI — Merefleksi</h3>${list(acts.reflect)}<h3>PENUTUP</h3>${list([`Guru dan peserta didik menyimpulkan inti pembelajaran ${sub.name}.`,`Guru memberikan umpan balik dan apresiasi.`,`Peserta didik menyampaikan refleksi singkat dan guru menjelaskan tindak lanjut.`])}
+ <h2>F. Pengalaman Belajar dan Kegiatan Pembelajaran</h2>
+ <h3>1. Kegiatan Awal — Berkesadaran, Bermakna, dan Menggembirakan</h3>
+ ${list([
+   `Guru membuka pembelajaran, mengecek kehadiran, kesiapan fisik dan mental, serta membangun suasana belajar yang aman, nyaman, dan inklusif.`,
+   `Guru mengaitkan ${sub.name} dengan pengalaman nyata, pengetahuan awal, atau pembelajaran sebelumnya agar peserta didik memahami manfaat pembelajaran.`,
+   `Guru memberikan pemantik berupa gambar, teks, video, demonstrasi, masalah, atau pertanyaan kontekstual yang menumbuhkan rasa ingin tahu.`,
+   `Guru menyampaikan tujuan pembelajaran, alur kegiatan, dan kriteria keberhasilan agar peserta didik belajar secara berkesadaran.`
+ ])}
+ <h3>2. Kegiatan Inti — Sintaks ${esc(model)}</h3>
+ <p><b>Pengalaman belajar:</b> Memahami → Mengaplikasi → Merefleksi. Setiap sintaks di bawah ini dikaitkan dengan prinsip <b>Berkesadaran, Bermakna, dan Menggembirakan</b> sesuai konteks kegiatan.</p>
+ ${syntaxTable(sub.name)}
+ <h3>3. Kegiatan Penutup — Refleksi dan Tindak Lanjut</h3>
+ ${list([
+   `Guru bersama peserta didik menyimpulkan inti pembelajaran ${sub.name} berdasarkan kegiatan dan hasil yang telah diperoleh.`,
+   `Peserta didik menyampaikan refleksi tentang pemahaman, pengalaman belajar, kesulitan, dan strategi yang membantu mereka belajar.`,
+   `Guru memberikan umpan balik dan apresiasi terhadap proses maupun hasil belajar.`,
+   `Guru menyampaikan tindak lanjut berupa remedial, pengayaan, perbaikan produk/tugas, atau persiapan pembelajaran berikutnya.`
+ ])}
  <h2>G. Asesmen Pembelajaran</h2><table><tr><th>Tahap</th><th>Metode/Teknik</th><th>Fungsi</th></tr><tr><td>Awal</td><td>Tanya jawab diagnostik, pertanyaan pemantik, atau kuis singkat.</td><td>Memetakan kesiapan belajar.</td></tr><tr><td>Proses</td><td>Observasi, LKPD, diskusi, unjuk kerja, pertanyaan reflektif, peer feedback.</td><td>Assessment for learning & assessment as learning.</td></tr><tr><td>Akhir</td><td>Tes lisan/tertulis, produk, proyek, presentasi, atau portofolio sesuai subbab.</td><td>Assessment of learning.</td></tr></table>
  <h2>H. LKPD Ringkas</h2><ol><li>Tuliskan pengetahuan awalmu tentang ${esc(sub.name)}.</li><li>Amati/baca/simak contoh yang diberikan guru dan catat informasi penting.</li><li>Kerjakan tugas penerapan sesuai petunjuk.</li><li>Presentasikan atau tuliskan hasil secara runtut.</li><li>Refleksikan kekuatan, kesulitan, dan rencana perbaikan.</li></ol>
  <h2>I. Rubrik Penilaian</h2><table><tr><th>Aspek</th><th>4</th><th>3</th><th>2</th><th>1</th></tr><tr><td>Pemahaman</td><td>Tepat, lengkap, mampu memberi alasan</td><td>Tepat dengan sedikit kekurangan</td><td>Sebagian tepat</td><td>Perlu bimbingan</td></tr><tr><td>Penerapan/Produk</td><td>Relevan, mandiri, berkualitas</td><td>Baik dengan sedikit bantuan</td><td>Masih perlu arahan</td><td>Belum sesuai</td></tr><tr><td>Komunikasi/Refleksi</td><td>Jelas, runtut, reflektif</td><td>Cukup jelas</td><td>Kurang runtut</td><td>Sulit dipahami</td></tr></table>
@@ -2259,6 +2404,12 @@ function downloadWord(){
 @media(max-width:700px){
   .saved-actions .btn{flex:1 1 46%}
 }
+
+
+/* V12.4 — Kegiatan inti berbasis sintaks */
+.syntax-table th,.syntax-table td{vertical-align:top}
+.syntax-table td:nth-child(2),.syntax-table td:nth-child(3){font-size:10.5px}
+.syntax-table td:first-child{background:#f8fafc}
 
 </style>
  </head>
