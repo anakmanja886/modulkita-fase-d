@@ -260,7 +260,7 @@ footer{text-align:center;color:#667085;font-size:12px;padding:24px 20px 40px}
 <header class="top">
   <div class="nav"><div class="brand"><div class="logo">M</div><div>ModulKita <span style="opacity:.8">Premium</span></div></div><button class="navbtn" onclick="loadExample()">Muat Contoh VIII</button></div>
   <div class="hero">
-    <div><span class="badge">Generator Buku Perangkat Pembelajaran Mendalam</span><h1>Isi Bab, Subbab & Materi.<br>Pilih modul per tingkat.</h1><p>Generator menyusun Analisis CP→TP, ATP, Kalender Pendidikan kerja, Analisis Alokasi Waktu, PROTA, PROSEM, Modul Ajar lengkap, dan LKPD. Jika Madrasah Aliyah dipilih, integrasi Kurikulum Berbasis Cinta (KBC) dan Panca Cinta otomatis tersedia.</p><div class="chips"><span class="chip">🎨 3 Tema Modul Kekinian</span><span class="chip">CP → TP</span><span class="chip">ATP</span><span class="chip">Kalender</span><span class="chip">PROTA</span><span class="chip">PROSEM</span><span class="chip">Modul Ajar</span><span class="chip">LKPD Menarik</span><span class="chip">🧠 SOLO Opsional</span><span class="chip">🇬🇧 English Worksheet Otomatis</span><span class="chip">SD • MI • SMP/MTs • SMA • MA • SMK</span><span class="chip">Cover Variatif per Guru</span></div></div>
+    <div><span class="badge">Generator Buku Perangkat Pembelajaran Mendalam</span><h1>Isi Bab, Subbab & Materi.<br>Pilih modul per tingkat.</h1><p>Generator menyusun Analisis CP→TP, ATP, Kalender Pendidikan kerja, Analisis Alokasi Waktu, PROTA, PROSEM, Modul Ajar lengkap, dan LKPD. Jika Madrasah Aliyah dipilih, integrasi Kurikulum Berbasis Cinta (KBC) dan Panca Cinta otomatis tersedia.</p><div class="chips"><span class="chip">🎨 3 Tema Modul Kekinian</span><span class="chip">CP → TP</span><span class="chip">ATP</span><span class="chip">Kalender</span><span class="chip">PROTA</span><span class="chip">PROSEM</span><span class="chip">Modul Ajar</span><span class="chip">LKPD Menarik</span><span class="chip">🧠 SOLO Opsional</span><span class="chip">✅ KKTP Otomatis</span><span class="chip">🇬🇧 English Worksheet Otomatis</span><span class="chip">SD • MI • SMP/MTs • SMA • MA • SMK</span><span class="chip">Cover Variatif per Guru</span></div></div>
     <div class="hero-card"><b>Urutan buku otomatis:</b><ul><li>Cover, identitas, kata pengantar, daftar isi</li><li>Analisis CP menjadi TP</li><li>ATP Ganjil & Genap</li><li>Kalender Pendidikan kerja & Analisis Alokasi Waktu</li><li>Program Tahunan (PROTA) & Program Semester (PROSEM)</li><li>Modul Ajar dapat dibuat per Bab, per Subbab, atau per Materi</li><li>Khusus MA: Integrasi KBC & Panca Cinta</li><li>LKPD otomatis mengikuti tingkat modul + rubrik guru</li><li>Asesmen, remedial/pengayaan, dan refleksi</li></ul></div>
   </div>
 </header>
@@ -429,7 +429,7 @@ footer{text-align:center;color:#667085;font-size:12px;padding:24px 20px 40px}
 <div class="solo-box">
   <label class="solo-toggle">
     <input id="includeSOLO" type="checkbox" style="width:auto" onchange="updateSoloUI();saveData()">
-    <span><b>Gunakan Taksonomi SOLO</b><span class="mini" style="display:block;font-weight:500">Opsional. Jika aktif, TP, kegiatan inti, pertanyaan asesmen, dan rubrik akan menunjukkan kedalaman pemahaman SOLO.</span></span>
+    <span><b>Gunakan Taksonomi SOLO</b><span class="mini" style="display:block;font-weight:500">Opsional. Jika aktif, TP disusun bertahap dari Unistruktural hingga target SOLO; asesmen dan kegiatan diselaraskan. CP resmi tetap tidak diubah.</span></span>
   </label>
   <div id="soloOptions" style="display:none;margin-top:10px">
     <div class="row">
@@ -446,6 +446,10 @@ footer{text-align:center;color:#667085;font-size:12px;padding:24px 20px 40px}
       </div>
     </div>
     <div id="soloInfo" class="solo-info"></div>
+  </div>
+  <div class="kktp-ui-note">
+    <b>✅ KKTP otomatis dan selalu tersedia.</b>
+    <span>KKTP diturunkan dari Tujuan Pembelajaran sebagai bukti ketercapaian, bukan sekadar angka/KKM. Jika SOLO aktif, TP dibuat bertahap berdasarkan kedalaman SOLO; CP tetap tidak diubah.</span>
   </div>
 </div>
 
@@ -1027,7 +1031,16 @@ function inferElement(sub){
 }
 function inferDPL(sub){const x=sub.toLowerCase();let a=['Penalaran Kritis','Kemandirian','Komunikasi'];if(/membuat|menulis|kreasi|proyek|desain|produk/.test(x))a.push('Kreativitas');if(/diskusi|kelompok|present|kolabor/.test(x))a.push('Kolaborasi');return[...new Set(a)]}
 function tpFor(sub){return`Peserta didik mampu memahami konsep utama ${sub}, menerapkannya melalui tugas yang kontekstual, menjelaskan hasilnya secara runtut, serta merefleksikan proses dan hasil belajar sesuai kriteria keberhasilan.`}
-function smartTP(sub){return[`Mengidentifikasi pengertian, ciri, unsur, atau informasi penting tentang ${sub}.`,`Menjelaskan konsep ${sub} dengan bahasa sendiri berdasarkan contoh/sumber yang diberikan.`,`Menganalisis contoh atau masalah yang berkaitan dengan ${sub}.`,`Menerapkan konsep ${sub} dalam tugas, produk, pemecahan masalah, atau unjuk kerja.`,`Menyajikan hasil dan melakukan refleksi/perbaikan berdasarkan umpan balik.`]}
+function smartTP(sub){
+ if(soloEnabled())return tpItems(sub).map((x,i)=>`TP ${i+1} — ${x.level}: ${x.objective}`);
+ return[
+  `Mengidentifikasi pengertian, ciri, unsur, atau informasi penting tentang ${sub}.`,
+  `Menjelaskan konsep ${sub} dengan bahasa sendiri berdasarkan contoh/sumber yang diberikan.`,
+  `Menganalisis contoh atau masalah yang berkaitan dengan ${sub}.`,
+  `Menerapkan konsep ${sub} dalam tugas, produk, pemecahan masalah, atau unjuk kerja.`,
+  `Menyajikan hasil dan melakukan refleksi/perbaikan berdasarkan umpan balik.`
+ ]
+}
 function inferModel(sub){const x=sub.toLowerCase();if(/membuat|menulis|proyek|produk|poster|artikel|laporan/.test(x))return'Project-Based Learning dan pembelajaran kontekstual';if(/masalah|kasus|problem/.test(x))return'Problem-Based Learning';return'Discovery Learning, diskusi terbimbing, dan pembelajaran kontekstual'}
 function inferCross(){const k=subjectKind();if(k==='bahasa')return'Informatika, IPA/IPS, Seni/Prakarya, atau mata pelajaran lain yang relevan dengan topik teks.';if(k==='ipa')return'Matematika, Informatika, IPS, atau mata pelajaran lain yang mendukung pengolahan data dan konteks.';if(k==='matematika')return'IPA, Informatika, Ekonomi/IPS, atau konteks lintas disiplin yang relevan.';return'Mata pelajaran lain yang relevan dengan topik dan konteks pembelajaran.'}
 function inferPartners(){return'Guru mata pelajaran, teman sebaya, orang tua/wali, pustakawan, atau mitra sekolah yang relevan dengan tujuan pembelajaran.'}
@@ -1041,7 +1054,7 @@ function soloTarget(){
  return $('soloTarget')?.value||'extended';
 }
 function soloTargetLabel(){
- return soloTarget()==='relational'?'Relational':'Extended Abstract';
+ return soloTarget()==='relational'?'Relasional (Relational)':'Abstrak Mendalam (Extended Abstract)';
 }
 function updateSoloUI(){
  const box=$('soloOptions');
@@ -1050,90 +1063,213 @@ function updateSoloUI(){
  if(box)box.style.display=on?'block':'none';
  if(info&&on){
    info.innerHTML=soloTarget()==='relational'
-     ?'<b>Target:</b> peserta didik mampu menghubungkan beberapa informasi/konsep menjadi pemahaman yang utuh (<b>Relational</b>).'
-     :'<b>Target:</b> peserta didik mampu menghubungkan konsep, kemudian menggeneralisasi, mencipta, atau menerapkannya pada konteks baru (<b>Extended Abstract</b>).';
+     ?'<b>Target TP:</b> perkembangan dimulai dari Unistruktural → Multistruktural → Relasional. Prastruktural hanya digunakan untuk diagnosis awal, bukan sebagai TP.'
+     :'<b>Target TP:</b> perkembangan dimulai dari Unistruktural → Multistruktural → Relasional → Abstrak Mendalam. Prastruktural hanya digunakan untuk diagnosis awal, bukan sebagai TP.';
  }
 }
+
 function soloLevels(sub){
  const topic=String(sub||'materi pembelajaran');
- const levels=[
+ return[
    {
      key:'prestructural',
-     level:'Prestructural',
+     level:'Prastruktural (Prestructural)',
+     role:'Diagnosis awal — bukan TP',
      focus:'Belum menunjukkan pemahaman yang relevan',
-     indicator:`Peserta didik belum dapat menunjukkan informasi yang tepat tentang ${topic}; respons masih acak/tidak relevan.`,
+     indicator:`Respons tentang ${topic} belum menunjukkan konsep/informasi yang relevan atau masih menunjukkan miskonsepsi mendasar.`,
      question:`Apa yang sudah kamu ketahui tentang ${topic}? Jelaskan dengan bahasamu sendiri.`
    },
    {
      key:'unistructural',
-     level:'Unistructural',
+     level:'Unistruktural (Unistructural)',
+     role:'TP tahap 1',
      focus:'Memahami satu aspek penting',
-     indicator:`Peserta didik dapat mengenali atau menjelaskan satu informasi, ciri, konsep, unsur, atau prosedur penting pada ${topic}.`,
-     question:`Sebutkan satu konsep/ciri/informasi penting tentang ${topic} dan jelaskan maknanya.`
+     indicator:`Mampu mengenali atau menjelaskan satu konsep, ciri, unsur, informasi, prosedur, atau bukti penting pada ${topic}.`,
+     question:`Identifikasi satu konsep/ciri/informasi penting tentang ${topic}, lalu jelaskan secara tepat.`
    },
    {
      key:'multistructural',
-     level:'Multistructural',
-     focus:'Memahami beberapa aspek secara terpisah',
-     indicator:`Peserta didik dapat mengidentifikasi dan menjelaskan beberapa unsur atau informasi tentang ${topic}, meskipun hubungan antaraspek belum sepenuhnya utuh.`,
-     question:`Jelaskan beberapa unsur/informasi penting pada ${topic} dan berikan contoh masing-masing.`
+     level:'Multistruktural (Multistructural)',
+     role:'TP tahap 2',
+     focus:'Memahami beberapa aspek yang relevan',
+     indicator:`Mampu menjelaskan beberapa konsep, unsur, informasi, prosedur, atau bukti pada ${topic} secara tepat, meskipun keterhubungannya belum sepenuhnya utuh.`,
+     question:`Jelaskan beberapa unsur/informasi penting pada ${topic} dan berikan contoh atau bukti yang relevan.`
    },
    {
      key:'relational',
-     level:'Relational',
-     focus:'Menghubungkan beberapa aspek menjadi pemahaman utuh',
-     indicator:`Peserta didik mampu menghubungkan konsep, bukti, prosedur, sebab-akibat, atau unsur pada ${topic} dan menjelaskan keterkaitannya secara runtut.`,
-     question:`Bagaimana hubungan antarunsur/konsep pada ${topic}? Jelaskan alasan dan bukti/contohnya.`
+     level:'Relasional (Relational)',
+     role:'TP tahap 3 / target minimum pilihan Relasional',
+     focus:'Menghubungkan aspek menjadi pemahaman utuh',
+     indicator:`Mampu menghubungkan konsep, informasi, bukti, prosedur, sebab-akibat, atau unsur pada ${topic} secara logis untuk menghasilkan kesimpulan/penjelasan yang utuh.`,
+     question:`Jelaskan hubungan antarunsur/konsep pada ${topic}. Gunakan alasan, bukti, atau contoh untuk mendukung kesimpulanmu.`
    },
    {
      key:'extended',
-     level:'Extended Abstract',
-     focus:'Menggeneralisasi dan menerapkan pada konteks baru',
-     indicator:`Peserta didik mampu mengembangkan prinsip dari ${topic}, membuat generalisasi, menghasilkan gagasan/produk baru, atau menerapkannya pada situasi yang berbeda.`,
-     question:`Bagaimana konsep ${topic} dapat diterapkan atau dikembangkan pada situasi baru? Buat solusi, produk, generalisasi, atau contoh baru.`
+     level:'Abstrak Mendalam (Extended Abstract)',
+     role:'TP tahap 4 / target pilihan Extended Abstract',
+     focus:'Transfer, generalisasi, evaluasi, atau kreasi pada konteks baru',
+     indicator:`Mampu menggunakan pemahaman tentang ${topic} untuk mengevaluasi, menggeneralisasi, merancang, mencipta, atau menerapkannya secara beralasan pada situasi baru.`,
+     question:`Terapkan atau kembangkan konsep ${topic} pada situasi baru. Buat solusi/produk/generalisasi dan jelaskan alasanmu.`
    }
  ];
- return soloTarget()==='relational'?levels.slice(0,4):levels;
 }
-function soloTP(sub){
- const base=tpFor(sub);
- if(!soloEnabled())return base;
- return `${base} Kedalaman pemahaman dikembangkan bertahap menggunakan Taksonomi SOLO hingga level ${soloTargetLabel()}.`;
+
+function tpItems(sub){
+ if(!soloEnabled()){
+   return [{
+     level:'TP',
+     objective:tpFor(sub),
+     evidence:`Peserta didik menunjukkan pemahaman yang tepat tentang ${sub}, mampu menerapkannya pada tugas kontekstual, mengomunikasikan hasil secara runtut, dan melakukan refleksi/perbaikan berdasarkan umpan balik.`
+   }];
+ }
+
+ const k=subjectKind(),topic=String(sub||'materi pembelajaran');
+ const items=[];
+
+ if(k==='bahasa'){
+   items.push(
+    {level:'Unistruktural',objective:`Peserta didik mampu mengidentifikasi satu informasi, ciri, unsur, atau penggunaan bahasa yang penting pada ${topic}.`,evidence:`Menunjukkan sedikitnya satu informasi/ciri/unsur yang tepat dan relevan pada ${topic}.`},
+    {level:'Multistruktural',objective:`Peserta didik mampu menjelaskan beberapa informasi, ciri, unsur, struktur, atau penggunaan bahasa pada ${topic} berdasarkan contoh/sumber yang relevan.`,evidence:`Menjelaskan beberapa aspek ${topic} dengan tepat serta menyertakan contoh/bukti yang sesuai.`},
+    {level:'Relasional',objective:`Peserta didik mampu menganalisis dan menghubungkan informasi, unsur, struktur, tujuan, konteks, atau penggunaan bahasa pada ${topic} untuk menghasilkan simpulan yang logis.`,evidence:`Menghubungkan aspek-aspek utama ${topic} secara runtut dan menghasilkan simpulan/interpretasi yang didukung alasan atau bukti.`}
+   );
+   if(soloTarget()==='extended')items.push(
+    {level:'Abstrak Mendalam',objective:`Peserta didik mampu mengevaluasi, mengembangkan, atau menghasilkan teks/produk yang menerapkan prinsip ${topic} secara tepat pada konteks baru serta menjelaskan alasan pilihannya.`,evidence:`Menghasilkan evaluasi/produk yang relevan, menerapkan prinsip ${topic} pada konteks baru, dan memberikan alasan yang dapat dipertanggungjawabkan.`}
+   );
+ }else if(k==='matematika'){
+   items.push(
+    {level:'Unistruktural',objective:`Peserta didik mampu mengenali satu konsep, sifat, informasi diketahui, atau prosedur dasar yang berkaitan dengan ${topic}.`,evidence:`Mengidentifikasi konsep/informasi/prosedur dasar ${topic} dengan benar.`},
+    {level:'Multistruktural',objective:`Peserta didik mampu menggunakan beberapa konsep, sifat, representasi, atau langkah prosedural pada ${topic} secara tepat.`,evidence:`Menunjukkan beberapa langkah/representasi yang benar dengan perhitungan atau prosedur yang dapat ditelusuri.`},
+    {level:'Relasional',objective:`Peserta didik mampu menghubungkan konsep, representasi, dan prosedur ${topic} untuk menyelesaikan masalah serta menjelaskan alasan strategi yang digunakan.`,evidence:`Penyelesaian benar/masuk akal, hubungan antarkonsep jelas, dan strategi dijustifikasi.`}
+   );
+   if(soloTarget()==='extended')items.push(
+    {level:'Abstrak Mendalam',objective:`Peserta didik mampu menggeneralisasi pola atau menerapkan strategi ${topic} secara fleksibel pada masalah baru dan mengevaluasi efisiensi penyelesaiannya.`,evidence:`Mampu melakukan transfer ke masalah baru, membuat generalisasi/strategi alternatif, serta mengevaluasi ketepatan atau efisiensinya.`}
+   );
+ }else if(k==='ipa'||k==='ipas'){
+   items.push(
+    {level:'Unistruktural',objective:`Peserta didik mampu mengidentifikasi satu konsep, gejala, variabel, fakta, atau bukti penting yang berkaitan dengan ${topic}.`,evidence:`Menunjukkan satu konsep/gejala/variabel/bukti yang benar dan relevan.`},
+    {level:'Multistruktural',objective:`Peserta didik mampu menjelaskan beberapa konsep, data, gejala, variabel, atau bukti yang berkaitan dengan ${topic}.`,evidence:`Menjelaskan beberapa aspek dengan data/bukti yang sesuai.`},
+    {level:'Relasional',objective:`Peserta didik mampu menghubungkan konsep, data, bukti, sebab-akibat, atau variabel pada ${topic} untuk membuat penjelasan atau kesimpulan berbasis bukti.`,evidence:`Hubungan konsep/bukti logis dan kesimpulan didukung data atau hasil pengamatan.`}
+   );
+   if(soloTarget()==='extended')items.push(
+    {level:'Abstrak Mendalam',objective:`Peserta didik mampu merancang penyelidikan, mengevaluasi penjelasan, atau menerapkan prinsip ${topic} pada situasi baru secara berbasis bukti.`,evidence:`Merancang/evaluasi/penerapan baru yang logis, relevan, dan didukung bukti.`}
+   );
+ }else if(k==='ips'){
+   items.push(
+    {level:'Unistruktural',objective:`Peserta didik mampu mengidentifikasi satu fakta, konsep, pelaku, tempat, waktu, atau informasi penting yang berkaitan dengan ${topic}.`,evidence:`Mengidentifikasi satu fakta/konsep/informasi yang benar dan relevan.`},
+    {level:'Multistruktural',objective:`Peserta didik mampu menjelaskan beberapa fakta, faktor, konsep, pelaku, atau dampak yang berkaitan dengan ${topic}.`,evidence:`Menjelaskan beberapa aspek ${topic} secara tepat dengan contoh/data yang relevan.`},
+    {level:'Relasional',objective:`Peserta didik mampu menganalisis hubungan sebab-akibat, keterkaitan antarfaktor, atau perubahan pada ${topic} untuk menyusun kesimpulan yang beralasan.`,evidence:`Menunjukkan hubungan antarfaktor secara logis dan menyimpulkan berdasarkan bukti/data.`}
+   );
+   if(soloTarget()==='extended')items.push(
+    {level:'Abstrak Mendalam',objective:`Peserta didik mampu mengevaluasi persoalan ${topic}, mengembangkan alternatif solusi, atau menerapkan pemahamannya untuk membaca situasi sosial yang baru.`,evidence:`Evaluasi/solusi menggunakan konsep yang tepat, mempertimbangkan bukti/perspektif, dan relevan pada konteks baru.`}
+   );
+ }else{
+   items.push(
+    {level:'Unistruktural',objective:`Peserta didik mampu mengidentifikasi satu konsep, informasi, unsur, atau prosedur penting pada ${topic}.`,evidence:`Menunjukkan satu aspek ${topic} secara benar dan relevan.`},
+    {level:'Multistruktural',objective:`Peserta didik mampu menjelaskan beberapa konsep, informasi, unsur, atau prosedur yang berkaitan dengan ${topic}.`,evidence:`Menjelaskan beberapa aspek ${topic} secara tepat dan didukung contoh/bukti yang sesuai.`},
+    {level:'Relasional',objective:`Peserta didik mampu menghubungkan beberapa konsep, informasi, unsur, bukti, atau prosedur pada ${topic} untuk menghasilkan penjelasan atau kesimpulan yang utuh.`,evidence:`Hubungan antaraspek jelas, logis, dan mendukung kesimpulan/hasil yang tepat.`}
+   );
+   if(soloTarget()==='extended')items.push(
+    {level:'Abstrak Mendalam',objective:`Peserta didik mampu mengevaluasi, menggeneralisasi, mencipta, atau menerapkan pemahaman ${topic} pada konteks baru secara beralasan.`,evidence:`Mampu melakukan transfer/generalisasi/kreasi pada konteks baru dengan alasan yang relevan.`}
+   );
+ }
+ return items;
 }
+
+function tpText(sub){
+ return tpItems(sub).map((x,i)=>`TP ${i+1} [${x.level}]: ${x.objective}`).join(' | ');
+}
+function tpHTML(sub){
+ const items=tpItems(sub);
+ return `<ol class="tp-stack">${items.map((x,i)=>`<li><b>TP ${i+1}${soloEnabled()?` — ${esc(x.level)}`:''}:</b> ${esc(x.objective)}</li>`).join('')}</ol>`;
+}
+
 function soloSection(sub){
  if(!soloEnabled())return '';
- const rows=soloLevels(sub);
- return `<h2>F. Pemetaan Kedalaman Pemahaman — Taksonomi SOLO</h2>
- <p>Taksonomi SOLO digunakan sebagai kerangka opsional untuk melihat perkembangan kualitas pemahaman peserta didik pada <b>${esc(sub)}</b>, bukan sekadar jumlah jawaban benar.</p>
+ const rows=soloLevels(sub).filter(r=>r.key==='prestructural'||r.key==='unistructural'||r.key==='multistructural'||r.key==='relational'||(r.key==='extended'&&soloTarget()==='extended'));
+ return `<h2>G. Pemetaan Kedalaman Pemahaman — Taksonomi SOLO</h2>
+ <div class="note-academic"><b>Catatan:</b> Prastruktural digunakan untuk membaca kondisi awal/miskonsepsi dan <b>bukan</b> Tujuan Pembelajaran. TP dimulai dari Unistruktural dan berkembang sampai target yang dipilih.</div>
  <table class="solo-table">
-   <tr><th>Level SOLO</th><th>Fokus Kedalaman</th><th>Indikator Bukti Belajar</th></tr>
-   ${rows.map(r=>`<tr><td><span class="solo-badge">${esc(r.level)}</span></td><td>${esc(r.focus)}</td><td>${esc(r.indicator)}</td></tr>`).join('')}
+   <tr><th>Level SOLO</th><th>Peran</th><th>Fokus</th><th>Bukti Pemahaman</th></tr>
+   ${rows.map(r=>`<tr><td><span class="solo-badge">${esc(r.level)}</span></td><td>${esc(r.role)}</td><td>${esc(r.focus)}</td><td>${esc(r.indicator)}</td></tr>`).join('')}
  </table>`;
 }
+
 function soloQuestionBlock(sub){
  if(!soloEnabled())return '';
- const rows=soloLevels(sub);
- return `<h3>Pertanyaan/Prompt Asesmen Berbasis SOLO</h3>
+ const rows=soloLevels(sub).filter(r=>r.key==='prestructural'||r.key==='unistructural'||r.key==='multistructural'||r.key==='relational'||(r.key==='extended'&&soloTarget()==='extended'));
+ return `<h3>Pertanyaan/Prompt Asesmen Pendukung SOLO</h3>
+ <p class="small-note"><i>Prompt Prastruktural digunakan untuk asesmen diagnostik; prompt level berikutnya digunakan untuk mengumpulkan bukti perkembangan kedalaman pemahaman.</i></p>
  <table class="solo-table">
-   <tr><th>Level</th><th>Contoh Pertanyaan/Prompt</th></tr>
-   ${rows.map(r=>`<tr><td><b>${esc(r.level)}</b></td><td>${esc(r.question)}</td></tr>`).join('')}
+   <tr><th>Level</th><th>Fungsi</th><th>Contoh Pertanyaan/Prompt</th></tr>
+   ${rows.map(r=>`<tr><td><b>${esc(r.level)}</b></td><td>${esc(r.role)}</td><td>${esc(r.question)}</td></tr>`).join('')}
  </table>`;
 }
+
 function soloRubricBlock(sub){
  if(!soloEnabled())return '';
- const rows=soloLevels(sub);
- return `<h3>Rubrik Kedalaman Pemahaman SOLO</h3>
+ const rows=soloLevels(sub).filter(r=>r.key!=='prestructural'&&(r.key!=='extended'||soloTarget()==='extended'));
+ return `<h3>Interpretasi Kedalaman SOLO (Pendukung, bukan KKTP)</h3>
+ <p class="small-note"><i>Level SOLO membantu membaca kualitas/kompleksitas pemahaman. KKTP tetap ditentukan dari bukti ketercapaian setiap TP.</i></p>
  <table class="solo-table">
-   <tr><th>Level</th><th>Deskripsi Kinerja pada ${esc(sub)}</th></tr>
+   <tr><th>Level</th><th>Deskripsi Bukti Kedalaman</th></tr>
    ${rows.map(r=>`<tr><td><b>${esc(r.level)}</b></td><td>${esc(r.indicator)}</td></tr>`).join('')}
  </table>`;
 }
-function soloForSyntax(index,total){
- if(!soloEnabled())return '';
- if(index===0)return 'Unistructural';
- if(index<=Math.floor(total/2))return 'Multistructural';
- if(index<total-1)return 'Relational';
- return soloTargetLabel();
+
+function kktpLevelRows(sub){
+ const items=tpItems(sub);
+ const core=items.map((x,i)=>`TP ${i+1}: ${x.evidence}`);
+ return[
+   {
+     status:'Belum mencapai',
+     desc:`Bukti belajar belum menunjukkan kompetensi esensial pada TP; terdapat kekeliruan konsep/prosedur utama atau tugas belum dapat diselesaikan meskipun sudah mendapat bantuan.`,
+     follow:'Lakukan diagnosis hambatan, pemodelan ulang, bimbingan bertahap, dan latihan pada kriteria yang belum tampak.'
+   },
+   {
+     status:'Mulai berkembang',
+     desc:`Sebagian bukti ketercapaian sudah tampak, tetapi belum konsisten/lengkap dan masih memerlukan arahan pada beberapa kriteria: ${core.join(' ')}`,
+     follow:'Berikan umpan balik spesifik, latihan terarah, scaffolding, atau perbaikan tugas pada bagian yang belum terpenuhi.'
+   },
+   {
+     status:'Mencapai tujuan',
+     desc:`Peserta didik menunjukkan seluruh bukti esensial yang ditetapkan pada TP secara tepat, relevan, dan cukup mandiri: ${core.join(' ')}`,
+     follow:'Lanjutkan ke tujuan berikutnya serta beri kesempatan refleksi/penguatan.'
+   },
+   {
+     status:'Melampaui tujuan',
+     desc:`Selain memenuhi seluruh kriteria TP, peserta didik menunjukkan ketepatan, kemandirian, alasan/bukti yang kuat, kualitas komunikasi/produk yang baik, atau transfer pemahaman pada konteks yang lebih menantang.`,
+     follow:'Berikan pengayaan, masalah/konteks baru, peran tutor sebaya, proyek lanjutan, atau tantangan yang lebih kompleks.'
+   }
+ ];
+}
+
+function kktpCompact(sub){
+ const items=tpItems(sub);
+ return items.map((x,i)=>`TP ${i+1}: ${x.evidence}`).join(' ');
+}
+
+function kktpSection(sub){
+ const items=tpItems(sub),levels=kktpLevelRows(sub);
+ return `<h2>F. Kriteria Ketercapaian Tujuan Pembelajaran (KKTP)</h2>
+ <p>KKTP disusun sebagai <b>bukti yang perlu ditunjukkan peserta didik</b> untuk menilai ketercapaian setiap TP. Pendekatan utama yang digunakan adalah deskripsi kriteria/rubrik; satuan pendidikan dapat memetakan hasilnya ke interval nilai bila diperlukan.</p>
+ <table class="kktp-table">
+   <tr><th>TP</th><th>${soloEnabled()?'Level SOLO':'Fokus'}</th><th>Bukti/Kriteria Ketercapaian</th></tr>
+   ${items.map((x,i)=>`<tr><td><b>TP ${i+1}</b></td><td>${esc(x.level)}</td><td>${esc(x.evidence)}</td></tr>`).join('')}
+ </table>
+ <h3>Rubrik Ketercapaian dan Tindak Lanjut</h3>
+ <table class="kktp-table">
+   <tr><th>Status</th><th>Deskripsi Bukti</th><th>Tindak Lanjut</th></tr>
+   ${levels.map((r,i)=>`<tr class="${i===2?'achieved':i===3?'exceed':''}"><td><b>${esc(r.status)}</b></td><td>${esc(r.desc)}</td><td>${esc(r.follow)}</td></tr>`).join('')}
+ </table>`;
+}
+
+function kktpBookSection(){
+ const mods=getModules();
+ return `<section class="section-page"><div class="module-title"><h1>KRITERIA KETERCAPAIAN TUJUAN PEMBELAJARAN (KKTP)</h1><p>${esc($('mapel').value)} • ${esc($('fasekelas').value)} • ${esc($('tahun').value)}</p></div>
+ <p class="note-academic"><b>Prinsip:</b> KKTP diturunkan dari TP dan berupa deskripsi bukti kompetensi yang perlu ditunjukkan peserta didik. KKTP tidak diperlakukan hanya sebagai satu angka batas minimum.</p>
+ <table class="kktp-table"><tr><th>Unit</th><th>Tujuan Pembelajaran</th><th>Bukti Ketercapaian</th><th>Teknik Asesmen yang Disarankan</th></tr>
+ ${mods.map(x=>`<tr><td>${esc(modulePathText(x))}</td><td>${tpHTML(x.sub.name)}</td><td>${esc(kktpCompact(x.sub.name))}</td><td>Observasi/percakapan, tugas tertulis, unjuk kerja, produk/proyek, portofolio, atau teknik lain yang paling sesuai dengan bukti TP.</td></tr>`).join('')}</table>
+ ${signatureHTML()}</section>`;
 }
 
 function learningSyntax(sub){
@@ -1258,11 +1394,11 @@ function learningSyntax(sub){
 }
 function syntaxTable(sub){
  const rows=learningSyntax(sub);
- const solo=soloEnabled();
  return `<table class="syntax-table">
-   <tr><th style="width:18%">Sintaks</th><th style="width:13%">Pengalaman Belajar</th><th style="width:18%">Prinsip Pembelajaran Mendalam</th>${solo?'<th style="width:13%">Level SOLO</th>':''}<th>Kegiatan Inti Guru & Peserta Didik</th></tr>
-   ${rows.map((r,i)=>`<tr><td><b>${esc(r.syntax)}</b></td><td>${esc(r.phase)}</td><td>${esc(r.principle)}</td>${solo?`<td><span class="solo-badge">${esc(soloForSyntax(i,rows.length))}</span></td>`:''}<td>${esc(r.activity)}</td></tr>`).join('')}
- </table>`;
+   <tr><th style="width:20%">Sintaks</th><th style="width:15%">Pengalaman Belajar</th><th style="width:20%">Prinsip Pembelajaran Mendalam</th><th>Kegiatan Inti Guru & Peserta Didik</th></tr>
+   ${rows.map(r=>`<tr><td><b>${esc(r.syntax)}</b></td><td>${esc(r.phase)}</td><td>${esc(r.principle)}</td><td>${esc(r.activity)}</td></tr>`).join('')}
+ </table>
+ ${soloEnabled()?`<p class="small-note"><i>Kegiatan pada setiap sintaks dirancang mendukung perkembangan TP berbasis SOLO secara bertahap. Satu sintaks tidak disamakan secara kaku dengan satu level SOLO tertentu.</i></p>`:''}`;
 }
 
 function list(a){return'<ol>'+a.map(x=>`<li>${esc(x)}</li>`).join('')+'</ol>'}
@@ -1380,9 +1516,9 @@ function signatureHTML(){
  return`<div class="signature"><table style="border:0"><tr><td style="border:0;text-align:center;width:50%">Mengetahui,<br>Kepala Sekolah<br><br><br><b>${esc($('kepsek').value||'................................')}</b>${$('nipKepsek').value?`<br>NIP. ${esc($('nipKepsek').value)}`:''}</td><td style="border:0;text-align:center;width:50%">${esc($('tempat').value||'....................')}, ${esc(tt)}<br>Guru Mata Pelajaran<br><br><br><b>${esc($('guru').value||'................................')}</b>${$('nip').value?`<br>NIP/NUPTK. ${esc($('nip').value)}`:''}</td></tr></table></div>`;
 }
 function analysisCPTable(){
- const mods=getModules();return`<section class="section-page"><div class="module-title"><h1>ANALISIS CAPAIAN PEMBELAJARAN MENJADI TUJUAN PEMBELAJARAN (TP)</h1><p>${esc($('mapel').value)} • ${esc($('fasekelas').value)}</p></div><p><b>Konteks Sekolah dan Peserta Didik:</b> ${esc($('karakter').value)}</p><table><tr><th>Elemen/Domain</th><th>Kompetensi</th><th>Materi/Bab</th><th>Submateri</th><th>Tujuan Pembelajaran</th></tr>${mods.map(x=>`<tr><td>${esc(inferElement(x.sub.name))}</td><td>Memahami, menganalisis, menerapkan, dan mengomunikasikan pembelajaran.</td><td>${esc(x.chapter.name)}</td><td>${esc(moduleParentText(x))}${x.unitLevel==='materi'?`<br><b>Materi:</b> ${esc(x.sub.name)}`:''}</td><td>${esc(soloTP(x.sub.name))}</td></tr>`).join('')}</table>${signatureHTML()}</section>`}
+ const mods=getModules();return`<section class="section-page"><div class="module-title"><h1>ANALISIS CAPAIAN PEMBELAJARAN MENJADI TUJUAN PEMBELAJARAN (TP)</h1><p>${esc($('mapel').value)} • ${esc($('fasekelas').value)}</p></div><p><b>Konteks Sekolah dan Peserta Didik:</b> ${esc($('karakter').value)}</p><table><tr><th>Elemen/Domain</th><th>Kompetensi</th><th>Materi/Bab</th><th>Submateri</th><th>Tujuan Pembelajaran</th></tr>${mods.map(x=>`<tr><td>${esc(inferElement(x.sub.name))}</td><td>Memahami, menganalisis, menerapkan, dan mengomunikasikan pembelajaran.</td><td>${esc(x.chapter.name)}</td><td>${esc(moduleParentText(x))}${x.unitLevel==='materi'?`<br><b>Materi:</b> ${esc(x.sub.name)}`:''}</td><td>${esc(tpText(x.sub.name))}</td></tr>`).join('')}</table>${signatureHTML()}</section>`}
 function atpSection(sem){
- const mods=semesterModules(sem),title=sem==='ganjil'?'GANJIL':'GENAP';return`<section class="section-page"><div class="module-title"><h1>ALUR TUJUAN PEMBELAJARAN (ATP) — SEMESTER ${title}</h1><p>${esc($('mapel').value)} • ${esc($('fasekelas').value)} • ${esc($('tahun').value)}</p></div><p><b>Total Alokasi Materi:</b> ${semJP(sem)} JP • <b>Minggu Efektif:</b> ${calWeeks(sem)} • <b>Kapasitas Kalender:</b> ${calJP(sem)} JP</p><table><tr><th>Materi</th><th>Submateri</th><th>Tujuan Pembelajaran Umum</th><th>Tujuan Pembelajaran Khusus (SMART)</th><th>Alokasi</th><th>Dimensi Profil Lulusan</th><th>Asesmen</th><th>Sumber Belajar</th></tr>${mods.map(x=>`<tr><td>${esc(x.chapter.name)}</td><td>${esc(moduleParentText(x))}${x.unitLevel==='materi'?`<br><b>Materi:</b> ${esc(x.sub.name)}`:''}</td><td>${esc(soloTP(x.sub.name))}</td><td><ol>${smartTP(x.sub.name).map(t=>`<li>${esc(t)}</li>`).join('')}</ol></td><td>${allocatedJP(x)} JP</td><td>${inferDPL(x.sub.name).map(esc).join(', ')}</td><td>Awal: tanya jawab/diagnostik.<br>Proses: diskusi, LKPD, observasi, umpan balik.<br>Akhir: tes/produk/kinerja sesuai subbab.</td><td>Buku ajar, LKPD, lingkungan sekitar, media visual/digital, dan sumber relevan.</td></tr>`).join('')}</table>${signatureHTML()}</section>`}
+ const mods=semesterModules(sem),title=sem==='ganjil'?'GANJIL':'GENAP';return`<section class="section-page"><div class="module-title"><h1>ALUR TUJUAN PEMBELAJARAN (ATP) — SEMESTER ${title}</h1><p>${esc($('mapel').value)} • ${esc($('fasekelas').value)} • ${esc($('tahun').value)}</p></div><p><b>Total Alokasi Materi:</b> ${semJP(sem)} JP • <b>Minggu Efektif:</b> ${calWeeks(sem)} • <b>Kapasitas Kalender:</b> ${calJP(sem)} JP</p><table><tr><th>Materi</th><th>Submateri</th><th>Tujuan Pembelajaran</th><th>Indikator/Urutan Kompetensi</th><th>Alokasi</th><th>Dimensi Profil Lulusan</th><th>Asesmen</th><th>Sumber Belajar</th></tr>${mods.map(x=>`<tr><td>${esc(x.chapter.name)}</td><td>${esc(moduleParentText(x))}${x.unitLevel==='materi'?`<br><b>Materi:</b> ${esc(x.sub.name)}`:''}</td><td>${esc(tpText(x.sub.name))}</td><td><ol>${smartTP(x.sub.name).map(t=>`<li>${esc(t)}</li>`).join('')}</ol></td><td>${allocatedJP(x)} JP</td><td>${inferDPL(x.sub.name).map(esc).join(', ')}</td><td>Awal: tanya jawab/diagnostik.<br>Proses: diskusi, LKPD, observasi, umpan balik.<br>Akhir: tes/produk/kinerja sesuai subbab.</td><td>Buku ajar, LKPD, lingkungan sekitar, media visual/digital, dan sumber relevan.</td></tr>`).join('')}</table>${signatureHTML()}</section>`}
 function calendarSection(){
  function t(sem,label){return`<h2>Semester ${label}</h2><table><tr><th>Bulan</th><th>Minggu Efektif</th><th>JP/Minggu</th><th>Total JP</th><th>Catatan Agenda/Libur</th></tr>${calendar[sem].map(r=>`<tr><td>${esc(r[0])}</td><td>${r[1]}</td><td>${esc($('jpMinggu').value)}</td><td>${Number(r[1]||0)*Number($('jpMinggu').value||0)}</td><td>${esc(r[2])}</td></tr>`).join('')}<tr><th>Total</th><th>${calWeeks(sem)}</th><th>—</th><th>${calJP(sem)}</th><th>—</th></tr></table>`}
  return`<section class="section-page"><div class="module-title"><h1>KALENDER PENDIDIKAN KERJA & MINGGU EFEKTIF</h1><p>Tahun Pelajaran ${esc($('tahun').value)}</p></div><p class="small-note"><i>Tabel ini merupakan kalender kerja berdasarkan minggu efektif yang diinput guru. Tanggal libur, asesmen, dan agenda resmi wajib disesuaikan dengan kalender pendidikan pemerintah daerah/satuan pendidikan.</i></p>${t('ganjil','Ganjil')}${t('genap','Genap')}${signatureHTML()}</section>`}
@@ -1422,9 +1558,10 @@ function moduleHTML(x){
  <h2>B. Identifikasi Peserta Didik</h2><p><b>Pengetahuan/Kesiapan Awal:</b> Peserta didik memiliki pengalaman awal yang beragam terkait ${esc(sub.name)} dan memerlukan pemetaan melalui pertanyaan diagnostik.</p><p><b>Minat & Latar Belakang:</b> ${esc($('karakter').value)}</p><p><b>Kebutuhan Belajar:</b> Contoh konkret, bimbingan bertahap, latihan kontekstual, umpan balik, dan kesempatan memperbaiki hasil.</p>
  <h2>C. Materi Pelajaran</h2><table><tr><td><b>Jenis Pengetahuan</b></td><td>${esc(prof.jenis)}</td></tr><tr><td><b>Relevansi</b></td><td>${esc(prof.relevansi)}</td></tr><tr><td><b>Tingkat Kesulitan</b></td><td>${esc(prof.sulit)}</td></tr><tr><td><b>Struktur Materi</b></td><td>${esc(prof.struktur)}</td></tr><tr><td><b>Integrasi Nilai & Karakter</b></td><td>${esc(prof.nilai)}</td></tr></table>
  <h2>D. Dimensi Profil Lulusan</h2><p>${dpl.map(x=>`<span class="tag">✓ ${esc(x)}</span>`).join(' ')}</p>
- <h2>E. Desain Pembelajaran</h2><table><tr><td><b>Capaian Pembelajaran</b></td><td>${esc(cp)}</td></tr><tr><td><b>Elemen/Domain</b></td><td>${esc(elem)}</td></tr><tr><td><b>Lintas Disiplin Ilmu</b></td><td>${esc(inferCross())}</td></tr><tr><td><b>Tujuan Pembelajaran</b></td><td>${esc(soloTP(sub.name))}</td></tr><tr><td><b>Topik Pembelajaran</b></td><td>${esc(sub.name)}</td></tr><tr><td><b>Praktik Pedagogis</b></td><td>${esc(model)}</td></tr><tr><td><b>Kemitraan Pembelajaran</b></td><td>${esc(inferPartners())}</td></tr><tr><td><b>Lingkungan Pembelajaran</b></td><td>${esc($('lingkungan').value)}</td></tr><tr><td><b>Pemanfaatan Digital</b></td><td>${esc($('digital').value)}</td></tr>${soloEnabled()?`<tr><td><b>Taksonomi SOLO</b></td><td>Aktif • Target ${esc(soloTargetLabel())}</td></tr>`:''}</table>
+ <h2>E. Desain Pembelajaran</h2><table><tr><td><b>Capaian Pembelajaran</b></td><td>${esc(cp)}</td></tr><tr><td><b>Elemen/Domain</b></td><td>${esc(elem)}</td></tr><tr><td><b>Lintas Disiplin Ilmu</b></td><td>${esc(inferCross())}</td></tr><tr><td><b>Tujuan Pembelajaran</b></td><td>${tpHTML(sub.name)}</td></tr><tr><td><b>Topik Pembelajaran</b></td><td>${esc(sub.name)}</td></tr><tr><td><b>Praktik Pedagogis</b></td><td>${esc(model)}</td></tr><tr><td><b>Kemitraan Pembelajaran</b></td><td>${esc(inferPartners())}</td></tr><tr><td><b>Lingkungan Pembelajaran</b></td><td>${esc($('lingkungan').value)}</td></tr><tr><td><b>Pemanfaatan Digital</b></td><td>${esc($('digital').value)}</td></tr>${soloEnabled()?`<tr><td><b>Taksonomi SOLO</b></td><td>Aktif sebagai kerangka kedalaman TP • Target ${esc(soloTargetLabel())}</td></tr>`:''}</table>
+ ${kktpSection(sub.name)}
  ${soloSection(sub.name)}
- <h2>${soloEnabled()?'G':'F'}. Pengalaman Belajar dan Kegiatan Pembelajaran</h2>
+ <h2>${soloEnabled()?'H':'G'}. Pengalaman Belajar dan Kegiatan Pembelajaran</h2>
  <h3>1. Kegiatan Awal — Berkesadaran, Bermakna, dan Menggembirakan</h3>
  ${list([
    `Guru membuka pembelajaran, mengecek kehadiran, kesiapan fisik dan mental, serta membangun suasana belajar yang aman, nyaman, dan inklusif.`,
@@ -1433,7 +1570,7 @@ function moduleHTML(x){
    `Guru menyampaikan tujuan pembelajaran, alur kegiatan, dan kriteria keberhasilan agar peserta didik belajar secara berkesadaran.`
  ])}
  <h3>2. Kegiatan Inti — Sintaks ${esc(model)}</h3>
- <p><b>Pengalaman belajar:</b> Memahami → Mengaplikasi → Merefleksi. Setiap sintaks dikaitkan dengan prinsip <b>Berkesadaran, Bermakna, dan Menggembirakan</b>${soloEnabled()?`, sekaligus dipetakan pada kedalaman pemahaman <b>Taksonomi SOLO</b> hingga ${esc(soloTargetLabel())}`:'' }.</p>
+ <p><b>Pengalaman belajar:</b> Memahami → Mengaplikasi → Merefleksi. Setiap sintaks dikaitkan dengan prinsip <b>Berkesadaran, Bermakna, dan Menggembirakan</b>${soloEnabled()?`, serta dirancang untuk membantu peserta didik mencapai TP bertahap berbasis SOLO hingga ${esc(soloTargetLabel())}`:'' }.</p>
  ${syntaxTable(sub.name)}
  <h3>3. Kegiatan Penutup — Refleksi dan Tindak Lanjut</h3>
  ${list([
@@ -1442,13 +1579,13 @@ function moduleHTML(x){
    `Guru memberikan umpan balik dan apresiasi terhadap proses maupun hasil belajar.`,
    `Guru menyampaikan tindak lanjut berupa remedial, pengayaan, perbaikan produk/tugas, atau persiapan pembelajaran berikutnya.`
  ])}
- <h2>${soloEnabled()?'H':'G'}. Asesmen Pembelajaran</h2><table><tr><th>Tahap</th><th>Metode/Teknik</th><th>Fungsi</th></tr><tr><td>Awal</td><td>Tanya jawab diagnostik, pertanyaan pemantik, atau kuis singkat.</td><td>Memetakan kesiapan belajar.</td></tr><tr><td>Proses</td><td>Observasi, LKPD, diskusi, unjuk kerja, pertanyaan reflektif, peer feedback.</td><td>Assessment for learning & assessment as learning.</td></tr><tr><td>Akhir</td><td>Tes lisan/tertulis, produk, proyek, presentasi, atau portofolio sesuai subbab.</td><td>Assessment of learning.</td></tr></table>
+ <h2>${soloEnabled()?'I':'H'}. Asesmen Pembelajaran</h2><table><tr><th>Tahap</th><th>Metode/Teknik</th><th>Fungsi</th></tr><tr><td>Awal</td><td>Tanya jawab diagnostik, pertanyaan pemantik, atau kuis singkat.</td><td>Memetakan kesiapan belajar.</td></tr><tr><td>Proses</td><td>Observasi, LKPD, diskusi, unjuk kerja, pertanyaan reflektif, peer feedback, atau bukti lain yang selaras dengan TP dan KKTP.</td><td>Assessment for learning & assessment as learning.</td></tr><tr><td>Akhir</td><td>Tes lisan/tertulis, produk, proyek, presentasi, portofolio, atau performa yang paling sesuai untuk membuktikan ketercapaian TP/KKTP.</td><td>Assessment of learning.</td></tr></table>
  ${soloQuestionBlock(sub.name)}
- <h2>${soloEnabled()?'I':'H'}. LKPD Ringkas</h2><ol><li>Tuliskan pengetahuan awalmu tentang ${esc(sub.name)}.</li><li>Amati/baca/simak contoh yang diberikan guru dan catat informasi penting.</li><li>Kerjakan tugas penerapan sesuai petunjuk.</li><li>Presentasikan atau tuliskan hasil secara runtut.</li><li>Refleksikan kekuatan, kesulitan, dan rencana perbaikan.</li></ol>
- <h2>${soloEnabled()?'J':'I'}. Rubrik Penilaian</h2><table><tr><th>Aspek</th><th>4</th><th>3</th><th>2</th><th>1</th></tr><tr><td>Pemahaman</td><td>Tepat, lengkap, mampu memberi alasan</td><td>Tepat dengan sedikit kekurangan</td><td>Sebagian tepat</td><td>Perlu bimbingan</td></tr><tr><td>Penerapan/Produk</td><td>Relevan, mandiri, berkualitas</td><td>Baik dengan sedikit bantuan</td><td>Masih perlu arahan</td><td>Belum sesuai</td></tr><tr><td>Komunikasi/Refleksi</td><td>Jelas, runtut, reflektif</td><td>Cukup jelas</td><td>Kurang runtut</td><td>Sulit dipahami</td></tr></table>
+ <h2>${soloEnabled()?'J':'I'}. LKPD Ringkas</h2><ol><li>Tuliskan pengetahuan awalmu tentang ${esc(sub.name)}.</li><li>Amati/baca/simak contoh yang diberikan guru dan catat informasi penting.</li><li>Kerjakan tugas penerapan sesuai petunjuk.</li><li>Presentasikan atau tuliskan hasil secara runtut.</li><li>Refleksikan kekuatan, kesulitan, dan rencana perbaikan.</li></ol>
+ <h2>${soloEnabled()?'K':'J'}. Rubrik Penilaian</h2><table><tr><th>Aspek</th><th>4</th><th>3</th><th>2</th><th>1</th></tr><tr><td>Pemahaman</td><td>Tepat, lengkap, mampu memberi alasan</td><td>Tepat dengan sedikit kekurangan</td><td>Sebagian tepat</td><td>Perlu bimbingan</td></tr><tr><td>Penerapan/Produk</td><td>Relevan, mandiri, berkualitas</td><td>Baik dengan sedikit bantuan</td><td>Masih perlu arahan</td><td>Belum sesuai</td></tr><tr><td>Komunikasi/Refleksi</td><td>Jelas, runtut, reflektif</td><td>Cukup jelas</td><td>Kurang runtut</td><td>Sulit dipahami</td></tr></table>
  ${soloRubricBlock(sub.name)}
- <h2>${soloEnabled()?'K':'J'}. Diferensiasi, Remedial, Pengayaan, dan Refleksi</h2><p><b>Diferensiasi:</b> penyesuaian contoh, media, dukungan, tingkat kompleksitas, waktu, dan bentuk produk. <b>Remedial:</b> pemodelan ulang, latihan bertahap, bimbingan kelompok kecil/individual. <b>Pengayaan:</b> konteks baru atau tugas lebih kompleks.</p><table><tr><th>Refleksi Guru</th><th>Refleksi Peserta Didik</th></tr><tr><td>Apakah tujuan tercapai? Siapa yang perlu tindak lanjut? Strategi apa yang perlu diperbaiki?</td><td>Apa yang saya pahami? Apa yang sulit? Apa rencana perbaikan saya?</td></tr></table>
- ${signatureHTML()}<p class="small-note"><i>Dokumen hasil generator wajib ditinjau dan disesuaikan dengan CP/ATP resmi, karakteristik peserta didik, serta kebijakan satuan pendidikan.</i></p></section>`;
+ <h2>${soloEnabled()?'L':'K'}. Diferensiasi, Remedial, Pengayaan, dan Refleksi</h2><p><b>Diferensiasi:</b> penyesuaian contoh, media, dukungan, tingkat kompleksitas, waktu, dan bentuk produk. <b>Remedial:</b> pemodelan ulang, latihan bertahap, bimbingan kelompok kecil/individual. <b>Pengayaan:</b> konteks baru atau tugas lebih kompleks.</p><table><tr><th>Refleksi Guru</th><th>Refleksi Peserta Didik</th></tr><tr><td>Apakah tujuan tercapai? Siapa yang perlu tindak lanjut? Strategi apa yang perlu diperbaiki?</td><td>Apa yang saya pahami? Apa yang sulit? Apa rencana perbaikan saya?</td></tr></table>
+ ${signatureHTML()}<p class="small-note"><i>Dokumen hasil generator wajib ditinjau dan disesuaikan dengan CP/ATP resmi, bukti ketercapaian TP (KKTP), karakteristik peserta didik, serta kebijakan satuan pendidikan. Jika SOLO digunakan, SOLO berfungsi sebagai kerangka kedalaman pemahaman dan tidak mengubah CP resmi.</i></p></section>`;
 }
 
 
@@ -1596,8 +1733,8 @@ function generateBook(){
  saveData();const mods=getModules();if(window.__MK_PLAN==='demo'&&mods.length>1)return alert(`Mode Demo hanya dapat membuat 1 unit modul. Saat ini mode Anda: Per ${moduleLevelLabel()}. Kurangi unit lain atau upgrade akses.`);if(!mods.length)return alert(moduleLevel()==='materi'?'Tambahkan minimal satu Materi pada Subbab.':'Tambahkan minimal satu '+moduleLevelLabel()+'.');
  const m=$('mapel').value||'Mata Pelajaran';
  let h=`<section class="cover">${coverLogoHTML()}<div class="kicker">Buku Perangkat Pembelajaran & Modul Ajar Pembelajaran Mendalam</div><h1>${esc(m)}</h1><h2>${esc($('fasekelas').value)} • ${esc($('jenjang').value)}</h2><div class="meta"><b>${esc(semesterCoverText())}</b><br>Tahun Pelajaran <b>${esc($('tahun').value)}</b><br><br>${esc($('sekolah').value||'Nama Sekolah/Madrasah')}<br><br>Disusun oleh<br><b>${esc($('guru').value||'Nama Guru/Penyusun')}</b>${$('nip').value?`<br>NIP/NUPTK: ${esc($('nip').value)}`:''}</div></section>`;
- h+=`<section class="section-page" style="page-break-before:auto"><div class="module-title"><h1>IDENTITAS PERANGKAT</h1></div><table><tr><td><b>Satuan Pendidikan</b></td><td>${esc($('sekolah').value||'—')}</td></tr><tr><td><b>Jenjang</b></td><td>${esc($('jenjang').value||'—')}</td></tr>${isMI()?`<tr><td><b>Acuan Madrasah</b></td><td>KMA No. 1503 Tahun 2025 • CP PAI & Bahasa Arab: SK Dirjen Pendis No. 9941 Tahun 2025 • 1 JP = 35 menit</td></tr>`:''}<tr><td><b>Mata Pelajaran</b></td><td>${esc(m)}</td></tr><tr><td><b>Fase/Kelas</b></td><td>${esc($('fasekelas').value)}</td></tr><tr><td><b>Semester</b></td><td>${esc(semesterCoverText())}</td></tr><tr><td><b>Tahun Pelajaran</b></td><td>${esc($('tahun').value)}</td></tr><tr><td><b>Penyusun</b></td><td>${esc($('guru').value||'—')}</td></tr><tr><td><b>NIP/NUPTK</b></td><td>${esc($('nip').value||'—')}</td></tr></table><h2>Kata Pengantar</h2><p>Buku perangkat pembelajaran ini menghimpun Analisis CP menjadi TP, ATP, kalender pendidikan kerja, analisis alokasi waktu, Program Tahunan, Program Semester, dan Modul Ajar Pembelajaran Mendalam. Modul ajar dapat disusun per Bab, per Subbab, atau per Materi sesuai pilihan guru, dan seluruh hasil tetap dapat diedit serta disesuaikan dengan kondisi satuan pendidikan.</p>${$('catatan').value?`<h2>Catatan Penyusun</h2><p>${esc($('catatan').value)}</p>`:''}<h2>Daftar Isi</h2><ol><li>Analisis CP menjadi TP</li><li>ATP Semester Ganjil</li><li>ATP Semester Genap</li><li>Kalender Pendidikan Kerja & Minggu Efektif</li><li>Analisis Alokasi Waktu</li><li>Program Tahunan (PROTA)</li><li>Program Semester Ganjil (PROSEM)</li><li>Program Semester Genap (PROSEM)</li><li>Modul Ajar Pembelajaran Mendalam per ${esc(moduleLevelLabel())}</li><li>LKPD Peserta Didik (sesuai pilihan guru)</li></ol></section>`;
- h+=analysisCPTable()+atpSection('ganjil')+atpSection('genap')+calendarSection()+allocationSection()+protaSection()+prosemSection('ganjil')+prosemSection('genap');
+ h+=`<section class="section-page" style="page-break-before:auto"><div class="module-title"><h1>IDENTITAS PERANGKAT</h1></div><table><tr><td><b>Satuan Pendidikan</b></td><td>${esc($('sekolah').value||'—')}</td></tr><tr><td><b>Jenjang</b></td><td>${esc($('jenjang').value||'—')}</td></tr>${isMI()?`<tr><td><b>Acuan Madrasah</b></td><td>KMA No. 1503 Tahun 2025 • CP PAI & Bahasa Arab: SK Dirjen Pendis No. 9941 Tahun 2025 • 1 JP = 35 menit</td></tr>`:''}<tr><td><b>Mata Pelajaran</b></td><td>${esc(m)}</td></tr><tr><td><b>Fase/Kelas</b></td><td>${esc($('fasekelas').value)}</td></tr><tr><td><b>Semester</b></td><td>${esc(semesterCoverText())}</td></tr><tr><td><b>Tahun Pelajaran</b></td><td>${esc($('tahun').value)}</td></tr><tr><td><b>Penyusun</b></td><td>${esc($('guru').value||'—')}</td></tr><tr><td><b>NIP/NUPTK</b></td><td>${esc($('nip').value||'—')}</td></tr></table><h2>Kata Pengantar</h2><p>Buku perangkat pembelajaran ini menghimpun Analisis CP menjadi TP, ATP, Kriteria Ketercapaian Tujuan Pembelajaran (KKTP), kalender pendidikan kerja, analisis alokasi waktu, Program Tahunan, Program Semester, dan Modul Ajar Pembelajaran Mendalam. Modul ajar dapat disusun per Bab, per Subbab, atau per Materi sesuai pilihan guru, dan seluruh hasil tetap dapat diedit serta disesuaikan dengan kondisi satuan pendidikan.</p>${$('catatan').value?`<h2>Catatan Penyusun</h2><p>${esc($('catatan').value)}</p>`:''}<h2>Daftar Isi</h2><ol><li>Analisis CP menjadi TP</li><li>ATP Semester Ganjil</li><li>ATP Semester Genap</li><li>Kriteria Ketercapaian Tujuan Pembelajaran (KKTP)</li><li>Kalender Pendidikan Kerja & Minggu Efektif</li><li>Analisis Alokasi Waktu</li><li>Program Tahunan (PROTA)</li><li>Program Semester Ganjil (PROSEM)</li><li>Program Semester Genap (PROSEM)</li><li>Modul Ajar Pembelajaran Mendalam per ${esc(moduleLevelLabel())}</li><li>LKPD Peserta Didik (sesuai pilihan guru)</li></ol></section>`;
+ h+=analysisCPTable()+atpSection('ganjil')+atpSection('genap')+kktpBookSection()+calendarSection()+allocationSection()+protaSection()+prosemSection('ganjil')+prosemSection('genap');
  let current='';const placement=$('lkpdPlacement').value;const lkpdMods=mods.filter(shouldIncludeLKPD);mods.forEach(x=>{if(x.sem!==current){current=x.sem;h+=`<section class="divider"><div><div class="kicker">Modul Ajar Pembelajaran Mendalam • Per ${esc(moduleLevelLabel())}</div><h1>${esc(current)}</h1><p>${esc(m)} • ${esc($('fasekelas').value)}</p></div></section>`}h+=moduleHTML(x);if(shouldIncludeLKPD(x)&&placement==='setelah')h+=lkpdHTML(x)});
  if(lkpdMods.length&&placement==='akhir'){h+=`<section class="divider"><div><div class="kicker">Lampiran Peserta Didik</div><h1>Kumpulan LKPD</h1><p>${esc(m)} • ${esc($('fasekelas').value)} • ${lkpdMods.length} LKPD</p></div></section>`;lkpdMods.forEach(x=>h+=lkpdHTML(x))}
  $('hasil').innerHTML=h;$('hasil').dataset.generated='1';$('hasil').contentEditable='false';window.scrollTo({top:$('hasil').getBoundingClientRect().top+window.scrollY-10,behavior:'smooth'});
@@ -2582,6 +2719,33 @@ function downloadWord(){
   color:#4338ca;
   font-size:10.5px;
   font-weight:900;
+}
+
+
+/* V12.6 — KKTP dan SOLO yang selaras */
+.kktp-ui-note{
+  margin-top:10px;
+  padding:9px 10px;
+  border:1px solid #abefc6;
+  background:#ecfdf3;
+  color:#067647;
+  border-radius:10px;
+  font-size:11px;
+  line-height:1.45;
+}
+.kktp-ui-note b{display:block;margin-bottom:2px}
+.kktp-table td,.kktp-table th{vertical-align:top}
+.kktp-table .achieved{background:#ecfdf3}
+.kktp-table .exceed{background:#eef2ff}
+.tp-stack{margin:0;padding-left:18px}
+.tp-stack li{margin-bottom:4px}
+.note-academic{
+  border-left:4px solid #6366f1;
+  padding:8px 10px;
+  background:#f8faff;
+  border-radius:0 9px 9px 0;
+  font-size:11px;
+  line-height:1.5;
 }
 
 </style>
@@ -4213,13 +4377,28 @@ moduleHTML=function(x){
  if(!isMA()||!$('includeKBC')?.checked)return h;
  const sub=x.sub.name,pc=inferPancaCinta(sub);
  const experienceHeading=soloEnabled()
-   ?'<h2>G. Pengalaman Belajar dan Kegiatan Pembelajaran</h2>'
-   :'<h2>F. Pengalaman Belajar dan Kegiatan Pembelajaran</h2>';
- const shiftedHeading=soloEnabled()
    ?'<h2>H. Pengalaman Belajar dan Kegiatan Pembelajaran</h2>'
    :'<h2>G. Pengalaman Belajar dan Kegiatan Pembelajaran</h2>';
- h=h.replace(experienceHeading,shiftedHeading);
- const block=`<h2>${soloEnabled()?'G':'F'}. Integrasi Kurikulum Berbasis Cinta (KBC)</h2>
+ const shiftedHeading=soloEnabled()
+   ?'<h2>I. Pengalaman Belajar dan Kegiatan Pembelajaran</h2>'
+   :'<h2>H. Pengalaman Belajar dan Kegiatan Pembelajaran</h2>';
+
+ const assessHeading=soloEnabled()?'<h2>I. Asesmen Pembelajaran</h2>':'<h2>H. Asesmen Pembelajaran</h2>';
+ const shiftedAssess=soloEnabled()?'<h2>J. Asesmen Pembelajaran</h2>':'<h2>I. Asesmen Pembelajaran</h2>';
+ const lkpdHeading=soloEnabled()?'<h2>J. LKPD Ringkas</h2>':'<h2>I. LKPD Ringkas</h2>';
+ const shiftedLkpd=soloEnabled()?'<h2>K. LKPD Ringkas</h2>':'<h2>J. LKPD Ringkas</h2>';
+ const rubricHeading=soloEnabled()?'<h2>K. Rubrik Penilaian</h2>':'<h2>J. Rubrik Penilaian</h2>';
+ const shiftedRubric=soloEnabled()?'<h2>L. Rubrik Penilaian</h2>':'<h2>K. Rubrik Penilaian</h2>';
+ const diffHeading=soloEnabled()?'<h2>L. Diferensiasi, Remedial, Pengayaan, dan Refleksi</h2>':'<h2>K. Diferensiasi, Remedial, Pengayaan, dan Refleksi</h2>';
+ const shiftedDiff=soloEnabled()?'<h2>M. Diferensiasi, Remedial, Pengayaan, dan Refleksi</h2>':'<h2>L. Diferensiasi, Remedial, Pengayaan, dan Refleksi</h2>';
+
+ h=h.replace(experienceHeading,shiftedHeading)
+    .replace(assessHeading,shiftedAssess)
+    .replace(lkpdHeading,shiftedLkpd)
+    .replace(rubricHeading,shiftedRubric)
+    .replace(diffHeading,shiftedDiff);
+
+ const block=`<h2>${soloEnabled()?'H':'G'}. Integrasi Kurikulum Berbasis Cinta (KBC)</h2>
  <table>
  <tr><td><b>Topik Panca Cinta</b></td><td>${esc(pc)}</td></tr>
  <tr><td><b>Materi Integrasi KBC</b></td><td>${esc(kbcMaterial(sub))}</td></tr>
